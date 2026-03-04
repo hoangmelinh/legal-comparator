@@ -17,10 +17,10 @@ class LegalVectorDB:
     def insert_legal_chunks(self, chunks, metadata_list):
 
         if not chunks:
-            print("⚠ Không có chunk nào để lưu.")
+            print("Không có chunk nào để lưu.")
             return
 
-        # 1️⃣ Tạo embeddings
+        #Tạo embeddings
         embeddings = self.embedder.get_embeddings(chunks)
 
         data_to_upsert = []

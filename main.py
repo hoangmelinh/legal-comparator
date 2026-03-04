@@ -32,5 +32,5 @@ def run_pipeline(file_name):
 
 if __name__ == "__main__":
     #ten file cần test
-    target_file = "hop_dong_mau.docx" 
+    target_file = "hop_dong_mau_1.docx" 
     run_pipeline(target_file)

@@ -19,6 +19,6 @@ def extract_text(file_path):
     return text
 
 if __name__ == "__main__":
-    print("--- Đang test module Ingestion ---")
+    print("Đang test module Ingestion")
     test_data = extract_text("data/raw/sample.pdf")
     print(test_data[:200])
