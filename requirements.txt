@@ -1,2 +1,7 @@
 python-docx
 PyMuPDF
+sentence-transformers
+nano-vectordb
+numpy
+torch
+scikit-learn

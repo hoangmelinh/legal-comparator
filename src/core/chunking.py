@@ -6,6 +6,7 @@ def structural_chunking(text, doc_id="doc1"):
     splits = list(re.finditer(pattern, text))
     
     chunks = []
+    seen_contents = set()
     
     for i, match in enumerate(splits):
         start = match.start()
@@ -13,9 +14,10 @@ def structural_chunking(text, doc_id="doc1"):
         
         chunk_text = text[start:end].strip()
         
-        if len(chunk_text) > 30:
+        if len(chunk_text) > 30 and chunk_text not in seen_contents:
             article_number = match.group(1)
             
+            seen_contents.add(chunk_text)
             chunks.append({
                 "doc_id": doc_id,
                 "article": article_number,
