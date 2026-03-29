@@ -37,7 +37,7 @@ def test_search():
     db = LegalVectorDB(db_name=db_path)
     
     # 3. Chạy search thử nghiệm bằng query CÓ THẬT trong hợp đồng
-    query = "trách nhiệm bồi thường thiệt hại phát sinh do vi phạm nghĩa vụ"
+    query = "Điều 5 và thanh toán"
     top_k = 3
     print(f"\n────────────────────────────────────────")
     print(f"Query: {query}")

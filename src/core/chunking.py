@@ -3,26 +3,26 @@ import uuid
 from dataclasses import dataclass, field, asdict
 from typing import List, Optional, Dict, Any, Tuple
 
-# --- Heading nhóm (không tạo chunk, chỉ cập nhật breadcrumb) ---
-_RE_PART    = re.compile(r"^(PHẦN|CHƯƠNG)\s+([IVXLCDM\d]+)\b(.*)", re.IGNORECASE)
-_RE_SECTION = re.compile(r"^MỤC\s+(\d+|[IVXLCDM]+)\b(.*)",         re.IGNORECASE)
 
-# Khớp: "Điều 1.", "Điều 12. Tiêu đề ở đây", "Điều 3 :"
+_RE_PART    = re.compile(r"^(PHẦN|CHƯƠNG|PART|CHAPTER)\s+([IVXLCDM\d]+)\b(.*)", re.IGNORECASE)
+_RE_SECTION = re.compile(r"^(MỤC|SECTION)\s+(\d+|[IVXLCDM]+)\b(.*)",         re.IGNORECASE)
+
+
 _RE_ARTICLE = re.compile(
-    r"^Điều\s+(\d+)\s*[.:\-–]?\s*(.*)",
+    r"^(?:Điều|Clause|Article)\s+(\d+)\s*[.:\-–]?\s*(.*)",
     re.IGNORECASE,
 )
 
-# Khớp: "1. ", "12. " — KHÔNG khớp "1.000" hay "1.5 triệu"
+
 _RE_CLAUSE = re.compile(r"^(\d+)\.\s+(.+)", re.DOTALL)
 
-# Khớp: "a) ", "b) ", "đ) ", "dd) "
+
 _RE_POINT = re.compile(r"^([a-zđ]{1,2})\)\s+(.+)", re.DOTALL)
 
-# --- Gạch đầu dòng (Sub-point) ---
+
 _RE_BULLET = re.compile(r"^[-•+]\s+(.+)", re.DOTALL)
 
-# Thứ tự kiểm tra: từ cụ thể nhất → chung nhất
+
 _STRUCTURAL_PATTERNS: List[Tuple[str, re.Pattern]] = [
     ("part",    _RE_PART),
     ("section", _RE_SECTION),
@@ -88,6 +88,8 @@ def legal_chunker(
     current_section : str = ""
     current_article : Optional[_ArticleBuffer] = None
 
+    seen_article_labels: Dict[str, int] = {}
+
     def _get_text(record: Dict) -> str:
         return record.get("canonical") or record.get("content", "")
 
@@ -114,7 +116,15 @@ def legal_chunker(
 
     def _flush_article_buffer(buf: _ArticleBuffer) -> List[LegalChunk]:
         result: List[LegalChunk] = []
-        article_label = f"Điều {buf.article_num}"
+        
+        base_label = _build_breadcrumb(buf.article_num)
+        
+        seen_article_labels[base_label] = seen_article_labels.get(base_label, 0) + 1
+        if seen_article_labels[base_label] > 1:
+            article_label = f"{base_label} (Lần {seen_article_labels[base_label]})"
+        else:
+            article_label = base_label
+
         article_context = (
             f"{article_label}. {buf.article_title}"
             if buf.article_title
@@ -294,14 +304,23 @@ def legal_chunker(
             )
 
         elif line_type in ("clause", "point", "bullet", "body"):
-            if current_article is not None:
-                current_article.lines.append({
-                    "text"      : text,
-                    "line_type" : line_type,
-                    "char_start": char_start,
-                    "char_end"  : char_end,
-                    "page"      : page_number,
-                })
+            if current_article is None:
+                current_article = _ArticleBuffer(
+                    article_num   = 0,
+                    article_title = "Nội dung không phân điều",
+                    page_number   = page_number,
+                    char_start    = char_start,
+                    source_file   = source_file,
+                    breadcrumb    = "Tổng quan",
+                )
+            
+            current_article.lines.append({
+                "text"      : text,
+                "line_type" : line_type,
+                "char_start": char_start,
+                "char_end"  : char_end,
+                "page"      : page_number,
+            })
 
     if current_article:
         chunks.extend(_flush_article_buffer(current_article))
@@ -313,7 +332,42 @@ def structural_chunking(text: str, doc_id: str = "doc1") -> List[Dict[str, Any]]
     Hàm giao tiếp với pipeline hiện tại (main.py).
     Chuyển văn bản thô thành danh sách records rồi đưa vào legal_chunker.
     """
-    # Tách văn bản thành từng dòng
+    # Nếu văn bản hoàn toàn không có cấu trúc Điều khoản pháp lý, ta dùng chế độ Fallback (chia theo đoạn)
+    if not re.search(r"^(?:Điều|Clause|Article)\s+(\d+)", text, re.IGNORECASE | re.MULTILINE):
+        lines = text.split("\n")
+        final_chunks = []
+        current_chunk_lines = []
+        current_word_count = 0
+        chunk_index = 1
+        
+        for line in lines:
+            line = line.strip()
+            if not line: continue
+            current_chunk_lines.append(line)
+            current_word_count += len(line.split())
+            
+            # Ngắt chunk nếu đủ dài (>=100 từ) hoặc có dấu hiệu ngắt câu
+            if current_word_count >= 100:
+                para_text = "\n".join(current_chunk_lines)
+                final_chunks.append({
+                    "doc_id": doc_id,
+                    "article": f"Đoạn {chunk_index}",
+                    "content": para_text,
+                })
+                chunk_index += 1
+                current_chunk_lines = []
+                current_word_count = 0
+                
+        if current_chunk_lines:
+            para_text = "\n".join(current_chunk_lines)
+            final_chunks.append({
+                "doc_id": doc_id,
+                "article": f"Đoạn {chunk_index}",
+                "content": para_text,
+            })
+        return final_chunks
+
+    # Tách văn bản thành từng dòng (Chế độ chuẩn có cấu trúc)
     lines = text.split("\n")
     records = []
     
@@ -338,7 +392,7 @@ def structural_chunking(text: str, doc_id: str = "doc1") -> List[Dict[str, Any]]
         chunk_dict = chunk.to_dict()
         # Bổ sung key doc_id và article để tương thích với luồng cũ
         chunk_dict["doc_id"] = doc_id
-        chunk_dict["article"] = chunk.parent_law_id.replace("Điều ", "") if chunk.parent_law_id.startswith("Điều ") else chunk.parent_law_id
+        chunk_dict["article"] = chunk.parent_law_id
         final_chunks.append(chunk_dict)
         
     return final_chunks

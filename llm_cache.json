@@ -1,0 +1,50 @@
+{
+  "2ea7ef2b00742ed6651709c67ac21deb": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "24388fb68fddc5c506f34a8aac741e70": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "df0c94ab2481de80a0fb29608d71db04": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "5a1e2120b02b607e65ffb7a241dce59b": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "d2b725e5411e9d74a14f55031276e922": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "33c4a60f04db33259d6e9acf0031c57f": {
+    "status": "MODIFIED",
+    "summary": "Nội dung hai bản khác nhau, thể hiện cảm xúc của người viết.",
+    "exact_difference": "Toàn bộ điều khoản",
+    "change_type": "Thay đổi từ ngữ",
+    "citation_a": "Hôm nay tôi buồn",
+    "citation_b": "Hôm nay tôi vui"
+  }
+}
