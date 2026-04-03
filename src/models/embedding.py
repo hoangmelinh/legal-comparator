@@ -1,5 +1,9 @@
-from sentence_transformers import SentenceTransformer
+import os
+os.environ["HF_DATASETS_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+os.environ["HF_HUB_OFFLINE"] = "1"
 
+from sentence_transformers import SentenceTransformer
 class EmbeddingModel:
     def __init__(self, model_name='BAAI/bge-m3'):
         # Khởi tạo mô hình BGE-M3
