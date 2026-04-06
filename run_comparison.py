@@ -16,8 +16,7 @@ from typing import Optional
 from src.core.comparator import run_comparison, save_report, print_report
 from src.core.llm import is_ollama_running, DEFAULT_MODEL
 from src.database.vector_store import LegalVectorDB
-from src.core.ingestion import extract_text
-from src.core.chunking import structural_chunking
+from src.core.ingestion import ingest_document
 
 
 # ─────────────────────────────────────────────
@@ -64,38 +63,21 @@ def list_docs(db_path: str):
         logger.info(f" - {doc_id} ({count} chunks)")
 
 
-def build_metadata(chunk, doc_id: str, index: int, file_path: str):
-    """Centralized metadata builder."""
-    return {
-        "doc_id": doc_id,
-        "article": chunk.get("article", ""),
-        "clause_index": index,
-        "source_file": file_path,
-    }
-
-
 def ingest_file(file_path: str, doc_id: str, db_path: str):
     """Ingest document into VectorDB."""
     logger.info(f"Ingesting file: {file_path}")
     logger.info(f"Doc ID: {doc_id}")
 
     start = time.time()
+    result = ingest_document(file_path=file_path, doc_id=doc_id, db_path=db_path)
 
-    text = extract_text(file_path)
-    if not text.strip():
-        raise ValueError("Empty text extracted from file")
-
-    chunks = structural_chunking(text, doc_id=doc_id)
-    logger.info(f"Chunked into {len(chunks)} clauses")
-
-    db = LegalVectorDB(db_name=db_path)
-
-    metadata_list = [
-        build_metadata(chunk, doc_id, i, file_path)
-        for i, chunk in enumerate(chunks)
-    ]
-
-    db.insert_legal_chunks(chunks, metadata_list, doc_id_to_clear=doc_id)
+    logger.info(f"Normalized PDF: {result['normalized_pdf_path']}")
+    logger.info(f"Conversion method: {result['conversion_method']}")
+    logger.info(f"Ingest status: {result['ingest_status']}")
+    logger.info(f"Used vector cache: {result['used_vector_cache']}")
+    logger.info(f"Chunks count: {result['chunks_count']}")
+    if result.get("warning"):
+        logger.warning(result["warning"])
 
     logger.info(f"Ingest completed in {time.time() - start:.2f}s")
 

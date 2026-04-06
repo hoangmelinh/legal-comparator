@@ -1,4 +1,23 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-legal_data.json
+*.py[cod]
+*$py.class
+
+# Environments
 .env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Data and Cache files
+# VS Code / IDEs
+.vscode/
+.idea/
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db

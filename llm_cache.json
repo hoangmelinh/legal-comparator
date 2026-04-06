@@ -46,5 +46,143 @@
     "change_type": "Thay đổi từ ngữ",
     "citation_a": "Hôm nay tôi buồn",
     "citation_b": "Hôm nay tôi vui"
+  },
+  "7824525cf70aabb6351c56d7c2b4f280": {
+    "status": "MODIFIED",
+    "summary": "Điểm khác biệt nằm ở thời gian thông báo sự cố an ninh thông tin và yêu cầu bổ sung của Bên A.",
+    "exact_difference": "'20.3' Khoản '20.4'",
+    "change_type": "Thay đổi ý nghĩa",
+    "citation_a": "Bên B phải thông báo cho Bên A trong vòng 04 (bốn) giờ kể từ thời điểm phát hiện;",
+    "citation_b": "Bên B phải thông báo cho Bên A trong vòng 02 (hai) giờ kể từ thời điểm phát hiện;"
+  },
+  "5c7fbcf28ee3edcf7a258592c1601dce": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "2c887f7794c6abe7ecc64a6ba0679046": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "Bên A có quyền yêu cầu tạm ngừng một phần công việc vì lý do an ninh, kiểm toán, tái cấu trúc nội bộ, thay đổi pháp luật hoặc các lý do quản trị hợp lý khác, với điều kiện phải thông báo bằng văn bản cho Bên B trong thời gian phù hợp và thanh toán các chi phí hợp lý đã phát sinh thực tế, nếu có.",
+    "citation_b": "Bên A có quyền yêu cầu tạm ngừng một phần công việc vì lý do an ninh, kiểm toán, tái cấu trúc nội bộ, thay đổi pháp luật hoặc các lý do quản trị hợp lý khác, với điều kiện phải thông báo bằng văn bản cho Bên B trong thời gian phù hợp và thanh toán các chi phí hợp lý đã phát sinh thực tế, nếu có."
+  },
+  "63a2de64ea85eb0d4d98869d42ce7760": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "Trừ các trường hợp vi phạm nghĩa vụ bảo mật, vi phạm bảo vệ dữ liệu cá nhân, hành vi gian lận/cố ý, xâm phạm sở hữu trí tuệ hoặc trách nhiệm không thể giới hạn theo quy định pháp luật, tổng trách nhiệm bồi thường của mỗi Bên phát sinh từ hoặc liên quan đến Hợp đồng này sẽ không vượt quá 100% tổng giá trị thực tế Bên A đã than toán cho Bên B trong 12 (mười hai) tháng liền kề trước thời điểm phát sinh sự kiện dẫn đến trách nhiệm.",
+    "citation_b": "Trừ các trường hợp vi phạm nghĩa vụ bảo mật, vi phạm bảo vệ dữ liệu cá nhân, hành vi gian lận/cố ý, xâm phạm sở hữu trí tuệ hoặc trách nhiệm không thể giới hạn theo quy định pháp luật, tổng trách nhiệm bồi thường của mỗi Bên phát sinh từ hoặc liên quan đến Hợp đồng này sẽ không vượt quá 100% tổng giá trị thực tế Bên A đã than toán cho Bên B trong 12 (mười hai) tháng liền kề trước thời điểm phát sinh sự kiện dẫn đến trách nhiệm."
+  },
+  "4a3e48be433d5db3ef4acef8cbf3a753": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "c1a5250218acb72942b7067f6a396f0e": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "e01a4f07aaab1eab5024c9acc671714b": {
+    "status": "IDENTICAL",
+    "summary": "Nội dung hai bản giống nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "impact_level": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "a2b78cf89ef72e6cf9333d3f310027f1": {
+    "status": "MODIFIED",
+    "summary": "Số tiền tạm tính trong Hợp đồng từ 4.850.000.000 đồng (BẢN A) tăng lên 5.420.000.000 đồng (BẢN B), theo hướng tăng, ảnh hưởng đến tổng giá trị hợp đồng và khả năng thực hiện dự án.",
+    "exact_difference": "Khoản 11.1",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Lớn",
+    "citation_a": "Giá trị tạm tính của Hợp đồng là 4.850.000.000 đồng (bốn tỷ tám trăm năm mươi triệu đồng)",
+    "citation_b": "Giá trị tạm tính của Hợp đồng là 5.420.000.000 đồng (năm tỷ bốn trăm hai mươi triệu đồng)"
+  },
+  "ad5f69aefba8b92610260afca4eb1027": {
+    "status": "MODIFIED",
+    "summary": "Tiến độ dự án trong bản A là 180 ngày, còn bản B là 210 ngày. Thời gian dự kiến tăng từ 180 ngày (bản A) lên 210 ngày (bản B), kéo dài tiến độ dự án. Điều này có thể ảnh hưởng đến quản lý thời gian và kế hoạch tổng thể của dự án.",
+    "exact_difference": "Khoản 6.1",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tiến độ dự kiến của dự án là 180 (một trăm tám mươi) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể.",
+    "citation_b": "Tiến độ dự kiến của dự án là 210 (hai trăm mười) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể."
+  },
+  "feda80fa8fe4276bbc3acc5440d3eb83": {
+    "status": "MODIFIED",
+    "summary": "Trước đây thời hạn thanh toán là 15 ngày làm việc, nay thay đổi thành 20 ngày làm việc. Đồng thời, tỷ lệ tiền tạm giữ từ 5% lên 10%, và thời gian tạm giữ kéo dài từ 60 ngày lên 90 ngày. Thay đổi này tăng thời gian thanh toán và mức độ rủi ro tài chính cho Bên A.",
+    "exact_difference": "Khoản 2",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn thanh toán cho mỗi đợt là 15 (mười lăm) ngày làm việc kể từ ngày Bên A nhận được đầy đủ hồ sơ thanh toán hợp lệ.",
+    "citation_b": "Thời hạn thanh toán cho mỗi đợt là 20 (hai mươi) ngày làm việc kể từ ngày Bên A nhận được đầy đủ hồ sơ thanh toán hợp lệ."
+  },
+  "f45ff925cf54e8be1d1490b002d8d8d6": {
+    "status": "MODIFIED",
+    "summary": "Thời gian bảo hành được tăng từ 12 tháng lên 18 tháng. Thời gian đưa ra giải pháp tạm thời và khắc phục hoàn toàn được rút ngắn từ 4 giờ và 24 giờ xuống còn 2 giờ và 12 giờ tương ứng. Điều này làm thay đổi quyền lợi của Bên A, kéo dài thời gian bảo hành nhưng giảm thời gian phản hồi sự cố.",
+    "exact_difference": "Khoản 16.1 và Điểm a Khoản 16.3",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời gian bảo hành tối thiểu của hệ thống là 12 (mười hai) tháng kể từ ngày nghiệm thu cuối cùng.",
+    "citation_b": "Thời gian bảo hành tối thiểu của hệ thống là 18 (mười tám) tháng kể từ ngày nghiệm thu cuối cùng."
+  },
+  "521118b6e6a4130011645e09b6cfa881": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn bảo mật thông tin trong Điều 19 của Bản B kéo dài từ 5 năm (Bản A) thành 7 năm. Điều này ảnh hưởng đến thời gian mà các bên phải giữ bí mật thông tin sau khi hợp đồng kết thúc.",
+    "exact_difference": "Toàn bộ điều khoản",
+    "change_type": "Thay đổi nhỏ về câu chữ",
+    "impact_level": "Trung bình",
+    "citation_a": "Khoản 1 Điều 19: Thời hạn bảo mật thông tin là 5 năm kể từ ngày hợp đồng chấm dứt.",
+    "citation_b": "Khoản 1 Điều 19: Thời hạn bảo mật thông tin là 7 năm kể từ ngày hợp đồng chấm dứt."
+  },
+  "c5802b874dbd9a6c6dda278d461c3e15": {
+    "status": "MODIFIED",
+    "summary": "Thời gian thông báo sự cố an ninh thông tin thay đổi từ 4 giờ trong BẢN A thành 2 giờ trong BẢN B. Điều này làm giảm thời gian phản ứng trước sự cố, có thể ảnh hưởng đến hiệu quả quản lý rủi ro và bảo vệ dữ liệu.",
+    "exact_difference": "Khoản 3",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Bên B phải thông báo cho Bên A trong vòng 04 (bốn) giờ kể từ thời điểm phát hiện",
+    "citation_b": "Bên B phải thông báo cho Bên A trong vòng 02 (hai) giờ kể từ thời điểm phát hiện"
+  },
+  "d9ab963d4594e5a4685c57e5fe17cef5": {
+    "status": "MODIFIED",
+    "summary": "Trước đây, mức phạt vi phạm tiến độ là 0,05% giá trị công việc bị chậm mỗi ngày, nay tăng lên 0,07%. Điều này làm tăng mức phạt và có thể ảnh hưởng đến quyền lợi của Bên B.",
+    "exact_difference": "Khoản 31.1",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "mức 0,05% giá trị phần công việc bị chậm cho mỗi ngày chậm",
+    "citation_b": "mức 0,07% giá trị phần công việc bị chậm cho mỗi ngày chậm"
+  },
+  "e71d1211605989f81c22c7c7afd578b8": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn hợp đồng thay đổi từ 36 tháng (BẢN A) thành 48 tháng (BẢN B), kéo dài thời gian thực hiện hợp đồng. Điều này ảnh hưởng đến quyền và nghĩa vụ của các bên trong việc hoàn thành công việc dở dang sau khi hết hạn.",
+    "exact_difference": "Khoản 2",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn của Hợp đồng là 36 (ba mươi sáu) tháng kể từ ngày có hiệu lực.",
+    "citation_b": "Thời hạn của Hợp đồng là 48 (bốn mươi tám) tháng kể từ ngày có hiệu lực."
+  },
+  "4092cc6dc38a8dc0425a97ab0b71b853": {
+    "status": "MODIFIED",
+    "summary": "Trước đây, Phụ lục 01 và Phụ lục 02 chỉ được mô tả tóm tắt, nay đã bổ sung chi tiết về danh mục hạng mục, tiến độ dự kiến và giá trị tham chiếu trong Phụ lục 01. Đồng thời, Phụ lục 02 nay cung cấp các tiêu chí nghiệm thu và mức dịch vụ tham chiếu.",
+    "exact_difference": "Toàn bộ điều khoản",
+    "change_type": "Thêm mới",
+    "impact_level": "Lớn",
+    "citation_a": "PHỤ LỤC 01 DANH MỤC HẠNG MỤC, TIẾN ĐỘ DỰ KIẾN VÀ GIÁ TRỊ THAM CHIẾU Phụ lục này là một bộ phận không tách rời của Hợp đồng khung",
+    "citation_b": "PHỤ LỤC 02 MA TRẬN TIÊU CHÍ NGHIỆM THU VÀ MỨC DỊCH VỤ THAM CHIẾU Phụ lục này mô tả một số tiêu chí nghiệm thu và mục tiêu dịch vụ tham chiếu để phục vụ thử nghiệm việc so sánh điều khoản, nhận diện thay đổi nhỏ/lớn và trích dẫn theo ngữ cảnh."
   }
 }

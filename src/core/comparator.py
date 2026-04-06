@@ -67,6 +67,13 @@ def _get_all_chunks_by_doc(db: LegalVectorDB, doc_id: str) -> List[dict]:
             "clause_index": meta.get("clause_index", 0),
             "content": content_text,
             "metadata": meta,
+            "doc_id": meta.get("doc_id"),
+            "source_hash": meta.get("source_hash"),
+            "source_file": meta.get("source_file"),
+            "preview_pdf_path": meta.get("preview_pdf_path") or meta.get("source_file"),
+            "page_start": chunk.get("page_start") or meta.get("page_start"),
+            "page_end": chunk.get("page_end") or meta.get("page_end"),
+            "source_anchors": chunk.get("source_anchors", []),
         })
     return result
 
@@ -98,6 +105,115 @@ def _merge_chunks_text(chunks: List[dict]) -> str:
             parts.append(content)
     return "\n".join(parts)
 
+
+def _merge_chunk_provenance(chunks: List[dict]) -> dict:
+    sorted_chunks = sorted(chunks, key=lambda c: c.get("clause_index", 0))
+    anchors = []
+    pages = []
+    preview_pdf_path = None
+    source_file = None
+    source_hash = None
+    doc_id = None
+
+    for chunk in sorted_chunks:
+        chunk_anchors = chunk.get("source_anchors", []) or []
+        anchors.extend(chunk_anchors)
+        preview_pdf_path = preview_pdf_path or chunk.get("preview_pdf_path") or chunk.get("metadata", {}).get("preview_pdf_path")
+        source_file = source_file or chunk.get("source_file") or chunk.get("metadata", {}).get("source_file")
+        source_hash = source_hash or chunk.get("source_hash") or chunk.get("metadata", {}).get("source_hash")
+        doc_id = doc_id or chunk.get("doc_id") or chunk.get("metadata", {}).get("doc_id")
+        if chunk.get("page_start") is not None:
+            pages.append(chunk.get("page_start"))
+        if chunk.get("page_end") is not None:
+            pages.append(chunk.get("page_end"))
+
+    return {
+        "doc_id": doc_id,
+        "source_hash": source_hash,
+        "source_file": source_file,
+        "preview_pdf_path": preview_pdf_path or source_file,
+        "page_start": min(pages) if pages else None,
+        "page_end": max(pages) if pages else None,
+        "anchors": anchors,
+    }
+
+
+def _normalize_anchor_text(value: str) -> str:
+    value = value or ""
+    value = re.sub(r"\s+", " ", value.lower()).strip()
+    value = re.sub(r"[^\w\s%./-]", "", value)
+    return value
+
+
+def _resolve_citation_anchor(citation: str, provenance: dict) -> Optional[dict]:
+    anchors = provenance.get("anchors", []) or []
+    if not citation or not anchors:
+        return None
+
+    needle = _normalize_anchor_text(citation)
+    if not needle:
+        return None
+
+    best_match = None
+    best_score = -1
+
+    for index, anchor in enumerate(anchors):
+        window = anchors[index:index + 3]
+        combined_text = " ".join(item.get("text", "") for item in window)
+        haystack = _normalize_anchor_text(combined_text)
+        if not haystack:
+            continue
+
+        score = 0
+        if needle in haystack or haystack in needle:
+            score = min(len(needle), len(haystack))
+        else:
+            common = set(needle.split()) & set(haystack.split())
+            score = len(common)
+
+        if score > best_score:
+            best_score = score
+            best_match = {
+                "doc_id": provenance.get("doc_id"),
+                "source_hash": provenance.get("source_hash"),
+                "source_file": provenance.get("source_file"),
+                "preview_pdf_path": provenance.get("preview_pdf_path"),
+                "page_start": window[0].get("page"),
+                "page_end": window[-1].get("page"),
+                "anchors": window,
+            }
+
+    return best_match if best_score > 0 else {
+        "doc_id": provenance.get("doc_id"),
+        "source_hash": provenance.get("source_hash"),
+        "source_file": provenance.get("source_file"),
+        "preview_pdf_path": provenance.get("preview_pdf_path"),
+        "page_start": provenance.get("page_start"),
+        "page_end": provenance.get("page_end"),
+        "anchors": anchors[:3],
+    }
+
+
+# ─────────────────────────────────────────────
+# Utils So Sánh Nâng Cao
+# ─────────────────────────────────────────────
+import unicodedata
+from difflib import SequenceMatcher
+
+_NUMERIC_REGEX = re.compile(r'\b\d+(?:[.,]\d+)*\b')
+
+def extract_numbers(text: str) -> list[str]:
+    """Tìm tất cả số nguyên và số thập phân (có dấu phân cách , hoặc .)"""
+    return sorted(_NUMERIC_REGEX.findall(text))
+
+def has_numeric_diff(text_a: str, text_b: str) -> bool:
+    """So sánh tập hợp các số giữa 2 đoạn văn để phát hiện thay đổi định lượng"""
+    return extract_numbers(text_a) != extract_numbers(text_b)
+
+def normalize_for_compare(t: str) -> str:
+    """Loại bỏ ký tự thừa, normalize chuẩn Unicode"""
+    t = unicodedata.normalize('NFC', t)
+    return re.sub(r'\s+', ' ', t).strip().lower()
 
 # ─────────────────────────────────────────────
 # Pipeline chính
@@ -173,12 +289,40 @@ def run_comparison(
     results = []
     pending_llm_tasks = []
 
+    if verbose:
+        print("[Comparator] Sử dụng Lazy Embedding Caching để tăng tốc độ so sánh...")
+    
+    text_a_map = {art: _merge_chunks_text(chunks) for art, chunks in grouped_a.items()}
+    text_b_map = {art: _merge_chunks_text(chunks) for art, chunks in grouped_b.items()}
+    
+    prov_a_map = {art: _merge_chunk_provenance(chunks) for art, chunks in grouped_a.items()}
+    prov_b_map = {art: _merge_chunk_provenance(chunks) for art, chunks in grouped_b.items()}
+    
+    vec_a_map, norm_a_map = {}, {}
+    vec_b_map, norm_b_map = {}, {}
+
+    def get_vec_a(art):
+        if art not in vec_a_map:
+            vec = db.embedder.get_embeddings([text_a_map[art]])[0]
+            vec_a_map[art] = vec
+            norm_a_map[art] = np.linalg.norm(vec)
+        return vec_a_map[art], norm_a_map[art]
+
+    def get_vec_b(art):
+        if art not in vec_b_map:
+            vec = db.embedder.get_embeddings([text_b_map[art]])[0]
+            vec_b_map[art] = vec
+            norm_b_map[art] = np.linalg.norm(vec)
+        return vec_b_map[art], norm_b_map[art]
+
     for article in all_articles:
         in_a = article in grouped_a
         in_b = article in grouped_b
 
-        text_a = _merge_chunks_text(grouped_a[article]) if in_a else ""
-        text_b = _merge_chunks_text(grouped_b[article]) if in_b else ""
+        text_a = text_a_map.get(article, "") if in_a else ""
+        text_b = text_b_map.get(article, "") if in_b else ""
+        provenance_a = prov_a_map.get(article) if in_a else {"page_start": None, "page_end": None, "anchors": []}
+        provenance_b = prov_b_map.get(article) if in_b else {"page_start": None, "page_end": None, "anchors": []}
         article_label = article if "Điều" in article else f"Điều {article}"
 
         # ── Case 1: Chỉ có ở bản B → BẢN MỚI THÊM VÀO
@@ -193,6 +337,10 @@ def run_comparison(
                 "citation_b": text_b[:300] + ("..." if len(text_b) > 300 else ""),
                 "text_a": "",
                 "text_b": text_b,
+                "pdf_anchor_a": None,
+                "pdf_anchor_b": provenance_b,
+                "citation_anchor_a": None,
+                "citation_anchor_b": _resolve_citation_anchor(text_b[:300], provenance_b),
             }
             results.append(entry)
             if verbose:
@@ -201,24 +349,23 @@ def run_comparison(
 
         # ── Case 2: Chỉ có ở bản A → ĐÃ BỊ XÓA HOẶC DI CHUYỂN
         if in_a and not in_b:
-            vec_a = db.embedder.get_embeddings([text_a])[0]
-            norm_a = np.linalg.norm(vec_a)
+            vec_a, norm_a = get_vec_a(article)
             
             best_match_article = None
             best_sim = 0.0
             best_text_b = ""
+            best_provenance_b = None
             
-            for art_b, chunks_b_list in grouped_b.items():
-                txt_b = _merge_chunks_text(chunks_b_list)
+            for art_b, txt_b in text_b_map.items():
                 if not txt_b.strip(): continue
-                vec_b = db.embedder.get_embeddings([txt_b])[0]
-                norm_b = np.linalg.norm(vec_b)
+                vec_b, norm_b = get_vec_b(art_b)
                 sim = np.dot(vec_a, vec_b) / (norm_a * norm_b) if (norm_a > 0 and norm_b > 0) else 0.0
                 
                 if sim > best_sim:
                     best_sim = sim
                     best_match_article = art_b if "Điều" in art_b else f"Điều {art_b}"
                     best_text_b = txt_b
+                    best_provenance_b = prov_b_map[art_b]
             
             if best_sim >= 0.85:
                 entry = {
@@ -231,7 +378,11 @@ def run_comparison(
                     "citation_b": best_text_b[:200] + "...",
                     "text_a": text_a,
                     "text_b": best_text_b,
-                    "word_diff": generate_word_diff(text_a, best_text_b)
+                    "word_diff": generate_word_diff(text_a, best_text_b),
+                    "pdf_anchor_a": provenance_a,
+                    "pdf_anchor_b": best_provenance_b,
+                    "citation_anchor_a": _resolve_citation_anchor(text_a[:200], provenance_a),
+                    "citation_anchor_b": _resolve_citation_anchor(best_text_b[:200], best_provenance_b or {"anchors": []}),
                 }
                 results.append(entry)
                 if verbose:
@@ -247,6 +398,10 @@ def run_comparison(
                     "citation_b": "",
                     "text_a": text_a,
                     "text_b": "",
+                    "pdf_anchor_a": provenance_a,
+                    "pdf_anchor_b": None,
+                    "citation_anchor_a": _resolve_citation_anchor(text_a[:300], provenance_a),
+                    "citation_anchor_b": None,
                 }
                 results.append(entry)
                 if verbose:
@@ -255,11 +410,6 @@ def run_comparison(
 
         # ── Case 3: Có ở cả 2
         # Tối ưu hóa: Kiểm tra khớp tuyệt đối (Exact Match) để bỏ qua LLM
-        def normalize_for_compare(t):
-            import unicodedata
-            t = unicodedata.normalize('NFC', t)
-            return re.sub(r'\s+', ' ', t).strip().lower()
-            
         if normalize_for_compare(text_a) == normalize_for_compare(text_b):
             if verbose:
                 print(f"  [COMPARE ] {article_label} — khớp hoàn toàn (bỏ qua LLM)... IDENTICAL")
@@ -273,40 +423,66 @@ def run_comparison(
                 "citation_b": "",
                 "text_a": text_a,
                 "text_b": text_b,
+                "pdf_anchor_a": provenance_a,
+                "pdf_anchor_b": provenance_b,
+                "citation_anchor_a": None,
+                "citation_anchor_b": None,
             }
             results.append(entry)
         else:
-            # Cosine similarity check bypass
-            vec_a = db.embedder.get_embeddings([text_a])[0]
-            vec_b = db.embedder.get_embeddings([text_b])[0]
-            norm_a = np.linalg.norm(vec_a)
-            norm_b = np.linalg.norm(vec_b)
-            sim = np.dot(vec_a, vec_b) / (norm_a * norm_b) if (norm_a > 0 and norm_b > 0) else 0.0
+            # Có thay đổi số liệu hay không?
+            is_numeric = has_numeric_diff(text_a, text_b)
 
-            if sim >= 0.98:
+            # Tối ưu chặng 1: Dùng thuật toán Lexical Jaccard/Sequence (Chạy C) siêu nhẹ để dò
+            lexical_sim = SequenceMatcher(None, text_a, text_b).ratio()
+            
+            is_minor = False
+            sim = 0.0
+            
+            if not is_numeric and lexical_sim >= 0.93:
+                sim = lexical_sim
+                is_minor = True
+            else:
+                # Tối ưu chặng 2: Nếu đảo vị trí quá nhiều khiến thuật toán chữ bị thấp, đành dùng AI Vector ngữ nghĩa
+                vec_a, norm_a = get_vec_a(article)
+                vec_b, norm_b = get_vec_b(article)
+                sim = np.dot(vec_a, vec_b) / (norm_a * norm_b) if (norm_a > 0 and norm_b > 0) else 0.0
+                if not is_numeric and sim >= 0.93:
+                    is_minor = True
+
+            # Bypass LLM nếu không đổi số liệu VÀ độ tương đồng cao
+            if is_minor:
                 if verbose:
-                    print(f"  [COMPARE ] {article_label} — Cosine Sim {sim:.3f} >= 0.98 (bỏ qua LLM)... MINOR-MODIFIED")
+                    print(f"  [COMPARE ] {article_label} — Sim {sim:.3f} >= 0.93 & Không đổi số (bỏ qua LLM)... MINOR-MODIFIED")
                 entry = {
                     "article": article,
                     "status": "MINOR-MODIFIED",
-                    "summary": f"Nội dung thay đổi rất ít (Cosine Similarity: {sim:.3f}). Đã bỏ qua LLM.",
-                    "exact_difference": "Chỉ thay đổi định dạng hoặc vài từ ngữ nhỏ.",
-                    "change_type": "Thay đổi từ ngữ",
+                    "summary": "Thay đổi chủ yếu ở cách diễn đạt, chưa thấy thay đổi bản chất nội dung.",
+                    "exact_difference": "Chỉ thay đổi cách diễn đạt hoặc trật tự một số từ ngữ nhỏ.",
+                    "change_type": "Thay đổi nhỏ về câu chữ",
+                    "impact_level": "Nhỏ",
                     "citation_a": text_a[:100] + "...",
                     "citation_b": text_b[:100] + "...",
                     "text_a": text_a,
                     "text_b": text_b,
-                    "word_diff": generate_word_diff(text_a, text_b)
+                    "word_diff": generate_word_diff(text_a, text_b),
+                    "pdf_anchor_a": provenance_a,
+                    "pdf_anchor_b": provenance_b,
+                    "citation_anchor_a": _resolve_citation_anchor(text_a[:100], provenance_a),
+                    "citation_anchor_b": _resolve_citation_anchor(text_b[:100], provenance_b),
                 }
                 results.append(entry)
             else:
-                # Cần kiểm tra bằng LLM
+                # Bắt buộc qua LLM (nếu có đổi số hoặc similarity thấp)
                 task = {
                     "article": article,
                     "article_label": article_label,
                     "text_a": text_a,
                     "text_b": text_b,
-                    "result_index": len(results)
+                    "is_numeric": is_numeric,
+                    "result_index": len(results),
+                    "provenance_a": provenance_a,
+                    "provenance_b": provenance_b,
                 }
                 pending_llm_tasks.append(task)
                 results.append(None)  # Placeholder cho LLM xử lý sau
@@ -317,7 +493,13 @@ def run_comparison(
             print(f"\n🚀 Đang chạy đa luồng ({len(pending_llm_tasks)} điều khoản) gửi tới LLM...")
 
         def _run_llm(task):
-            res = compare_clauses(task["text_a"], task["text_b"], task["article_label"], model=model)
+            res = compare_clauses(
+                task["text_a"], 
+                task["text_b"], 
+                task["article_label"], 
+                model=model, 
+                has_numeric_change=task["is_numeric"]
+            )
             return task, res
 
         max_workers = min(2, len(pending_llm_tasks))  # Giảm xuống 2 luồng để tránh CPU bị quá tải gây timeout
@@ -346,8 +528,24 @@ def run_comparison(
                     "citation_b": llm_result.get("citation_b", ""),
                     "text_a": task["text_a"],
                     "text_b": task["text_b"],
-                    "word_diff": generate_word_diff(task["text_a"], task["text_b"])
+                    "word_diff": generate_word_diff(task["text_a"], task["text_b"]),
+                    "pdf_anchor_a": task["provenance_a"],
+                    "pdf_anchor_b": task["provenance_b"],
+                    "citation_anchor_a": _resolve_citation_anchor(llm_result.get("citation_a", ""), task["provenance_a"]),
+                    "citation_anchor_b": _resolve_citation_anchor(llm_result.get("citation_b", ""), task["provenance_b"]),
                 }
+
+    for entry in results:
+        if not entry:
+            continue
+        pdf_anchor_a = entry.get("pdf_anchor_a") or {}
+        pdf_anchor_b = entry.get("pdf_anchor_b") or {}
+        entry.setdefault("doc_id_a", pdf_anchor_a.get("doc_id") or doc_id_a)
+        entry.setdefault("doc_id_b", pdf_anchor_b.get("doc_id") or doc_id_b)
+        entry.setdefault("preview_pdf_path_a", pdf_anchor_a.get("preview_pdf_path"))
+        entry.setdefault("preview_pdf_path_b", pdf_anchor_b.get("preview_pdf_path"))
+        entry.setdefault("source_hash_a", pdf_anchor_a.get("source_hash"))
+        entry.setdefault("source_hash_b", pdf_anchor_b.get("source_hash"))
 
     return results
 
@@ -463,6 +661,7 @@ def print_report(results: List[dict]):
     print("\n" + SEP)
     print("  🔍  PHẦN 2 — TÓM TẮT ĐIỂM THAY ĐỔI QUAN TRỌNG")
     print(SEP)
+    print(SEP)
 
     important = added + removed + moved + modified
     if not important:
@@ -473,12 +672,24 @@ def print_report(results: List[dict]):
                 "ADDED": "➕", "REMOVED": "➖", "MOVED": "🔀",
                 "MODIFIED": "✏️ ", "MINOR-MODIFIED": "≈ ",
             }.get(r["status"], "•")
-            print(f"\n  {idx:>2}. {status_icon} {article_label(r)}")
-            print(f"      Tóm tắt : {r.get('summary', '(không có)')}")
+            print(f"\n  {idx:>2}. {status_icon} Điều/khoản: {article_label(r)}")
+            print(f"      Loại thay đổi: {r.get('change_type', r.get('status'))}")
+            print(f"      Tóm tắt dễ hiểu: {r.get('summary', '(không có)')}")
+            
+            citation_a = (r.get("citation_a") or "").replace('\n', ' ').strip()
+            citation_b = (r.get("citation_b") or "").replace('\n', ' ').strip()
+            if citation_a and citation_b:
+                print(f"      Minh chứng ngắn: Từ '{citation_a[:50]}...' -> '{citation_b[:50]}...'")
+            elif citation_a:
+                print(f"      Minh chứng ngắn: Bỏ đoạn '{citation_a[:50]}...'")
+            elif citation_b:
+                print(f"      Minh chứng ngắn: Thêm đoạn '{citation_b[:50]}...'")
+
+            if r.get("impact_level"):
+                print(f"      Mức độ ảnh hưởng: {r['impact_level']}")
+            
             if r.get("exact_difference"):
-                print(f"      Vị trí  : {r['exact_difference']}")
-            if r.get("change_type"):
-                print(f"      Tính chất: {r['change_type']}")
+                print(f"      Vị trí cụ thể: {r['exact_difference']}")
 
     # ══════════════════════════════════════════════════════
     # PHẦN 3 – TRÍCH ĐOẠN + VỊ TRÍ
