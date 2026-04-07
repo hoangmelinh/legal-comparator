@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Comparator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <i class="fa-regular fa-file-lines"></i>
+            <span>Legal Comparator</span>
+        </div>
+        <nav class="main-nav">
+            <a href="#" class="nav-item active" data-view="home"><i class="fa-solid fa-house"></i> Trang chủ</a>
+            <a href="#" class="nav-item disabled" id="nav-compare" data-view="compare"><i class="fa-solid fa-file-contract"></i> So sánh</a>
+            <a href="#" class="nav-item disabled" id="nav-report" data-view="report"><i class="fa-solid fa-chart-simple"></i> Báo cáo</a>
+            <a href="#" class="nav-item disabled" id="nav-chat" data-view="chat"><i class="fa-regular fa-comment"></i> Chatbot</a>
+        </nav>
+    </header>
+
+    <main class="app-main">
+        <section id="view-home" class="view-section active">
+            <div class="home-container">
+                <div class="upload-panels">
+                    <div class="upload-panel" id="panel-a">
+                        <div class="step-label"><span class="step-num">1</span> Bản cũ (File A)</div>
+                        <div class="upload-zone" id="zone-a">
+                            <i class="fa-regular fa-file-lines icon-default"></i>
+                            <h3 id="h3-a">Kéo thả hoặc nhấn để chọn</h3>
+                            <p id="p-a">Hỗ trợ: .txt, .pdf, .docx</p>
+                            <input type="file" id="input-a" accept=".txt,.pdf,.docx" style="display: none;">
+                        </div>
+                        <div class="status-indicator">
+                            <div class="dot gray" id="dot-a"></div>
+                            <span id="status-a" class="status-text text-gray">Chưa tải lên</span>
+                        </div>
+                    </div>
+
+                    <div class="upload-panel disabled" id="panel-b">
+                        <div class="step-label"><span class="step-num disabled-step">2</span> Bản mới (File B)</div>
+                        <div class="upload-zone" id="zone-b">
+                            <i class="fa-solid fa-clipboard-list icon-disabled"></i>
+                            <h3 id="h3-b" class="text-disabled">Upload File 1 trước</h3>
+                            <p id="p-b" class="text-disabled">File 2 sẽ khả dụng sau khi chọn File 1</p>
+                            <input type="file" id="input-b" accept=".txt,.pdf,.docx" style="display: none;">
+                        </div>
+                        <div class="status-indicator">
+                            <div class="dot gray" id="dot-b"></div>
+                            <span id="status-b" class="status-text text-disabled">Chờ File 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-container">
+                    <button id="btn-compare" class="btn-primary" disabled>
+                        <div class="inner-btn"><div class="compare-icon-wrapper"></div> So sánh 2 file</div>
+                    </button>
+                    <p class="action-hint" id="action-hint">Vui lòng tải lên cả 2 file để tiếp tục</p>
+                </div>
+
+                <div class="features-row">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fa-solid fa-magnifying-glass" style="color: #2b6cb0;"></i></div>
+                        <h4>Phát hiện chính xác</h4>
+                        <p>Nhận diện các thay đổi chính và bám sát vị trí trên PDF gốc.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fa-solid fa-chart-simple" style="color: #38a169;"></i></div>
+                        <h4>Báo cáo trọng tâm</h4>
+                        <p>Tập trung vào các thay đổi đáng chú ý thay vì làm báo cáo bị nhiễu.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fa-regular fa-comment" style="color: #805ad5;"></i></div>
+                        <h4>Đối chiếu dễ hơn</h4>
+                        <p>Xem 2 tài liệu dạng cuộn liên tục để đọc và so sánh tự nhiên hơn.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-compare" class="view-section">
+            <div class="compare-toolbar">
+                <div class="toolbar-left">
+                    <div class="toolbar-title"><i class="fa-solid fa-file-contract"></i> So sánh song song</div>
+                    <div class="compare-mode-note">Cuộn liên tục toàn tài liệu</div>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-secondary" id="btn-view-report"><i class="fa-solid fa-chart-simple"></i> Xem báo cáo →</button>
+                </div>
+            </div>
+
+            <div class="compare-layout">
+                <div class="pdf-container">
+                    <div class="pdf-header">
+                        <div class="dot red"></div>
+                        <span>Bản cũ</span>
+                        <div class="pdf-controls">
+                            <span><span id="page-num-a">0</span> / <span id="page-count-a">0</span></span>
+                        </div>
+                    </div>
+                    <div class="pdf-wrapper" id="pdf-wrapper-a">
+                        <div class="pdf-pages" id="pdf-pages-a"></div>
+                    </div>
+                </div>
+
+                <div class="pdf-container">
+                    <div class="pdf-header">
+                        <div class="dot green"></div>
+                        <span>Bản mới</span>
+                        <div class="pdf-controls">
+                            <span><span id="page-num-b">0</span> / <span id="page-count-b">0</span></span>
+                        </div>
+                    </div>
+                    <div class="pdf-wrapper" id="pdf-wrapper-b">
+                        <div class="pdf-pages" id="pdf-pages-b"></div>
+                    </div>
+                </div>
+
+                <div class="changes-sidebar">
+                    <div class="sidebar-header">
+                        <i class="fa-regular fa-file-lines"></i> Danh sách thay đổi (<span id="changes-count">0</span>)
+                    </div>
+                    <div class="changes-list" id="changes-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-report" class="view-section">
+            <div class="report-toolbar">
+                <div class="toolbar-left">
+                    <div class="toolbar-title"><i class="fa-solid fa-chart-simple"></i> Báo cáo chi tiết</div>
+                    <button class="btn-outline"><i class="fa-solid fa-print"></i> In báo cáo</button>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn-primary" id="btn-ask-chatbot"><i class="fa-regular fa-comment"></i> Hỏi chatbot →</button>
+                </div>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-value text-blue" id="stat-total">0</div>
+                    <div class="stat-label"><i class="fa-regular fa-file-lines"></i> Thay đổi đáng chú ý</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value text-green" id="stat-added">0</div>
+                    <div class="stat-label"><i class="fa-solid fa-plus"></i> Thêm mới</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value text-red" id="stat-removed">0</div>
+                    <div class="stat-label"><i class="fa-solid fa-minus"></i> Đã xóa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value text-yellow" id="stat-modified">0</div>
+                    <div class="stat-label"><i class="fa-solid fa-pen"></i> Đã sửa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value text-purple" id="stat-moved">0</div>
+                    <div class="stat-label"><i class="fa-solid fa-arrows-up-down"></i> Di chuyển</div>
+                </div>
+            </div>
+
+            <div class="report-layout">
+                <div class="report-toc">
+                    <div class="toc-header">MỤC LỤC</div>
+                    <div class="toc-list" id="toc-list"></div>
+                </div>
+                <div class="report-content" id="report-content"></div>
+            </div>
+        </section>
+
+        <section id="view-chat" class="view-section">
+            <div class="chat-layout">
+                <div class="chat-sidebar">
+                    <div class="sidebar-header" style="border-bottom: 0;">
+                        <i class="fa-regular fa-lightbulb" style="color: #d69e2e;"></i> Câu hỏi gợi ý
+                        <div style="font-size: 12px; color: #718096; margin-top: 4px; font-weight: normal;">Nhấn để hỏi nhanh về kết quả so sánh</div>
+                    </div>
+                    <div class="suggestion-group">
+                        <div class="suggestion-title">TỔNG QUAN</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Tóm tắt các thay đổi chính</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Điều khoản nào thay đổi nhiều nhất?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Có phần nào bị xóa hoàn toàn không?</div>
+                    </div>
+                    <div class="suggestion-group">
+                        <div class="suggestion-title">TÀI CHÍNH</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Các thay đổi về giá trị hợp đồng là gì?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Thay đổi điều khoản thanh toán như thế nào?</div>
+                    </div>
+                    <div class="suggestion-group">
+                        <div class="suggestion-title">PHÁP LÝ</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Thay đổi nào ảnh hưởng đến trách nhiệm pháp lý?</div>
+                    </div>
+                </div>
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div class="chat-agent-info">
+                            <div class="agent-avatar"><i class="fa-solid fa-robot"></i></div>
+                            <div>
+                                <div class="agent-name">Legal AI Assistant</div>
+                                <div class="agent-desc">Phân tích văn bản pháp lý thông minh</div>
+                            </div>
+                        </div>
+                        <button class="btn-outline" style="padding: 6px 12px; font-size: 13px;"><i class="fa-solid fa-trash-can"></i> Xóa chat</button>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message assistant">
+                            <div class="msg-bubble">
+                                <div style="margin-bottom: 8px;"><strong>Xin chào! Tôi là Legal AI Assistant.</strong></div>
+                                <div>Tôi có thể giúp bạn phân tích kết quả so sánh văn bản pháp lý. Hãy hỏi tôi bất cứ điều gì về các thay đổi điều khoản.</div>
+                            </div>
+                        </div>
+                        <div class="mock-warning">
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #d69e2e;"></i> Chatbot đang dùng mock data. Chưa có kết nối API cho Chat.
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="Nhập câu hỏi của bạn..." id="chat-input-field">
+                            <button class="btn-send"><i class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="loading-overlay" class="hidden">
+        <div class="progress-box">
+            <h3 id="progress-title">Đang xử lý</h3>
+            <p id="progress-message">Khởi tạo...</p>
+            <div class="progress-bar-bg">
+                <div id="progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-pct" id="progress-pct">0%</div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/pdf-viewer.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -8,7 +8,7 @@ import tempfile
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Callable, Dict, Iterable, Optional
 
 import fitz  # PyMuPDF
 from docx import Document
@@ -19,7 +19,7 @@ from docx.table import Table
 from docx.text.paragraph import Paragraph
 
 from src.core.chunking import structural_chunking
-from src.core.document_registry import DEFAULT_CACHE_ROOT, DocumentRegistry
+from src.core.document_registry import DEFAULT_CACHE_ROOT
 from src.database.vector_store import LegalVectorDB
 
 
@@ -103,12 +103,19 @@ def _json_load(path: Path, default: Any) -> Any:
         return default
 
 
+def _is_nonempty_file(path: Path) -> bool:
+    try:
+        return path.exists() and path.stat().st_size > 0
+    except OSError:
+        return False
+
+
 def _normalize_pdf_line_text(text: str) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
 
 
 def _copy_to_canonical_pdf(source_path: Path, destination_pdf: Path) -> str:
-    if not destination_pdf.exists():
+    if not _is_nonempty_file(destination_pdf):
         shutil.copy2(source_path, destination_pdf)
     return "pdf_passthrough"
 
@@ -453,14 +460,21 @@ def convert_to_pdf(source_path: str | Path, destination_pdf: str | Path) -> str:
         raise ValueError(f"Unsupported file format: {suffix}")
 
     if destination_pdf.exists():
-        existing_method = "cached_conversion"
-        return existing_method
+        try:
+            destination_pdf.unlink()
+        except OSError:
+            pass
 
-    # 1. Thử dùng Gotenberg trước cho mọi định dạng (trừ PDF)
+    # Xử lý nhanh file txt
+    if suffix == ".txt":
+        return _convert_txt_with_internal_renderer(source_path, destination_pdf)
+
+    # 1. Thử dùng Gotenberg cho docx
     try:
         _convert_via_gotenberg(source_path, destination_pdf)
         return "gotenberg"
     except Exception as e:
+        print(f"Bypass Gotenberg conversion. Error: {e}")
         pass  # Bypass and fallback
 
     if suffix == ".docx":
@@ -509,6 +523,17 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
                         continue
 
                     bbox = [round(value, 2) for value in line.get("bbox", [])]
+                    text_items = []
+                    for span in spans:
+                        span_text = _normalize_pdf_line_text(span.get("text", ""))
+                        if not span_text:
+                            continue
+                        span_bbox = [round(value, 2) for value in span.get("bbox", [])]
+                        text_items.append({
+                            "text": span_text,
+                            "bbox": span_bbox,
+                        })
+
                     char_start = current_char
                     char_end = current_char + len(normalized_text)
                     current_char = char_end + 1
@@ -522,6 +547,7 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
                         "page_number": page_index,
                         "source_file": str(pdf_path),
                         "bbox": bbox,
+                        "text_items": text_items,
                         "block_index": block_index,
                         "line_index": line_index,
                     }
@@ -571,7 +597,15 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
     }
 
 
-def prepare_document(file_path: str, cache_root: str | Path = DEFAULT_CACHE_ROOT) -> Dict[str, Any]:
+def prepare_document(
+    file_path: str,
+    cache_root: str | Path = DEFAULT_CACHE_ROOT,
+    cache_key: Optional[str] = None,
+    progress_callback: Optional[Callable[[float, str], None]] = None,
+) -> Dict[str, Any]:
+    if progress_callback:
+        progress_callback(5, "Đang kiểm tra file đầu vào")
+
     source_path = Path(file_path).resolve()
     if not source_path.exists():
         raise FileNotFoundError(f"File not found: {source_path}")
@@ -582,36 +616,36 @@ def prepare_document(file_path: str, cache_root: str | Path = DEFAULT_CACHE_ROOT
 
     cache_root = Path(cache_root)
     directories = _ensure_cache_dirs(cache_root)
-    registry = DocumentRegistry(cache_root / "document_registry.json")
     source_hash = compute_file_hash(source_path)
+    cache_key = cache_key or source_hash
+    normalized_pdf_path = directories["normalized"] / f"{cache_key}.pdf"
+    text_cache_path = directories["text"] / f"{cache_key}.txt"
+    records_cache_path = directories["records"] / f"{cache_key}.json"
 
-    hash_entry = registry.get_hash_entry(source_hash) or {}
-    normalized_pdf_path = Path(hash_entry.get("normalized_pdf_path", directories["normalized"] / f"{source_hash}.pdf"))
-    text_cache_path = Path(hash_entry.get("text_cache_path", directories["text"] / f"{source_hash}.txt"))
-    records_cache_path = Path(hash_entry.get("records_cache_path", directories["records"] / f"{source_hash}.json"))
+    if progress_callback:
+        progress_callback(20, "Đang chuẩn hóa PDF")
 
-    conversion_method = hash_entry.get("conversion_method")
+    conversion_method = None
     if suffix == ".pdf":
-        conversion_method = conversion_method or _copy_to_canonical_pdf(source_path, normalized_pdf_path)
+        conversion_method = _copy_to_canonical_pdf(source_path, normalized_pdf_path)
     else:
         conversion_method = convert_to_pdf(source_path, normalized_pdf_path)
-        if conversion_method == "cached_conversion":
-            conversion_method = hash_entry.get("conversion_method", conversion_method)
 
-    analysis = hash_entry.get("pdf_analysis")
-    if text_cache_path.exists() and records_cache_path.exists() and analysis:
-        extracted_text = text_cache_path.read_text(encoding="utf-8")
-        extracted_records = _json_load(records_cache_path, default=[])
-    else:
-        analysis = _extract_text_and_analyse_pdf(normalized_pdf_path)
-        extracted_text = analysis["text"]
-        extracted_records = analysis["records"]
-        text_cache_path.write_text(extracted_text, encoding="utf-8")
-        _json_dump(records_cache_path, extracted_records)
+    if progress_callback:
+        progress_callback(45, "Đang trích xuất text từ PDF")
+    analysis = _extract_text_and_analyse_pdf(normalized_pdf_path)
+    extracted_text = analysis["text"]
+    extracted_records = analysis["records"]
+    text_cache_path.write_text(extracted_text, encoding="utf-8")
+    _json_dump(records_cache_path, extracted_records)
+
+    if progress_callback:
+        progress_callback(70, "Đang hoàn tất metadata tài liệu")
 
     prepared = {
         "source_path": str(source_path),
         "source_hash": source_hash,
+        "cache_key": cache_key,
         "original_extension": suffix,
         "normalized_pdf_path": str(normalized_pdf_path.resolve()),
         "preview_pdf_path": str(normalized_pdf_path.resolve()),
@@ -629,19 +663,6 @@ def prepare_document(file_path: str, cache_root: str | Path = DEFAULT_CACHE_ROOT
         "prepared_at": _utc_now(),
         "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
     }
-
-    registry.upsert_hash_entry(source_hash, {
-        "source_hash": source_hash,
-        "original_extension": suffix,
-        "normalized_pdf_path": prepared["normalized_pdf_path"],
-        "preview_pdf_path": prepared["preview_pdf_path"],
-        "conversion_method": conversion_method,
-        "text_cache_path": prepared["text_cache_path"],
-        "records_cache_path": prepared["records_cache_path"],
-        "pdf_analysis": analysis,
-        "prepared_at": prepared["prepared_at"],
-        "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
-    })
 
     return prepared
 
@@ -663,35 +684,32 @@ def build_chunk_metadata(chunk: Dict[str, Any], doc_id: str, clause_index: int, 
     }
 
 
-def ingest_document(file_path: str, doc_id: str, db_path: str = "legal_data.json", cache_root: str | Path = DEFAULT_CACHE_ROOT) -> Dict[str, Any]:
+def ingest_document(
+    file_path: str,
+    doc_id: str,
+    db_path: str = "legal_data.json",
+    cache_root: str | Path = DEFAULT_CACHE_ROOT,
+    cache_key: Optional[str] = None,
+    progress_callback: Optional[Callable[[float, str], None]] = None,
+) -> Dict[str, Any]:
     cache_root = Path(cache_root)
     directories = _ensure_cache_dirs(cache_root)
-    registry = DocumentRegistry(cache_root / "document_registry.json")
-    prepared = prepare_document(file_path=file_path, cache_root=cache_root)
+    prepared = prepare_document(
+        file_path=file_path,
+        cache_root=cache_root,
+        cache_key=cache_key or doc_id,
+        progress_callback=(lambda p, m: progress_callback(min(75, p), m)) if progress_callback else None,
+    )
     db = LegalVectorDB(db_name=db_path)
 
-    existing_doc = registry.get_document(doc_id) or {}
-    if (
-        existing_doc.get("source_hash") == prepared["source_hash"]
-        and existing_doc.get("provenance_schema_version") == PROVENANCE_SCHEMA_VERSION
-        and db.doc_exists(doc_id)
-    ):
-        result = {
-            **prepared,
-            "doc_id": doc_id,
-            "ingest_status": "cached",
-            "used_vector_cache": True,
-            "chunks_count": existing_doc.get("chunks_count", 0),
-            "vector_cache_path": existing_doc.get("vector_cache_path", ""),
-        }
-        registry.upsert_document(doc_id, result)
-        return result
-
-    hash_entry = registry.get_hash_entry(prepared["source_hash"]) or {}
-    vector_cache_path = Path(hash_entry.get("vector_cache_path", directories["vectors"] / f"{prepared['source_hash']}.json"))
-    chunk_cache_path = Path(hash_entry.get("chunk_cache_path", directories["chunks"] / f"{prepared['source_hash']}.json"))
+    if progress_callback:
+        progress_callback(78, "Đang kiểm tra cache ingest")
+    vector_cache_path = directories["vectors"] / f"{prepared['cache_key']}.json"
+    chunk_cache_path = directories["chunks"] / f"{prepared['cache_key']}.json"
 
     if not prepared["can_ingest"]:
+        if progress_callback:
+            progress_callback(90, "Text quá ít, bỏ qua ingest và trả cảnh báo")
         result = {
             **prepared,
             "doc_id": doc_id,
@@ -701,54 +719,21 @@ def ingest_document(file_path: str, doc_id: str, db_path: str = "legal_data.json
             "vector_cache_path": str(vector_cache_path.resolve()),
             "chunk_cache_path": str(chunk_cache_path.resolve()),
         }
-        registry.upsert_document(doc_id, result)
-        registry.upsert_hash_entry(prepared["source_hash"], {
-            "canonical_doc_id": hash_entry.get("canonical_doc_id", doc_id),
-            "vector_cache_path": str(vector_cache_path.resolve()),
-            "chunk_cache_path": str(chunk_cache_path.resolve()),
-            "ingest_status": result["ingest_status"],
-            "warning": prepared["warning"],
-            "last_ingested_at": _utc_now(),
-            "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
-        })
+        if progress_callback:
+            progress_callback(100, "Hoàn tất với cảnh báo")
         return result
 
-    if vector_cache_path.exists():
-        cached_entries = _json_load(vector_cache_path, default=[])
-        cached_chunks = _json_load(chunk_cache_path, default=[])
-        cache_has_provenance = bool(
-            cached_entries
-            and isinstance(cached_entries[0].get("content"), dict)
-            and cached_entries[0]["content"].get("source_anchors")
-        )
-        if cache_has_provenance:
-            db.insert_precomputed_entries(cached_entries, target_doc_id=doc_id, doc_id_to_clear=doc_id)
-            result = {
-                **prepared,
-                "doc_id": doc_id,
-                "ingest_status": "cached",
-                "used_vector_cache": True,
-                "chunks_count": len(cached_chunks),
-                "vector_cache_path": str(vector_cache_path.resolve()),
-                "chunk_cache_path": str(chunk_cache_path.resolve()),
-            }
-            registry.upsert_document(doc_id, result)
-            registry.upsert_hash_entry(prepared["source_hash"], {
-                "canonical_doc_id": hash_entry.get("canonical_doc_id") or doc_id,
-                "vector_cache_path": str(vector_cache_path.resolve()),
-                "chunk_cache_path": str(chunk_cache_path.resolve()),
-                "ingest_status": result["ingest_status"],
-                "warning": prepared["warning"],
-                "last_ingested_at": _utc_now(),
-                "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
-            })
-            return result
+    if progress_callback:
+        progress_callback(86, "Đang chunking văn bản")
 
     chunks = structural_chunking(prepared["text"], doc_id=doc_id, records=prepared.get("records"))
     metadata_list = [
         build_chunk_metadata(chunk, doc_id, index, prepared)
         for index, chunk in enumerate(chunks)
     ]
+    if progress_callback:
+        progress_callback(92, "Đang tạo embedding và ingest VectorDB")
+
     inserted_entries = db.insert_legal_chunks(chunks, metadata_list, doc_id_to_clear=doc_id)
 
     _json_dump(vector_cache_path, inserted_entries)
@@ -765,16 +750,8 @@ def ingest_document(file_path: str, doc_id: str, db_path: str = "legal_data.json
         "chunk_cache_path": str(chunk_cache_path.resolve()),
     }
 
-    registry.upsert_document(doc_id, result)
-    registry.upsert_hash_entry(prepared["source_hash"], {
-        "canonical_doc_id": hash_entry.get("canonical_doc_id") or doc_id,
-        "vector_cache_path": str(vector_cache_path.resolve()),
-        "chunk_cache_path": str(chunk_cache_path.resolve()),
-        "ingest_status": ingest_status,
-        "warning": prepared["warning"],
-        "last_ingested_at": _utc_now(),
-        "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
-    })
+    if progress_callback:
+        progress_callback(100, "Ingest hoàn tất")
 
     return result
 

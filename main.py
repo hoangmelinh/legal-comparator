@@ -1,4 +1,5 @@
 import os
+from uuid import uuid4
 
 from src.core.ingestion import ingest_document
 
@@ -7,7 +8,8 @@ def run_pipeline(file_name):
     print(f"Bắt đầu xử lý: {file_name}")
 
     input_path = os.path.join("data", "raw", file_name)
-    result = ingest_document(input_path, doc_id="HD_TEST_01", db_path="legal_data.json")
+    doc_id = f"run_{uuid4().hex[:12]}"
+    result = ingest_document(input_path, doc_id=doc_id, db_path="legal_data.json")
 
     print("Hoàn thành! Dữ liệu đã sẵn sàng trong NanoVectorDB.")
     print("Normalized PDF:", result["normalized_pdf_path"])

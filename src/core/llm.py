@@ -1,151 +1,146 @@
 import json
-import urllib.request
 import urllib.error
+import urllib.request
+
+from src.core.cache import cache
+
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 DEFAULT_MODEL = "qwen2.5:7b"
 
 
 def _call_ollama(prompt: str, model: str = DEFAULT_MODEL, timeout: int = 300) -> str:
-    """
-    Gọi Ollama API và trả về nội dung response dạng string.
-    """
-    payload = json.dumps({
-        "model": model,
-        "prompt": prompt,
-        "stream": False,
-        "options": {
-            "temperature": 0.0,   # Can ket qua on dinh, khong ngau nhien
-            "num_ctx": 2048,      # Giam de chay nhanh hon tren CPU
+    payload = json.dumps(
+        {
+            "model": model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0.0,
+                "num_ctx": 2048,
+            },
         }
-    }).encode("utf-8")
+    ).encode("utf-8")
 
     req = urllib.request.Request(
         OLLAMA_URL,
         data=payload,
         headers={"Content-Type": "application/json"},
-        method="POST"
+        method="POST",
     )
 
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             result = json.loads(resp.read().decode("utf-8"))
             return result.get("response", "").strip()
-    except urllib.error.URLError as e:
+    except urllib.error.URLError as exc:
         raise ConnectionError(
-            f"Không thể kết nối Ollama. Hãy chắc chắn Ollama đang chạy.\nChi tiết: {e}"
+            "Khong the ket noi Ollama. Hay chac chan Ollama dang chay.\n"
+            f"Chi tiet: {exc}"
         )
 
 
-from src.core.cache import cache
+def _truncate(text: str, max_chars: int = 800) -> str:
+    text = text or ""
+    if len(text) <= max_chars:
+        return text
+    return text[:max_chars] + "..."
 
-def compare_clauses(text_a: str, text_b: str, article_label: str,
-                    model: str = DEFAULT_MODEL, has_numeric_change: bool = False) -> dict:
-    """
-    Dùng LLM so sánh 2 điều khoản và trả về kết quả JSON có cấu trúc.
 
-    Returns:
-    {
-        "status": "MODIFIED" | "IDENTICAL" | "ERROR",
-        "summary": "Tóm tắt điểm khác biệt...",
-        "citation_a": "Đoạn trích từ bản A làm bằng chứng...",
-        "citation_b": "Đoạn trích từ bản B làm bằng chứng..."
-    }
+def _parse_json_response(raw: str) -> dict:
+    cleaned = (raw or "").strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        cleaned = "\n".join(lines).strip()
+
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        start = cleaned.find("{")
+        end = cleaned.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            return json.loads(cleaned[start:end + 1])
+        raise
+
+
+def compare_clauses(
+    text_a: str,
+    text_b: str,
+    article_label: str,
+    model: str = DEFAULT_MODEL,
+    has_numeric_change: bool = False,
+) -> dict:
     """
+    Compare two clause texts with Ollama and return a normalized JSON payload.
+    """
+    text_a = _truncate(text_a)
+    text_b = _truncate(text_b)
+
     alert_numeric = ""
     if has_numeric_change:
-        alert_numeric = "\n⚡ CẢNH BÁO: ĐÃ PHÁT HIỆN THAY ĐỔI VỀ MẶT SỐ LIỆU ĐỊNH LƯỢNG (Tiền, tỷ lệ, thời gian...).\n" \
-                        "BẠN TẬP TRUNG PHÂN TÍCH VÀ TRẢ LỜI 3 CÂU HỎI SAU TRONG PHẦN 'summary':\n" \
-                        "- Số cũ là bao nhiêu? Số mới là bao nhiêu?\n" \
-                        "- Thay đổi này theo hướng nào (tăng/giảm, kéo dài/rút ngắn...)?\n" \
-                        "- Ảnh hưởng chính của việc thay đổi số liệu này tới bản chất hợp đồng là gì?\n"
+        alert_numeric = (
+            "\nCANH BAO: DA PHAT HIEN THAY DOI VE SO LIEU DINH LUONG.\n"
+            "Trong summary, hay chi ro so cu, so moi, huong thay doi va anh huong chinh.\n"
+        )
 
-    prompt = f"""Bạn là chuyên gia phân tích pháp lý. Nhiệm vụ của bạn là so sánh hai phiên bản của cùng một điều khoản hợp đồng.
+    prompt = f"""Ban la chuyen gia phan tich phap ly. Nhiem vu cua ban la so sanh hai phien ban cua cung mot dieu khoan hop dong.
 
-ĐIỀU KHOẢN: {article_label}
+DIEU KHOAN: {article_label}
 
---- BẢN A ---
+--- BAN A ---
 {text_a}
 
---- BẢN B ---
+--- BAN B ---
 {text_b}
 
-Hãy phân tích và trả về KẾT QUẢ THEO ĐÚNG ĐỊNH DẠNG JSON dưới đây, KHÔNG thêm bất kỳ văn bản nào ngoài JSON:
+Hay phan tich va tra ve DUNG JSON, khong them bat ky van ban nao ngoai JSON:
 
 {{
-  "status": "IDENTICAL hoặc MODIFIED",
-  "summary": "Tóm tắt dễ hiểu (1-3 câu) về điểm khác biệt. Xem QUY TẮC TÓM TẮT DƯỚI ĐÂY.",
-  "exact_difference": "Chỉ rõ cụ thể phần nào thay đổi (Ví dụ: 'Khoản 2', 'Điểm a Khoản 3', 'Toàn bộ điều khoản').",
-  "change_type": "Một trong các loại: 'Thêm mới', 'Xóa bỏ', 'Sửa nội dung', 'Di chuyển vị trí', 'Thay đổi nhỏ về câu chữ'.",
-  "impact_level": "Mức độ ảnh hưởng: 'Nhỏ', 'Trung bình', 'Lớn', hoặc để trống nếu IDENTICAL.",
-  "citation_a": "Trích nguyên văn phần bị đổi từ BẢN A làm minh chứng. Tối đa 50 từ.",
-  "citation_b": "Trích nguyên văn phần mới từ BẢN B làm minh chứng. Tối đa 50 từ."
+  "status": "IDENTICAL hoac MODIFIED",
+  "summary": "Tom tat de hieu (1-3 cau) ve diem khac biet. Neu IDENTICAL thi ghi 'Noi dung hai ban giong nhau.'",
+  "exact_difference": "Chi ro cu the phan nao thay doi.",
+  "change_type": "Mot trong cac loai: 'Them moi', 'Xoa bo', 'Sua noi dung', 'Di chuyen vi tri', 'Thay doi nho ve cau chu'.",
+  "impact_level": "Muc do anh huong: 'Nho', 'Trung binh', 'Lon', hoac de trong neu IDENTICAL.",
+  "citation_a": "Trich nguyen van phan bi doi tu BAN A. Toi da 50 tu.",
+  "citation_b": "Trich nguyen van phan moi tu BAN B. Toi da 50 tu."
 }}
 
-QUY TẮC TÓM TẮT CHO PHẦN "summary":
-1. Dùng ngôn ngữ tự nhiên, chính xác, dễ hiểu. Nếu IDENTICAL thì ghi 'Nội dung hai bản giống nhau.'
-2. TUYỆT ĐỐI KHÔNG dùng các câu mơ hồ như: 'có thay đổi nội dung', 'điều khoản được chỉnh sửa', 'nội dung có khác biệt'.
-3. Phải chỉ ra cụ thể: phần nào thay đổi, thay đổi từ gì sang gì, theo hướng nào và ảnh hưởng chính là gì.
-4. Ưu tiên mẫu câu: 'Trước đây [nội dung/quy định cũ], nay sửa thành [nội dung/quy định mới]' hoặc 'Điều khoản này thay đổi từ [cũ] sang [mới]'. Căn cứ vào đó bản mới bổ sung/bỏ/điều chỉnh...
-5. Lấy thay đổi lớn đưa lên đầu. Ưu tiên nêu: quyền nào, nghĩa vụ nào, điều kiện nào, thời hạn, mức tiền, hay chế tài nào đã thay đổi.
-6. Nếu nội dung thay đổi nhỏ (về câu chữ/diễn đạt), phải ghi rõ thay đổi đó và kết luận có đổi ý nghĩa hay không.
-7. Nếu không đủ dữ liệu/ngữ cảnh để kết luận, TUYỆT ĐỐI KHÔNG tự suy diễn, BẮT BUỘC thêm: 'Chưa đủ dữ liệu để kết luận chính xác' hoặc 'Cần xem thêm ngữ cảnh của điều khoản'.
-8. KHÔNG liệt kê diff theo từng từ. Không lặp lại nguyên văn quá nhiều (dành việc đó cho citation). Viết để người bình thường đọc hiểu ngay sự khác biệt.
+QUY TAC:
+1. Khong dung nhan xet mo ho.
+2. Neu co thay doi, phai chi ro thay doi tu gi sang gi va anh huong chinh.
+3. Khong duoc sang tac citation.
+4. Khong tra ve markdown, chi tra ve JSON.
 {alert_numeric}
-QUY TẮC BẮT BUỘC KHÁC:
-- Chỉ kết luận MODIFIED nếu có sự thay đổi. Định dạng khoảng trắng/newline nếu đọc tương đồng thì là IDENTICAL.
-- Phần citation PHẢI lấy chính xác từ BẢN A và BẢN B. KHÔNG SÁNG TÁC.
-- TRẢ VỀ CHỈ JSON, KHÔNG text ngoài, KHÔNG markdown block.
 """
 
-    # Truncate input to avoid timeout on CPU (max ~800 chars each)
-    MAX_CHARS = 800
-    if len(text_a) > MAX_CHARS:
-        text_a = text_a[:MAX_CHARS] + "..."
-    if len(text_b) > MAX_CHARS:
-        text_b = text_b[:MAX_CHARS] + "..."
-
-    # Check cache first
     cached_result = cache.get(prompt, model)
     if cached_result:
         return cached_result
 
     raw = _call_ollama(prompt, model=model)
-
-    # Parse JSON từ response
     try:
-        # Đôi khi LLM bọc trong ```json ... ```, cần strip ra
-        cleaned = raw.strip()
-        if cleaned.startswith("```"):
-            lines = cleaned.split("\n")
-            cleaned = "\n".join(lines[1:-1]) if lines[-1].strip() == "```" else "\n".join(lines[1:])
-
-        result = json.loads(cleaned)
-
-        # Validate keys
+        result = _parse_json_response(raw)
         for key in ("status", "summary", "exact_difference", "change_type", "impact_level", "citation_a", "citation_b"):
-            if key not in result:
-                result[key] = ""
-
-        # Update cache
+            result.setdefault(key, "")
         cache.set(prompt, model, result)
-        
         return result
-
     except json.JSONDecodeError:
         return {
             "status": "ERROR",
-            "summary": f"LLM trả về định dạng không đúng JSON. Raw: {raw[:200]}",
+            "summary": f"LLM tra ve dinh dang khong dung JSON. Raw: {raw[:200]}",
             "exact_difference": "",
             "change_type": "",
             "impact_level": "",
             "citation_a": "",
-            "citation_b": ""
+            "citation_b": "",
         }
 
 
 def is_ollama_running(model: str = DEFAULT_MODEL) -> bool:
-    """Kiểm tra Ollama API có đang chạy không."""
     try:
         _call_ollama("Hi", model=model, timeout=60)
         return True

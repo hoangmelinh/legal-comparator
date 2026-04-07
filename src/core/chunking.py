@@ -80,6 +80,8 @@ def _compact_anchor(record: Dict[str, Any]) -> Dict[str, Any]:
     }
     if record.get("bbox") is not None:
         anchor["bbox"] = record.get("bbox")
+    if record.get("text_items") is not None:
+        anchor["text_items"] = record.get("text_items")
     if record.get("block_index") is not None:
         anchor["block_index"] = record.get("block_index")
     if record.get("line_index") is not None:

@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -36,8 +37,10 @@ class DocumentRegistry:
         return loaded
 
     def save(self) -> None:
-        with self.registry_path.open("w", encoding="utf-8") as handle:
+        tmp_path = self.registry_path.with_suffix(".tmp")
+        with tmp_path.open("w", encoding="utf-8") as handle:
             json.dump(self.data, handle, ensure_ascii=False, indent=2)
+        os.replace(tmp_path, self.registry_path)
 
     def get_document(self, doc_id: str) -> Optional[Dict[str, Any]]:
         return self.data["documents"].get(doc_id)

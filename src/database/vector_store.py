@@ -60,6 +60,9 @@ class LegalVectorDB:
             if deleted:
                 print(f"--- Deleted {deleted} existing chunks for {list(doc_ids)} before ingest ---")
 
+        if not chunks:
+            return []
+
         texts_to_embed = [chunk["content"] if isinstance(chunk, dict) else str(chunk) for chunk in chunks]
 
         if hasattr(self.embedder.model, "encode"):

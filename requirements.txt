@@ -5,3 +5,6 @@ nano-vectordb
 numpy
 torch
 scikit-learn
+fastapi
+uvicorn
+python-multipart
