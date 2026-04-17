@@ -1,0 +1,2830 @@
+[
+  {
+    "content": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+    "canonical": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+    "retrieval": "cộng hòa xã hội chủ nghĩa việt nam",
+    "char_start": 0,
+    "char_end": 34,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      200.26,
+      57.04,
+      420.04,
+      69.32
+    ],
+    "text_items": [
+      {
+        "text": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
+        "bbox": [
+          200.26,
+          57.04,
+          420.04,
+          69.32
+        ]
+      }
+    ],
+    "block_index": 0,
+    "line_index": 0
+  },
+  {
+    "content": "Độc lập – Tự do – Hạnh phúc",
+    "canonical": "Độc lập – Tự do – Hạnh phúc",
+    "retrieval": "độc lập – tự do – hạnh phúc",
+    "char_start": 35,
+    "char_end": 62,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      220.28,
+      77.04,
+      364.51,
+      89.32
+    ],
+    "text_items": [
+      {
+        "text": "Độc lập – Tự do – Hạnh phúc",
+        "bbox": [
+          220.28,
+          77.04,
+          364.51,
+          89.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 0
+  },
+  {
+    "content": "HỢP ĐỒNG TẶNG CHO QUYỀN SỬ DỤNG ĐẤT",
+    "canonical": "HỢP ĐỒNG TẶNG CHO QUYỀN SỬ DỤNG ĐẤT",
+    "retrieval": "hợp đồng tặng cho quyền sử dụng đất",
+    "char_start": 63,
+    "char_end": 98,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      197.4,
+      105.04,
+      441.51,
+      117.32
+    ],
+    "text_items": [
+      {
+        "text": "HỢP ĐỒNG TẶNG CHO QUYỀN SỬ DỤNG ĐẤT",
+        "bbox": [
+          197.4,
+          105.04,
+          441.51,
+          117.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 0
+  },
+  {
+    "content": "VÀ TÀI SẢN GẮN LIỀN VỚI ĐẤT (1)",
+    "canonical": "VÀ TÀI SẢN GẮN LIỀN VỚI ĐẤT (1)",
+    "retrieval": "và tài sản gắn liền với đất (1)",
+    "char_start": 99,
+    "char_end": 130,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      208.84,
+      125.04,
+      387.96,
+      137.32
+    ],
+    "text_items": [
+      {
+        "text": "VÀ TÀI SẢN GẮN LIỀN VỚI ĐẤT (1)",
+        "bbox": [
+          208.84,
+          125.04,
+          387.96,
+          137.32
+        ]
+      }
+    ],
+    "block_index": 3,
+    "line_index": 0
+  },
+  {
+    "content": "(Số:01 /HĐTCTSGLĐ)",
+    "canonical": "(Số:01 /HĐTCTSGLĐ)",
+    "retrieval": "(số:01 /hđtctsglđ)",
+    "char_start": 131,
+    "char_end": 149,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      246.02,
+      145.04,
+      355.34,
+      157.32
+    ],
+    "text_items": [
+      {
+        "text": "(Số:01 /HĐTCTSGLĐ)",
+        "bbox": [
+          246.02,
+          145.04,
+          355.34,
+          157.32
+        ]
+      }
+    ],
+    "block_index": 4,
+    "line_index": 0
+  },
+  {
+    "content": "Hôm nay, ngày 20 tháng 03 năm 2025, Tại Hà Nội. Chúng tôi gồm có:",
+    "canonical": "Hôm nay, ngày 20 tháng 03 năm 2025, Tại Hà Nội. Chúng tôi gồm có:",
+    "retrieval": "hôm nay, ngày 20 tháng 03 năm 2025, tại hà nội. chúng tôi gồm có:",
+    "char_start": 150,
+    "char_end": 215,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      173.04,
+      394.33,
+      185.32
+    ],
+    "text_items": [
+      {
+        "text": "Hôm nay, ngày 20 tháng 03 năm 2025, Tại Hà Nội. Chúng tôi gồm có:",
+        "bbox": [
+          54.0,
+          173.04,
+          394.33,
+          185.32
+        ]
+      }
+    ],
+    "block_index": 5,
+    "line_index": 0
+  },
+  {
+    "content": "BÊN TẶNG CHO (BÊN A): (2)",
+    "canonical": "BÊN TẶNG CHO (BÊN A): (2)",
+    "retrieval": "bên tặng cho (bên a): (2)",
+    "char_start": 216,
+    "char_end": 241,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      193.04,
+      200.52,
+      205.32
+    ],
+    "text_items": [
+      {
+        "text": "BÊN TẶNG CHO (BÊN A): (2)",
+        "bbox": [
+          54.0,
+          193.04,
+          200.52,
+          205.32
+        ]
+      }
+    ],
+    "block_index": 6,
+    "line_index": 0
+  },
+  {
+    "content": "Ông: Nguyễn Văn A",
+    "canonical": "Ông: Nguyễn Văn A",
+    "retrieval": "ông: nguyễn văn a",
+    "char_start": 242,
+    "char_end": 259,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      213.04,
+      151.76,
+      225.32
+    ],
+    "text_items": [
+      {
+        "text": "Ông: Nguyễn Văn A",
+        "bbox": [
+          54.0,
+          213.04,
+          151.76,
+          225.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 0
+  },
+  {
+    "content": "CMND số: 0012005005489",
+    "canonical": "CMND số: 0012005005489",
+    "retrieval": "cmnd số: 0012005005489",
+    "char_start": 260,
+    "char_end": 282,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      233.04,
+      187.25,
+      245.32
+    ],
+    "text_items": [
+      {
+        "text": "CMND số: 0012005005489",
+        "bbox": [
+          54.0,
+          233.04,
+          187.25,
+          245.32
+        ]
+      }
+    ],
+    "block_index": 8,
+    "line_index": 0
+  },
+  {
+    "content": "Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "canonical": "Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "retrieval": "nơi đktt: 89 phùng hưng, hà đông, hà nội",
+    "char_start": 283,
+    "char_end": 323,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      253.04,
+      276.25,
+      265.32
+    ],
+    "text_items": [
+      {
+        "text": "Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội",
+        "bbox": [
+          54.0,
+          253.04,
+          276.25,
+          265.32
+        ]
+      }
+    ],
+    "block_index": 9,
+    "line_index": 0
+  },
+  {
+    "content": "Là chủ sở hữu bất động sản: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "canonical": "Là chủ sở hữu bất động sản: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "retrieval": "là chủ sở hữu bất động sản: 89 phùng hưng, hà đông, hà nội",
+    "char_start": 324,
+    "char_end": 382,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      273.05,
+      364.95,
+      285.32
+    ],
+    "text_items": [
+      {
+        "text": "Là chủ sở hữu bất động sản: 89 Phùng Hưng, Hà Đông, Hà Nội",
+        "bbox": [
+          54.0,
+          273.05,
+          364.95,
+          285.32
+        ]
+      }
+    ],
+    "block_index": 10,
+    "line_index": 0
+  },
+  {
+    "content": "BÊN ĐƯỢC TẶNG CHO (BÊN B): (3)",
+    "canonical": "BÊN ĐƯỢC TẶNG CHO (BÊN B): (3)",
+    "retrieval": "bên được tặng cho (bên b): (3)",
+    "char_start": 383,
+    "char_end": 413,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      301.05,
+      238.27,
+      313.32
+    ],
+    "text_items": [
+      {
+        "text": "BÊN ĐƯỢC TẶNG CHO (BÊN B): (3)",
+        "bbox": [
+          54.0,
+          301.05,
+          238.27,
+          313.32
+        ]
+      }
+    ],
+    "block_index": 11,
+    "line_index": 0
+  },
+  {
+    "content": "Ông: Nguyễn Văn B",
+    "canonical": "Ông: Nguyễn Văn B",
+    "retrieval": "ông: nguyễn văn b",
+    "char_start": 414,
+    "char_end": 431,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      321.05,
+      151.76,
+      333.32
+    ],
+    "text_items": [
+      {
+        "text": "Ông: Nguyễn Văn B",
+        "bbox": [
+          54.0,
+          321.05,
+          151.76,
+          333.32
+        ]
+      }
+    ],
+    "block_index": 12,
+    "line_index": 0
+  },
+  {
+    "content": "CMND số: 001205005499",
+    "canonical": "CMND số: 001205005499",
+    "retrieval": "cmnd số: 001205005499",
+    "char_start": 432,
+    "char_end": 453,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      341.05,
+      181.14,
+      353.32
+    ],
+    "text_items": [
+      {
+        "text": "CMND số: 001205005499",
+        "bbox": [
+          54.0,
+          341.05,
+          181.14,
+          353.32
+        ]
+      }
+    ],
+    "block_index": 13,
+    "line_index": 0
+  },
+  {
+    "content": "Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "canonical": "Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "retrieval": "nơi đktt: 89 phùng hưng, hà đông, hà nội",
+    "char_start": 454,
+    "char_end": 494,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      361.05,
+      276.25,
+      373.32
+    ],
+    "text_items": [
+      {
+        "text": "Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội",
+        "bbox": [
+          54.0,
+          361.05,
+          276.25,
+          373.32
+        ]
+      }
+    ],
+    "block_index": 14,
+    "line_index": 0
+  },
+  {
+    "content": "Hai bên đồng ý thực hiện việc tặng cho quyền sử dụng đất và tài sản gắn liền với",
+    "canonical": "Hai bên đồng ý thực hiện việc tặng cho quyền sử dụng đất và tài sản gắn liền với",
+    "retrieval": "hai bên đồng ý thực hiện việc tặng cho quyền sử dụng đất và tài sản gắn liền với",
+    "char_start": 495,
+    "char_end": 575,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      389.05,
+      449.28,
+      401.32
+    ],
+    "text_items": [
+      {
+        "text": "Hai bên đồng ý thực hiện việc tặng cho quyền sử dụng đất và tài sản gắn liền với",
+        "bbox": [
+          54.0,
+          389.05,
+          449.28,
+          401.32
+        ]
+      }
+    ],
+    "block_index": 15,
+    "line_index": 0
+  },
+  {
+    "content": "đất theo các thoả thuận sau đây:",
+    "canonical": "đất theo các thoả thuận sau đây:",
+    "retrieval": "đất theo các thoả thuận sau đây:",
+    "char_start": 576,
+    "char_end": 608,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      405.05,
+      213.49,
+      417.32
+    ],
+    "text_items": [
+      {
+        "text": "đất theo các thoả thuận sau đây:",
+        "bbox": [
+          54.0,
+          405.05,
+          213.49,
+          417.32
+        ]
+      }
+    ],
+    "block_index": 15,
+    "line_index": 1
+  },
+  {
+    "content": "ĐIỀU 1: ĐỐI TƯỢNG CỦA HỢP ĐỒNG",
+    "canonical": "ĐIỀU 1: ĐỐI TƯỢNG CỦA HỢP ĐỒNG",
+    "retrieval": "điều 1: đối tượng của hợp đồng",
+    "char_start": 609,
+    "char_end": 639,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      433.05,
+      250.14,
+      445.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 1: ĐỐI TƯỢNG CỦA HỢP ĐỒNG",
+        "bbox": [
+          54.0,
+          433.05,
+          250.14,
+          445.32
+        ]
+      }
+    ],
+    "block_index": 16,
+    "line_index": 0
+  },
+  {
+    "content": "1.1. Quyền sử dụng đất",
+    "canonical": "1.1. Quyền sử dụng đất",
+    "retrieval": "1.1. quyền sử dụng đất",
+    "char_start": 640,
+    "char_end": 662,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      453.05,
+      169.51,
+      465.32
+    ],
+    "text_items": [
+      {
+        "text": "1.1. Quyền sử dụng đất",
+        "bbox": [
+          54.0,
+          453.05,
+          169.51,
+          465.32
+        ]
+      }
+    ],
+    "block_index": 17,
+    "line_index": 0
+  },
+  {
+    "content": "Quyền sử dụng đất của bên A đối với thửa đất ,cụ thể như sau:",
+    "canonical": "Quyền sử dụng đất của bên A đối với thửa đất ,cụ thể như sau:",
+    "retrieval": "quyền sử dụng đất của bên a đối với thửa đất ,cụ thể như sau:",
+    "char_start": 663,
+    "char_end": 724,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      473.05,
+      363.11,
+      485.32
+    ],
+    "text_items": [
+      {
+        "text": "Quyền sử dụng đất của bên A đối với thửa đất ,cụ thể như sau:",
+        "bbox": [
+          54.0,
+          473.05,
+          363.11,
+          485.32
+        ]
+      }
+    ],
+    "block_index": 18,
+    "line_index": 0
+  },
+  {
+    "content": "­ Thửa đất số: 01",
+    "canonical": "­ Thửa đất số: 01",
+    "retrieval": "­ thửa đất số: 01",
+    "char_start": 725,
+    "char_end": 742,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      493.05,
+      138.33,
+      505.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Thửa đất số: 01",
+        "bbox": [
+          54.0,
+          493.05,
+          138.33,
+          505.32
+        ]
+      }
+    ],
+    "block_index": 19,
+    "line_index": 0
+  },
+  {
+    "content": "­ Tờ bản đồ số: 01",
+    "canonical": "­ Tờ bản đồ số: 01",
+    "retrieval": "­ tờ bản đồ số: 01",
+    "char_start": 743,
+    "char_end": 761,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      513.04,
+      144.29,
+      525.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Tờ bản đồ số: 01",
+        "bbox": [
+          54.0,
+          513.04,
+          144.29,
+          525.32
+        ]
+      }
+    ],
+    "block_index": 20,
+    "line_index": 0
+  },
+  {
+    "content": "­ Địa chỉ thửa đất: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "canonical": "­ Địa chỉ thửa đất: 89 Phùng Hưng, Hà Đông, Hà Nội",
+    "retrieval": "­ địa chỉ thửa đất: 89 phùng hưng, hà đông, hà nội",
+    "char_start": 762,
+    "char_end": 812,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      533.04,
+      311.26,
+      545.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Địa chỉ thửa đất: 89 Phùng Hưng, Hà Đông, Hà Nội",
+        "bbox": [
+          54.0,
+          533.04,
+          311.26,
+          545.32
+        ]
+      }
+    ],
+    "block_index": 21,
+    "line_index": 0
+  },
+  {
+    "content": "­ Diện tích: 100 m2 (Bằng chữ: một trăm mét vuông)",
+    "canonical": "­ Diện tích: 100 m2 (Bằng chữ: một trăm mét vuông)",
+    "retrieval": "­ diện tích: 100 m2 (bằng chữ: một trăm mét vuông)",
+    "char_start": 813,
+    "char_end": 863,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      553.04,
+      308.76,
+      565.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Diện tích: 100 m2 (Bằng chữ: một trăm mét vuông)",
+        "bbox": [
+          54.0,
+          553.04,
+          308.76,
+          565.32
+        ]
+      }
+    ],
+    "block_index": 22,
+    "line_index": 0
+  },
+  {
+    "content": "­ Hình thức sử dụng:",
+    "canonical": "­ Hình thức sử dụng:",
+    "retrieval": "­ hình thức sử dụng:",
+    "char_start": 864,
+    "char_end": 884,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      573.04,
+      155.46,
+      585.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Hình thức sử dụng:",
+        "bbox": [
+          54.0,
+          573.04,
+          155.46,
+          585.32
+        ]
+      }
+    ],
+    "block_index": 23,
+    "line_index": 0
+  },
+  {
+    "content": "+ Sử dụng riêng: 100 m2",
+    "canonical": "+ Sử dụng riêng: 100 m2",
+    "retrieval": "+ sử dụng riêng: 100 m2",
+    "char_start": 885,
+    "char_end": 908,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      593.04,
+      175.92,
+      605.32
+    ],
+    "text_items": [
+      {
+        "text": "+ Sử dụng riêng: 100 m2",
+        "bbox": [
+          54.0,
+          593.04,
+          175.92,
+          605.32
+        ]
+      }
+    ],
+    "block_index": 24,
+    "line_index": 0
+  },
+  {
+    "content": "+ Sử dụng chung: 0 m2",
+    "canonical": "+ Sử dụng chung: 0 m2",
+    "retrieval": "+ sử dụng chung: 0 m2",
+    "char_start": 909,
+    "char_end": 930,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      613.04,
+      169.2,
+      625.32
+    ],
+    "text_items": [
+      {
+        "text": "+ Sử dụng chung: 0 m2",
+        "bbox": [
+          54.0,
+          613.04,
+          169.2,
+          625.32
+        ]
+      }
+    ],
+    "block_index": 25,
+    "line_index": 0
+  },
+  {
+    "content": "­ Mục đích sử dụng: Nhà ở",
+    "canonical": "­ Mục đích sử dụng: Nhà ở",
+    "retrieval": "­ mục đích sử dụng: nhà ở",
+    "char_start": 931,
+    "char_end": 956,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      633.04,
+      185.25,
+      645.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Mục đích sử dụng: Nhà ở",
+        "bbox": [
+          54.0,
+          633.04,
+          185.25,
+          645.32
+        ]
+      }
+    ],
+    "block_index": 26,
+    "line_index": 0
+  },
+  {
+    "content": "ĐIỀU 2: VIỆC ĐĂNG KÝ TẶNG CHO QUYỀN SỬ DỤNG ĐẤT VÀ TÀI SẢN GẮN LIỀN VỚI ĐẤT VÀ",
+    "canonical": "ĐIỀU 2: VIỆC ĐĂNG KÝ TẶNG CHO QUYỀN SỬ DỤNG ĐẤT VÀ TÀI SẢN GẮN LIỀN VỚI ĐẤT VÀ",
+    "retrieval": "điều 2: việc đăng ký tặng cho quyền sử dụng đất và tài sản gắn liền với đất và",
+    "char_start": 957,
+    "char_end": 1035,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      661.04,
+      540.43,
+      673.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 2: VIỆC ĐĂNG KÝ TẶNG CHO QUYỀN SỬ DỤNG ĐẤT VÀ TÀI SẢN GẮN LIỀN VỚI ĐẤT VÀ",
+        "bbox": [
+          54.0,
+          661.04,
+          540.43,
+          673.32
+        ]
+      }
+    ],
+    "block_index": 27,
+    "line_index": 0
+  },
+  {
+    "content": "LỆ PHÍ",
+    "canonical": "LỆ PHÍ",
+    "retrieval": "lệ phí",
+    "char_start": 1036,
+    "char_end": 1042,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      677.04,
+      88.8,
+      689.32
+    ],
+    "text_items": [
+      {
+        "text": "LỆ PHÍ",
+        "bbox": [
+          54.0,
+          677.04,
+          88.8,
+          689.32
+        ]
+      }
+    ],
+    "block_index": 27,
+    "line_index": 1
+  },
+  {
+    "content": "2.1. Việc đăng ký tặng cho quyền sử dụng đất và tài sản gắn liền với đất tại cơ",
+    "canonical": "2.1. Việc đăng ký tặng cho quyền sử dụng đất và tài sản gắn liền với đất tại cơ",
+    "retrieval": "2.1. việc đăng ký tặng cho quyền sử dụng đất và tài sản gắn liền với đất tại cơ",
+    "char_start": 1043,
+    "char_end": 1122,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      697.04,
+      436.87,
+      709.32
+    ],
+    "text_items": [
+      {
+        "text": "2.1. Việc đăng ký tặng cho quyền sử dụng đất và tài sản gắn liền với đất tại cơ",
+        "bbox": [
+          54.0,
+          697.04,
+          436.87,
+          709.32
+        ]
+      }
+    ],
+    "block_index": 28,
+    "line_index": 0
+  },
+  {
+    "content": "quan có thẩm quyền theo quy định của pháp luật do bên A chịu trách nhiệm thực",
+    "canonical": "quan có thẩm quyền theo quy định của pháp luật do bên A chịu trách nhiệm thực",
+    "retrieval": "quan có thẩm quyền theo quy định của pháp luật do bên a chịu trách nhiệm thực",
+    "char_start": 1123,
+    "char_end": 1200,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      713.04,
+      447.57,
+      725.32
+    ],
+    "text_items": [
+      {
+        "text": "quan có thẩm quyền theo quy định của pháp luật do bên A chịu trách nhiệm thực",
+        "bbox": [
+          54.0,
+          713.04,
+          447.57,
+          725.32
+        ]
+      }
+    ],
+    "block_index": 28,
+    "line_index": 1
+  },
+  {
+    "content": "hiện.",
+    "canonical": "hiện.",
+    "retrieval": "hiện.",
+    "char_start": 1201,
+    "char_end": 1206,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      729.04,
+      77.84,
+      741.32
+    ],
+    "text_items": [
+      {
+        "text": "hiện.",
+        "bbox": [
+          54.0,
+          729.04,
+          77.84,
+          741.32
+        ]
+      }
+    ],
+    "block_index": 28,
+    "line_index": 2
+  },
+  {
+    "content": "2.2. Lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+    "canonical": "2.2. Lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+    "retrieval": "2.2. lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+    "char_start": 1207,
+    "char_end": 1286,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      749.04,
+      429.23,
+      761.32
+    ],
+    "text_items": [
+      {
+        "text": "2.2. Lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+        "bbox": [
+          54.0,
+          749.04,
+          429.23,
+          761.32
+        ]
+      }
+    ],
+    "block_index": 29,
+    "line_index": 0
+  },
+  {
+    "content": "với đất theo Hợp đồng này do bên A chịu trách nhiệm nộp.",
+    "canonical": "với đất theo Hợp đồng này do bên A chịu trách nhiệm nộp.",
+    "retrieval": "với đất theo hợp đồng này do bên a chịu trách nhiệm nộp.",
+    "char_start": 1287,
+    "char_end": 1343,
+    "page_number": 1,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      765.04,
+      339.71,
+      777.32
+    ],
+    "text_items": [
+      {
+        "text": "với đất theo Hợp đồng này do bên A chịu trách nhiệm nộp.",
+        "bbox": [
+          54.0,
+          765.04,
+          339.71,
+          777.32
+        ]
+      }
+    ],
+    "block_index": 29,
+    "line_index": 1
+  },
+  {
+    "content": "ĐIỀU 3: VIỆC GIAO VÀ ĐĂNG KÝ QUYỀN SỬ DỤNG ĐẤT, ĐĂNG KÝ QUYỀN SỞ HỮU TÀI SẢN GẮN",
+    "canonical": "ĐIỀU 3: VIỆC GIAO VÀ ĐĂNG KÝ QUYỀN SỬ DỤNG ĐẤT, ĐĂNG KÝ QUYỀN SỞ HỮU TÀI SẢN GẮN",
+    "retrieval": "điều 3: việc giao và đăng ký quyền sử dụng đất, đăng ký quyền sở hữu tài sản gắn",
+    "char_start": 1344,
+    "char_end": 1424,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      57.04,
+      562.65,
+      69.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 3: VIỆC GIAO VÀ ĐĂNG KÝ QUYỀN SỬ DỤNG ĐẤT, ĐĂNG KÝ QUYỀN SỞ HỮU TÀI SẢN GẮN",
+        "bbox": [
+          54.0,
+          57.04,
+          562.65,
+          69.32
+        ]
+      }
+    ],
+    "block_index": 0,
+    "line_index": 0
+  },
+  {
+    "content": "LIỀN VỚI ĐẤT",
+    "canonical": "LIỀN VỚI ĐẤT",
+    "retrieval": "liền với đất",
+    "char_start": 1425,
+    "char_end": 1437,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      73.04,
+      126.3,
+      85.32
+    ],
+    "text_items": [
+      {
+        "text": "LIỀN VỚI ĐẤT",
+        "bbox": [
+          54.0,
+          73.04,
+          126.3,
+          85.32
+        ]
+      }
+    ],
+    "block_index": 0,
+    "line_index": 1
+  },
+  {
+    "content": "3.1. Bên A có nghĩa vụ giao thửa đất và tài sản gắn liền với đất nêu tại Điều 1",
+    "canonical": "3.1. Bên A có nghĩa vụ giao thửa đất và tài sản gắn liền với đất nêu tại Điều 1",
+    "retrieval": "3.1. bên a có nghĩa vụ giao thửa đất và tài sản gắn liền với đất nêu tại điều 1",
+    "char_start": 1438,
+    "char_end": 1517,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      101.04,
+      432.08,
+      113.32
+    ],
+    "text_items": [
+      {
+        "text": "3.1. Bên A có nghĩa vụ giao thửa đất và tài sản gắn liền với đất nêu tại Điều 1",
+        "bbox": [
+          54.0,
+          101.04,
+          432.08,
+          113.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 0
+  },
+  {
+    "content": "của Hợp đồng này cùng giấy tờ về quyền sử dụng đất, giấy tờ về quyền sở hữu tài",
+    "canonical": "của Hợp đồng này cùng giấy tờ về quyền sử dụng đất, giấy tờ về quyền sở hữu tài",
+    "retrieval": "của hợp đồng này cùng giấy tờ về quyền sử dụng đất, giấy tờ về quyền sở hữu tài",
+    "char_start": 1518,
+    "char_end": 1597,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      117.04,
+      457.45,
+      129.32
+    ],
+    "text_items": [
+      {
+        "text": "của Hợp đồng này cùng giấy tờ về quyền sử dụng đất, giấy tờ về quyền sở hữu tài",
+        "bbox": [
+          54.0,
+          117.04,
+          457.45,
+          129.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 1
+  },
+  {
+    "content": "sản gắn liền với đất cho bên B vào thời điểm",
+    "canonical": "sản gắn liền với đất cho bên B vào thời điểm",
+    "retrieval": "sản gắn liền với đất cho bên b vào thời điểm",
+    "char_start": 1598,
+    "char_end": 1642,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      133.04,
+      271.88,
+      145.32
+    ],
+    "text_items": [
+      {
+        "text": "sản gắn liền với đất cho bên B vào thời điểm",
+        "bbox": [
+          54.0,
+          133.04,
+          271.88,
+          145.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 2
+  },
+  {
+    "content": "3.2. Bên B có nghĩa vụ đăng ký quyền sử dụng đất, đăng ký quyền sở hữu tài sản",
+    "canonical": "3.2. Bên B có nghĩa vụ đăng ký quyền sử dụng đất, đăng ký quyền sở hữu tài sản",
+    "retrieval": "3.2. bên b có nghĩa vụ đăng ký quyền sử dụng đất, đăng ký quyền sở hữu tài sản",
+    "char_start": 1643,
+    "char_end": 1721,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      153.04,
+      452.94,
+      165.32
+    ],
+    "text_items": [
+      {
+        "text": "3.2. Bên B có nghĩa vụ đăng ký quyền sử dụng đất, đăng ký quyền sở hữu tài sản",
+        "bbox": [
+          54.0,
+          153.04,
+          452.94,
+          165.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 0
+  },
+  {
+    "content": "gắn liền với đất tại cơ quan có thẩm quyền theo quy định của pháp luật.",
+    "canonical": "gắn liền với đất tại cơ quan có thẩm quyền theo quy định của pháp luật.",
+    "retrieval": "gắn liền với đất tại cơ quan có thẩm quyền theo quy định của pháp luật.",
+    "char_start": 1722,
+    "char_end": 1793,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      169.04,
+      403.27,
+      181.32
+    ],
+    "text_items": [
+      {
+        "text": "gắn liền với đất tại cơ quan có thẩm quyền theo quy định của pháp luật.",
+        "bbox": [
+          54.0,
+          169.04,
+          403.27,
+          181.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 1
+  },
+  {
+    "content": "ĐIỀU 4: TRÁCH NHIỆM NỘP THUẾ, LỆ PHÍ",
+    "canonical": "ĐIỀU 4: TRÁCH NHIỆM NỘP THUẾ, LỆ PHÍ",
+    "retrieval": "điều 4: trách nhiệm nộp thuế, lệ phí",
+    "char_start": 1794,
+    "char_end": 1830,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      197.04,
+      272.57,
+      209.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 4: TRÁCH NHIỆM NỘP THUẾ, LỆ PHÍ",
+        "bbox": [
+          54.0,
+          197.04,
+          272.57,
+          209.32
+        ]
+      }
+    ],
+    "block_index": 3,
+    "line_index": 0
+  },
+  {
+    "content": "Thuế, lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+    "canonical": "Thuế, lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+    "retrieval": "thuế, lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+    "char_start": 1831,
+    "char_end": 1909,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      217.04,
+      435.34,
+      229.32
+    ],
+    "text_items": [
+      {
+        "text": "Thuế, lệ phí liên quan đến việc tặng cho quyền sử dụng đất và tài sản gắn liền",
+        "bbox": [
+          54.0,
+          217.04,
+          435.34,
+          229.32
+        ]
+      }
+    ],
+    "block_index": 4,
+    "line_index": 0
+  },
+  {
+    "content": "với đất theo Hợp đồng này do bên B chịu trách nhiệm nộp.",
+    "canonical": "với đất theo Hợp đồng này do bên B chịu trách nhiệm nộp.",
+    "retrieval": "với đất theo hợp đồng này do bên b chịu trách nhiệm nộp.",
+    "char_start": 1910,
+    "char_end": 1966,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      233.04,
+      339.71,
+      245.32
+    ],
+    "text_items": [
+      {
+        "text": "với đất theo Hợp đồng này do bên B chịu trách nhiệm nộp.",
+        "bbox": [
+          54.0,
+          233.04,
+          339.71,
+          245.32
+        ]
+      }
+    ],
+    "block_index": 4,
+    "line_index": 1
+  },
+  {
+    "content": "ĐIỀU 5: NGHĨA VỤ CỦA BÊN A",
+    "canonical": "ĐIỀU 5: NGHĨA VỤ CỦA BÊN A",
+    "retrieval": "điều 5: nghĩa vụ của bên a",
+    "char_start": 1967,
+    "char_end": 1993,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      261.05,
+      210.9,
+      273.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 5: NGHĨA VỤ CỦA BÊN A",
+        "bbox": [
+          54.0,
+          261.05,
+          210.9,
+          273.32
+        ]
+      }
+    ],
+    "block_index": 5,
+    "line_index": 0
+  },
+  {
+    "content": "5.1. Giao đất đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu, tình trạng",
+    "canonical": "5.1. Giao đất đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu, tình trạng",
+    "retrieval": "5.1. giao đất đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu, tình trạng",
+    "char_start": 1994,
+    "char_end": 2074,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      281.05,
+      415.64,
+      293.32
+    ],
+    "text_items": [
+      {
+        "text": "5.1. Giao đất đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu, tình trạng",
+        "bbox": [
+          54.0,
+          281.05,
+          415.64,
+          293.32
+        ]
+      }
+    ],
+    "block_index": 6,
+    "line_index": 0
+  },
+  {
+    "content": "đất và tài sản gắn liền với đất như đã thoả thuận;",
+    "canonical": "đất và tài sản gắn liền với đất như đã thoả thuận;",
+    "retrieval": "đất và tài sản gắn liền với đất như đã thoả thuận;",
+    "char_start": 2075,
+    "char_end": 2125,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      297.05,
+      293.41,
+      309.32
+    ],
+    "text_items": [
+      {
+        "text": "đất và tài sản gắn liền với đất như đã thoả thuận;",
+        "bbox": [
+          54.0,
+          297.05,
+          293.41,
+          309.32
+        ]
+      }
+    ],
+    "block_index": 6,
+    "line_index": 1
+  },
+  {
+    "content": "5.2. Giao giấy tờ có liên quan đến quyền sử dụng đất và tài sản gắn liền với đất",
+    "canonical": "5.2. Giao giấy tờ có liên quan đến quyền sử dụng đất và tài sản gắn liền với đất",
+    "retrieval": "5.2. giao giấy tờ có liên quan đến quyền sử dụng đất và tài sản gắn liền với đất",
+    "char_start": 2126,
+    "char_end": 2206,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      317.05,
+      441.77,
+      329.32
+    ],
+    "text_items": [
+      {
+        "text": "5.2. Giao giấy tờ có liên quan đến quyền sử dụng đất và tài sản gắn liền với đất",
+        "bbox": [
+          54.0,
+          317.05,
+          441.77,
+          329.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 0
+  },
+  {
+    "content": "cho bên được tặng cho để làm thủ tục đăng ký quyền sử dụng đất, quyền sở hữu tài",
+    "canonical": "cho bên được tặng cho để làm thủ tục đăng ký quyền sử dụng đất, quyền sở hữu tài",
+    "retrieval": "cho bên được tặng cho để làm thủ tục đăng ký quyền sử dụng đất, quyền sở hữu tài",
+    "char_start": 2207,
+    "char_end": 2287,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      333.05,
+      465.07,
+      345.32
+    ],
+    "text_items": [
+      {
+        "text": "cho bên được tặng cho để làm thủ tục đăng ký quyền sử dụng đất, quyền sở hữu tài",
+        "bbox": [
+          54.0,
+          333.05,
+          465.07,
+          345.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 1
+  },
+  {
+    "content": "sản gắn liền với đất.",
+    "canonical": "sản gắn liền với đất.",
+    "retrieval": "sản gắn liền với đất.",
+    "char_start": 2288,
+    "char_end": 2309,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      349.05,
+      152.86,
+      361.32
+    ],
+    "text_items": [
+      {
+        "text": "sản gắn liền với đất.",
+        "bbox": [
+          54.0,
+          349.05,
+          152.86,
+          361.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 2
+  },
+  {
+    "content": "ĐIỀU 6: NGHĨA VỤ CỦA BÊN B",
+    "canonical": "ĐIỀU 6: NGHĨA VỤ CỦA BÊN B",
+    "retrieval": "điều 6: nghĩa vụ của bên b",
+    "char_start": 2310,
+    "char_end": 2336,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      377.05,
+      210.9,
+      389.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 6: NGHĨA VỤ CỦA BÊN B",
+        "bbox": [
+          54.0,
+          377.05,
+          210.9,
+          389.32
+        ]
+      }
+    ],
+    "block_index": 8,
+    "line_index": 0
+  },
+  {
+    "content": "6.1. Đăng ký quyền sử dụng đất, quyền sở hữu tài sản tại cơ quan nhà nước có",
+    "canonical": "6.1. Đăng ký quyền sử dụng đất, quyền sở hữu tài sản tại cơ quan nhà nước có",
+    "retrieval": "6.1. đăng ký quyền sử dụng đất, quyền sở hữu tài sản tại cơ quan nhà nước có",
+    "char_start": 2337,
+    "char_end": 2413,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      397.05,
+      443.54,
+      409.32
+    ],
+    "text_items": [
+      {
+        "text": "6.1. Đăng ký quyền sử dụng đất, quyền sở hữu tài sản tại cơ quan nhà nước có",
+        "bbox": [
+          54.0,
+          397.05,
+          443.54,
+          409.32
+        ]
+      }
+    ],
+    "block_index": 9,
+    "line_index": 0
+  },
+  {
+    "content": "thẩm quyền theo quy định của pháp luật về đất đai;",
+    "canonical": "thẩm quyền theo quy định của pháp luật về đất đai;",
+    "retrieval": "thẩm quyền theo quy định của pháp luật về đất đai;",
+    "char_start": 2414,
+    "char_end": 2464,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      413.05,
+      303.33,
+      425.32
+    ],
+    "text_items": [
+      {
+        "text": "thẩm quyền theo quy định của pháp luật về đất đai;",
+        "bbox": [
+          54.0,
+          413.05,
+          303.33,
+          425.32
+        ]
+      }
+    ],
+    "block_index": 9,
+    "line_index": 1
+  },
+  {
+    "content": "6.2. Bảo đảm quyền của người thứ ba đối với đất, tài sản gắn liền với đất được",
+    "canonical": "6.2. Bảo đảm quyền của người thứ ba đối với đất, tài sản gắn liền với đất được",
+    "retrieval": "6.2. bảo đảm quyền của người thứ ba đối với đất, tài sản gắn liền với đất được",
+    "char_start": 2465,
+    "char_end": 2543,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      433.05,
+      440.32,
+      445.32
+    ],
+    "text_items": [
+      {
+        "text": "6.2. Bảo đảm quyền của người thứ ba đối với đất, tài sản gắn liền với đất được",
+        "bbox": [
+          54.0,
+          433.05,
+          440.32,
+          445.32
+        ]
+      }
+    ],
+    "block_index": 10,
+    "line_index": 0
+  },
+  {
+    "content": "tặng cho;",
+    "canonical": "tặng cho;",
+    "retrieval": "tặng cho;",
+    "char_start": 2544,
+    "char_end": 2553,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      449.05,
+      99.22,
+      461.32
+    ],
+    "text_items": [
+      {
+        "text": "tặng cho;",
+        "bbox": [
+          54.0,
+          449.05,
+          99.22,
+          461.32
+        ]
+      }
+    ],
+    "block_index": 10,
+    "line_index": 1
+  },
+  {
+    "content": "6.3. Thực hiện các nghĩa vụ khác theo quy định của pháp luật về đất đai.",
+    "canonical": "6.3. Thực hiện các nghĩa vụ khác theo quy định của pháp luật về đất đai.",
+    "retrieval": "6.3. thực hiện các nghĩa vụ khác theo quy định của pháp luật về đất đai.",
+    "char_start": 2554,
+    "char_end": 2626,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      469.05,
+      408.43,
+      481.32
+    ],
+    "text_items": [
+      {
+        "text": "6.3. Thực hiện các nghĩa vụ khác theo quy định của pháp luật về đất đai.",
+        "bbox": [
+          54.0,
+          469.05,
+          408.43,
+          481.32
+        ]
+      }
+    ],
+    "block_index": 11,
+    "line_index": 0
+  },
+  {
+    "content": "ĐIỀU 7: QUYỀN CỦA BÊN B",
+    "canonical": "ĐIỀU 7: QUYỀN CỦA BÊN B",
+    "retrieval": "điều 7: quyền của bên b",
+    "char_start": 2627,
+    "char_end": 2650,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      497.05,
+      196.87,
+      509.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 7: QUYỀN CỦA BÊN B",
+        "bbox": [
+          54.0,
+          497.05,
+          196.87,
+          509.32
+        ]
+      }
+    ],
+    "block_index": 12,
+    "line_index": 0
+  },
+  {
+    "content": "7.1. Yêu cầu bên A giao đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu,",
+    "canonical": "7.1. Yêu cầu bên A giao đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu,",
+    "retrieval": "7.1. yêu cầu bên a giao đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu,",
+    "char_start": 2651,
+    "char_end": 2730,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      517.04,
+      420.55,
+      529.32
+    ],
+    "text_items": [
+      {
+        "text": "7.1. Yêu cầu bên A giao đủ diện tích, đúng hạng đất, loại đất, vị trí, số hiệu,",
+        "bbox": [
+          54.0,
+          517.04,
+          420.55,
+          529.32
+        ]
+      }
+    ],
+    "block_index": 13,
+    "line_index": 0
+  },
+  {
+    "content": "tình trạng đất và tài sản gắn liền với đất như đã thoả thuận;",
+    "canonical": "tình trạng đất và tài sản gắn liền với đất như đã thoả thuận;",
+    "retrieval": "tình trạng đất và tài sản gắn liền với đất như đã thoả thuận;",
+    "char_start": 2731,
+    "char_end": 2792,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      533.04,
+      342.89,
+      545.32
+    ],
+    "text_items": [
+      {
+        "text": "tình trạng đất và tài sản gắn liền với đất như đã thoả thuận;",
+        "bbox": [
+          54.0,
+          533.04,
+          342.89,
+          545.32
+        ]
+      }
+    ],
+    "block_index": 13,
+    "line_index": 1
+  },
+  {
+    "content": "7.2. Được sử dụng đất, sở hữu tài sản gắn liền với đất theo đúng mục đích, đúng",
+    "canonical": "7.2. Được sử dụng đất, sở hữu tài sản gắn liền với đất theo đúng mục đích, đúng",
+    "retrieval": "7.2. được sử dụng đất, sở hữu tài sản gắn liền với đất theo đúng mục đích, đúng",
+    "char_start": 2793,
+    "char_end": 2872,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      553.04,
+      450.23,
+      565.32
+    ],
+    "text_items": [
+      {
+        "text": "7.2. Được sử dụng đất, sở hữu tài sản gắn liền với đất theo đúng mục đích, đúng",
+        "bbox": [
+          54.0,
+          553.04,
+          450.23,
+          565.32
+        ]
+      }
+    ],
+    "block_index": 14,
+    "line_index": 0
+  },
+  {
+    "content": "thời hạn;",
+    "canonical": "thời hạn;",
+    "retrieval": "thời hạn;",
+    "char_start": 2873,
+    "char_end": 2882,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      569.04,
+      97.25,
+      581.32
+    ],
+    "text_items": [
+      {
+        "text": "thời hạn;",
+        "bbox": [
+          54.0,
+          569.04,
+          97.25,
+          581.32
+        ]
+      }
+    ],
+    "block_index": 14,
+    "line_index": 1
+  },
+  {
+    "content": "7.3. Được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền",
+    "canonical": "7.3. Được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền",
+    "retrieval": "7.3. được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền",
+    "char_start": 2883,
+    "char_end": 2961,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      589.04,
+      455.33,
+      601.32
+    ],
+    "text_items": [
+      {
+        "text": "7.3. Được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền",
+        "bbox": [
+          54.0,
+          589.04,
+          455.33,
+          601.32
+        ]
+      }
+    ],
+    "block_index": 15,
+    "line_index": 0
+  },
+  {
+    "content": "với đất.",
+    "canonical": "với đất.",
+    "retrieval": "với đất.",
+    "char_start": 2962,
+    "char_end": 2970,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      605.04,
+      90.52,
+      617.32
+    ],
+    "text_items": [
+      {
+        "text": "với đất.",
+        "bbox": [
+          54.0,
+          605.04,
+          90.52,
+          617.32
+        ]
+      }
+    ],
+    "block_index": 15,
+    "line_index": 1
+  },
+  {
+    "content": "ĐIỀU 8: PHƯƠNG THỨC GIẢI QUYẾT TRANH CHẤP HỢP ĐỒNG",
+    "canonical": "ĐIỀU 8: PHƯƠNG THỨC GIẢI QUYẾT TRANH CHẤP HỢP ĐỒNG",
+    "retrieval": "điều 8: phương thức giải quyết tranh chấp hợp đồng",
+    "char_start": 2971,
+    "char_end": 3021,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      633.04,
+      385.3,
+      645.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 8: PHƯƠNG THỨC GIẢI QUYẾT TRANH CHẤP HỢP ĐỒNG",
+        "bbox": [
+          54.0,
+          633.04,
+          385.3,
+          645.32
+        ]
+      }
+    ],
+    "block_index": 16,
+    "line_index": 0
+  },
+  {
+    "content": "Trong quá trình thực hiện Hợp đồng này, nếu phát sinh tranh chấp, các bên cùng",
+    "canonical": "Trong quá trình thực hiện Hợp đồng này, nếu phát sinh tranh chấp, các bên cùng",
+    "retrieval": "trong quá trình thực hiện hợp đồng này, nếu phát sinh tranh chấp, các bên cùng",
+    "char_start": 3022,
+    "char_end": 3100,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      653.04,
+      449.26,
+      665.32
+    ],
+    "text_items": [
+      {
+        "text": "Trong quá trình thực hiện Hợp đồng này, nếu phát sinh tranh chấp, các bên cùng",
+        "bbox": [
+          54.0,
+          653.04,
+          449.26,
+          665.32
+        ]
+      }
+    ],
+    "block_index": 17,
+    "line_index": 0
+  },
+  {
+    "content": "nhau thương lượng giải quyết trên nguyên tắc tôn trọng quyền lợi của nhau; trong",
+    "canonical": "nhau thương lượng giải quyết trên nguyên tắc tôn trọng quyền lợi của nhau; trong",
+    "retrieval": "nhau thương lượng giải quyết trên nguyên tắc tôn trọng quyền lợi của nhau; trong",
+    "char_start": 3101,
+    "char_end": 3181,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      669.04,
+      452.71,
+      681.32
+    ],
+    "text_items": [
+      {
+        "text": "nhau thương lượng giải quyết trên nguyên tắc tôn trọng quyền lợi của nhau; trong",
+        "bbox": [
+          54.0,
+          669.04,
+          452.71,
+          681.32
+        ]
+      }
+    ],
+    "block_index": 17,
+    "line_index": 1
+  },
+  {
+    "content": "trường hợp không giải quyết được thì một trong hai bên có quyền khởi kiện để yêu",
+    "canonical": "trường hợp không giải quyết được thì một trong hai bên có quyền khởi kiện để yêu",
+    "retrieval": "trường hợp không giải quyết được thì một trong hai bên có quyền khởi kiện để yêu",
+    "char_start": 3182,
+    "char_end": 3262,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      685.04,
+      457.45,
+      697.32
+    ],
+    "text_items": [
+      {
+        "text": "trường hợp không giải quyết được thì một trong hai bên có quyền khởi kiện để yêu",
+        "bbox": [
+          54.0,
+          685.04,
+          457.45,
+          697.32
+        ]
+      }
+    ],
+    "block_index": 17,
+    "line_index": 2
+  },
+  {
+    "content": "cầu toà án có thẩm quyền giải quyết theo quy định của pháp luật.",
+    "canonical": "cầu toà án có thẩm quyền giải quyết theo quy định của pháp luật.",
+    "retrieval": "cầu toà án có thẩm quyền giải quyết theo quy định của pháp luật.",
+    "char_start": 3263,
+    "char_end": 3327,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      701.04,
+      371.77,
+      713.32
+    ],
+    "text_items": [
+      {
+        "text": "cầu toà án có thẩm quyền giải quyết theo quy định của pháp luật.",
+        "bbox": [
+          54.0,
+          701.04,
+          371.77,
+          713.32
+        ]
+      }
+    ],
+    "block_index": 17,
+    "line_index": 3
+  },
+  {
+    "content": "ĐIỀU 9: CAM ĐOAN CỦA CÁC BÊN",
+    "canonical": "ĐIỀU 9: CAM ĐOAN CỦA CÁC BÊN",
+    "retrieval": "điều 9: cam đoan của các bên",
+    "char_start": 3328,
+    "char_end": 3356,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      729.04,
+      232.9,
+      741.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 9: CAM ĐOAN CỦA CÁC BÊN",
+        "bbox": [
+          54.0,
+          729.04,
+          232.9,
+          741.32
+        ]
+      }
+    ],
+    "block_index": 18,
+    "line_index": 0
+  },
+  {
+    "content": "Bên A và bên B chịu trách nhiệm trước pháp luật về những lời cam đoan sau đây:",
+    "canonical": "Bên A và bên B chịu trách nhiệm trước pháp luật về những lời cam đoan sau đây:",
+    "retrieval": "bên a và bên b chịu trách nhiệm trước pháp luật về những lời cam đoan sau đây:",
+    "char_start": 3357,
+    "char_end": 3435,
+    "page_number": 2,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      749.04,
+      452.78,
+      761.32
+    ],
+    "text_items": [
+      {
+        "text": "Bên A và bên B chịu trách nhiệm trước pháp luật về những lời cam đoan sau đây:",
+        "bbox": [
+          54.0,
+          749.04,
+          452.78,
+          761.32
+        ]
+      }
+    ],
+    "block_index": 19,
+    "line_index": 0
+  },
+  {
+    "content": "9.1. Bên A cam đoan:",
+    "canonical": "9.1. Bên A cam đoan:",
+    "retrieval": "9.1. bên a cam đoan:",
+    "char_start": 3436,
+    "char_end": 3456,
+    "page_number": 3,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      57.04,
+      159.69,
+      69.32
+    ],
+    "text_items": [
+      {
+        "text": "9.1. Bên A cam đoan:",
+        "bbox": [
+          54.0,
+          57.04,
+          159.69,
+          69.32
+        ]
+      }
+    ],
+    "block_index": 0,
+    "line_index": 0
+  },
+  {
+    "content": "a) Những thông tin về nhân thân, về thửa đất và tài sản gắn liền với đất đã ghi",
+    "canonical": "a) Những thông tin về nhân thân, về thửa đất và tài sản gắn liền với đất đã ghi",
+    "retrieval": "a) những thông tin về nhân thân, về thửa đất và tài sản gắn liền với đất đã ghi",
+    "char_start": 3457,
+    "char_end": 3536,
+    "page_number": 3,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      77.04,
+      435.19,
+      89.32
+    ],
+    "text_items": [
+      {
+        "text": "a) Những thông tin về nhân thân, về thửa đất và tài sản gắn liền với đất đã ghi",
+        "bbox": [
+          54.0,
+          77.04,
+          435.19,
+          89.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 0
+  },
+  {
+    "content": "trong Hợp đồng này là đúng sự thật;",
+    "canonical": "trong Hợp đồng này là đúng sự thật;",
+    "retrieval": "trong hợp đồng này là đúng sự thật;",
+    "char_start": 3537,
+    "char_end": 3572,
+    "page_number": 3,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      93.04,
+      231.1,
+      105.32
+    ],
+    "text_items": [
+      {
+        "text": "trong Hợp đồng này là đúng sự thật;",
+        "bbox": [
+          54.0,
+          93.04,
+          231.1,
+          105.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 1
+  },
+  {
+    "content": "b) Thửa đất thuộc trường hợp được tặng cho quyền sử dụng đất theo quy định của",
+    "canonical": "b) Thửa đất thuộc trường hợp được tặng cho quyền sử dụng đất theo quy định của",
+    "retrieval": "b) thửa đất thuộc trường hợp được tặng cho quyền sử dụng đất theo quy định của",
+    "char_start": 3573,
+    "char_end": 3651,
+    "page_number": 3,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      113.04,
+      459.47,
+      125.32
+    ],
+    "text_items": [
+      {
+        "text": "b) Thửa đất thuộc trường hợp được tặng cho quyền sử dụng đất theo quy định của",
+        "bbox": [
+          54.0,
+          113.04,
+          459.47,
+          125.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 0
+  },
+  {
+    "content": "pháp luật;",
+    "canonical": "pháp luật;",
+    "retrieval": "pháp luật;",
+    "char_start": 3652,
+    "char_end": 3662,
+    "page_number": 3,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      129.04,
+      102.28,
+      141.32
+    ],
+    "text_items": [
+      {
+        "text": "pháp luật;",
+        "bbox": [
+          54.0,
+          129.04,
+          102.28,
+          141.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 1
+  },
+  {
+    "content": "c) Tại thời điểm giao kết Hợp đồng này:",
+    "canonical": "c) Tại thời điểm giao kết Hợp đồng này:",
+    "retrieval": "c) tại thời điểm giao kết hợp đồng này:",
+    "char_start": 3663,
+    "char_end": 3702,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      57.04,
+      247.41,
+      69.32
+    ],
+    "text_items": [
+      {
+        "text": "c) Tại thời điểm giao kết Hợp đồng này:",
+        "bbox": [
+          54.0,
+          57.04,
+          247.41,
+          69.32
+        ]
+      }
+    ],
+    "block_index": 0,
+    "line_index": 0
+  },
+  {
+    "content": "­ Thửa đất và tài sản gắn liền với đất không có tranh chấp;",
+    "canonical": "­ Thửa đất và tài sản gắn liền với đất không có tranh chấp;",
+    "retrieval": "­ thửa đất và tài sản gắn liền với đất không có tranh chấp;",
+    "char_start": 3703,
+    "char_end": 3762,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      77.04,
+      339.23,
+      89.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Thửa đất và tài sản gắn liền với đất không có tranh chấp;",
+        "bbox": [
+          54.0,
+          77.04,
+          339.23,
+          89.32
+        ]
+      }
+    ],
+    "block_index": 1,
+    "line_index": 0
+  },
+  {
+    "content": "­ Quyền sử dụng đất và tài sản gắn liền với đất không bị kê biên để bảo đảm thi",
+    "canonical": "­ Quyền sử dụng đất và tài sản gắn liền với đất không bị kê biên để bảo đảm thi",
+    "retrieval": "­ quyền sử dụng đất và tài sản gắn liền với đất không bị kê biên để bảo đảm thi",
+    "char_start": 3763,
+    "char_end": 3842,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      97.04,
+      441.9,
+      109.32
+    ],
+    "text_items": [
+      {
+        "text": "­ Quyền sử dụng đất và tài sản gắn liền với đất không bị kê biên để bảo đảm thi",
+        "bbox": [
+          54.0,
+          97.04,
+          441.9,
+          109.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 0
+  },
+  {
+    "content": "hành án;",
+    "canonical": "hành án;",
+    "retrieval": "hành án;",
+    "char_start": 3843,
+    "char_end": 3851,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      113.04,
+      96.79,
+      125.32
+    ],
+    "text_items": [
+      {
+        "text": "hành án;",
+        "bbox": [
+          54.0,
+          113.04,
+          96.79,
+          125.32
+        ]
+      }
+    ],
+    "block_index": 2,
+    "line_index": 1
+  },
+  {
+    "content": "d) Việc giao kết Hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+    "canonical": "d) Việc giao kết Hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+    "retrieval": "d) việc giao kết hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+    "char_start": 3852,
+    "char_end": 3930,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      133.04,
+      438.9,
+      145.32
+    ],
+    "text_items": [
+      {
+        "text": "d) Việc giao kết Hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+        "bbox": [
+          54.0,
+          133.04,
+          438.9,
+          145.32
+        ]
+      }
+    ],
+    "block_index": 3,
+    "line_index": 0
+  },
+  {
+    "content": "ép buộc;",
+    "canonical": "ép buộc;",
+    "retrieval": "ép buộc;",
+    "char_start": 3931,
+    "char_end": 3941,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      149.04,
+      96.17,
+      161.32
+    ],
+    "text_items": [
+      {
+        "text": "ép buộc;",
+        "bbox": [
+          54.0,
+          149.04,
+          96.17,
+          161.32
+        ]
+      }
+    ],
+    "block_index": 3,
+    "line_index": 1
+  },
+  {
+    "content": "e) Thực hiện đúng và đầy đủ các thoả thuận đã ghi trong Hợp đồng này.",
+    "canonical": "e) Thực hiện đúng và đầy đủ các thoả thuận đã ghi trong Hợp đồng này.",
+    "retrieval": "e) thực hiện đúng và đầy đủ các thoả thuận đã ghi trong hợp đồng này.",
+    "char_start": 3942,
+    "char_end": 4011,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      169.04,
+      406.49,
+      181.32
+    ],
+    "text_items": [
+      {
+        "text": "e) Thực hiện đúng và đầy đủ các thoả thuận đã ghi trong Hợp đồng này.",
+        "bbox": [
+          54.0,
+          169.04,
+          406.49,
+          181.32
+        ]
+      }
+    ],
+    "block_index": 4,
+    "line_index": 0
+  },
+  {
+    "content": "9.2. Bên B cam đoan:",
+    "canonical": "9.2. Bên B cam đoan:",
+    "retrieval": "9.2. bên b cam đoan:",
+    "char_start": 4012,
+    "char_end": 4032,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      189.04,
+      159.69,
+      201.32
+    ],
+    "text_items": [
+      {
+        "text": "9.2. Bên B cam đoan:",
+        "bbox": [
+          54.0,
+          189.04,
+          159.69,
+          201.32
+        ]
+      }
+    ],
+    "block_index": 5,
+    "line_index": 0
+  },
+  {
+    "content": "a) Những thông tin về nhân thân đã ghi trong Hợp đồng này là đúng sự thật;",
+    "canonical": "a) Những thông tin về nhân thân đã ghi trong Hợp đồng này là đúng sự thật;",
+    "retrieval": "a) những thông tin về nhân thân đã ghi trong hợp đồng này là đúng sự thật;",
+    "char_start": 4033,
+    "char_end": 4107,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      209.04,
+      425.45,
+      221.32
+    ],
+    "text_items": [
+      {
+        "text": "a) Những thông tin về nhân thân đã ghi trong Hợp đồng này là đúng sự thật;",
+        "bbox": [
+          54.0,
+          209.04,
+          425.45,
+          221.32
+        ]
+      }
+    ],
+    "block_index": 6,
+    "line_index": 0
+  },
+  {
+    "content": "b) Đã xem xét kỹ, biết rõ về thửa đất và tài sản gắn liền với đất nêu tại Điều 1",
+    "canonical": "b) Đã xem xét kỹ, biết rõ về thửa đất và tài sản gắn liền với đất nêu tại Điều 1",
+    "retrieval": "b) đã xem xét kỹ, biết rõ về thửa đất và tài sản gắn liền với đất nêu tại điều 1",
+    "char_start": 4108,
+    "char_end": 4188,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      229.04,
+      430.83,
+      241.32
+    ],
+    "text_items": [
+      {
+        "text": "b) Đã xem xét kỹ, biết rõ về thửa đất và tài sản gắn liền với đất nêu tại Điều 1",
+        "bbox": [
+          54.0,
+          229.04,
+          430.83,
+          241.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 0
+  },
+  {
+    "content": "của Hợp đồng này và các giấy tờ về quyền sử dụng đất, quyền sở hữu tài sản gắn",
+    "canonical": "của Hợp đồng này và các giấy tờ về quyền sử dụng đất, quyền sở hữu tài sản gắn",
+    "retrieval": "của hợp đồng này và các giấy tờ về quyền sử dụng đất, quyền sở hữu tài sản gắn",
+    "char_start": 4189,
+    "char_end": 4267,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      245.04,
+      456.37,
+      257.32
+    ],
+    "text_items": [
+      {
+        "text": "của Hợp đồng này và các giấy tờ về quyền sử dụng đất, quyền sở hữu tài sản gắn",
+        "bbox": [
+          54.0,
+          245.04,
+          456.37,
+          257.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 1
+  },
+  {
+    "content": "liền với đất;",
+    "canonical": "liền với đất;",
+    "retrieval": "liền với đất;",
+    "char_start": 4268,
+    "char_end": 4281,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      261.05,
+      110.68,
+      273.32
+    ],
+    "text_items": [
+      {
+        "text": "liền với đất;",
+        "bbox": [
+          54.0,
+          261.05,
+          110.68,
+          273.32
+        ]
+      }
+    ],
+    "block_index": 7,
+    "line_index": 2
+  },
+  {
+    "content": "c) Việc giao kết Hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+    "canonical": "c) Việc giao kết Hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+    "retrieval": "c) việc giao kết hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+    "char_start": 4282,
+    "char_end": 4360,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      281.05,
+      438.28,
+      293.32
+    ],
+    "text_items": [
+      {
+        "text": "c) Việc giao kết Hợp đồng này hoàn toàn tự nguyện, không bị lừa dối, không bị",
+        "bbox": [
+          54.0,
+          281.05,
+          438.28,
+          293.32
+        ]
+      }
+    ],
+    "block_index": 8,
+    "line_index": 0
+  },
+  {
+    "content": "ép buộc;",
+    "canonical": "ép buộc;",
+    "retrieval": "ép buộc;",
+    "char_start": 4361,
+    "char_end": 4369,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      297.05,
+      96.17,
+      309.32
+    ],
+    "text_items": [
+      {
+        "text": "ép buộc;",
+        "bbox": [
+          54.0,
+          297.05,
+          96.17,
+          309.32
+        ]
+      }
+    ],
+    "block_index": 8,
+    "line_index": 1
+  },
+  {
+    "content": "d) Thực hiện đúng và đầy đủ các thoả thuận đã ghi trong Hợp đồng này.",
+    "canonical": "d) Thực hiện đúng và đầy đủ các thoả thuận đã ghi trong Hợp đồng này.",
+    "retrieval": "d) thực hiện đúng và đầy đủ các thoả thuận đã ghi trong hợp đồng này.",
+    "char_start": 4370,
+    "char_end": 4439,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      317.05,
+      406.49,
+      329.32
+    ],
+    "text_items": [
+      {
+        "text": "d) Thực hiện đúng và đầy đủ các thoả thuận đã ghi trong Hợp đồng này.",
+        "bbox": [
+          54.0,
+          317.05,
+          406.49,
+          329.32
+        ]
+      }
+    ],
+    "block_index": 9,
+    "line_index": 0
+  },
+  {
+    "content": "ĐIỀU 10: ĐIỀU KHOẢN CHUNG",
+    "canonical": "ĐIỀU 10: ĐIỀU KHOẢN CHUNG",
+    "retrieval": "điều 10: điều khoản chung",
+    "char_start": 4440,
+    "char_end": 4465,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      345.05,
+      213.38,
+      357.32
+    ],
+    "text_items": [
+      {
+        "text": "ĐIỀU 10: ĐIỀU KHOẢN CHUNG",
+        "bbox": [
+          54.0,
+          345.05,
+          213.38,
+          357.32
+        ]
+      }
+    ],
+    "block_index": 10,
+    "line_index": 0
+  },
+  {
+    "content": "10.1. Hai bên hiểu rõ quyền, nghĩa vụ và lợi ích hợp pháp của mình được thỏa",
+    "canonical": "10.1. Hai bên hiểu rõ quyền, nghĩa vụ và lợi ích hợp pháp của mình được thỏa",
+    "retrieval": "10.1. hai bên hiểu rõ quyền, nghĩa vụ và lợi ích hợp pháp của mình được thỏa",
+    "char_start": 4466,
+    "char_end": 4542,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      365.05,
+      436.77,
+      377.32
+    ],
+    "text_items": [
+      {
+        "text": "10.1. Hai bên hiểu rõ quyền, nghĩa vụ và lợi ích hợp pháp của mình được thỏa",
+        "bbox": [
+          54.0,
+          365.05,
+          436.77,
+          377.32
+        ]
+      }
+    ],
+    "block_index": 11,
+    "line_index": 0
+  },
+  {
+    "content": "thuận trong hợp đồng này.",
+    "canonical": "thuận trong hợp đồng này.",
+    "retrieval": "thuận trong hợp đồng này.",
+    "char_start": 4543,
+    "char_end": 4568,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      381.05,
+      183.44,
+      393.32
+    ],
+    "text_items": [
+      {
+        "text": "thuận trong hợp đồng này.",
+        "bbox": [
+          54.0,
+          381.05,
+          183.44,
+          393.32
+        ]
+      }
+    ],
+    "block_index": 11,
+    "line_index": 1
+  },
+  {
+    "content": "10.2. Hai bên đã tự đọc lại hợp đồng này, đã hiểu và đồng ý tất cả các điều",
+    "canonical": "10.2. Hai bên đã tự đọc lại hợp đồng này, đã hiểu và đồng ý tất cả các điều",
+    "retrieval": "10.2. hai bên đã tự đọc lại hợp đồng này, đã hiểu và đồng ý tất cả các điều",
+    "char_start": 4569,
+    "char_end": 4644,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      401.05,
+      420.52,
+      413.32
+    ],
+    "text_items": [
+      {
+        "text": "10.2. Hai bên đã tự đọc lại hợp đồng này, đã hiểu và đồng ý tất cả các điều",
+        "bbox": [
+          54.0,
+          401.05,
+          420.52,
+          413.32
+        ]
+      }
+    ],
+    "block_index": 12,
+    "line_index": 0
+  },
+  {
+    "content": "khoản đã ghi trong hợp đồng.",
+    "canonical": "khoản đã ghi trong hợp đồng.",
+    "retrieval": "khoản đã ghi trong hợp đồng.",
+    "char_start": 4645,
+    "char_end": 4673,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      417.05,
+      198.11,
+      429.32
+    ],
+    "text_items": [
+      {
+        "text": "khoản đã ghi trong hợp đồng.",
+        "bbox": [
+          54.0,
+          417.05,
+          198.11,
+          429.32
+        ]
+      }
+    ],
+    "block_index": 12,
+    "line_index": 1
+  },
+  {
+    "content": "10.3. Hợp đồng này có hiệu lực kể từ ngày 20 tháng 04 năm 2025",
+    "canonical": "10.3. Hợp đồng này có hiệu lực kể từ ngày 20 tháng 04 năm 2025",
+    "retrieval": "10.3. hợp đồng này có hiệu lực kể từ ngày 20 tháng 04 năm 2025",
+    "char_start": 4674,
+    "char_end": 4736,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      437.05,
+      375.97,
+      449.32
+    ],
+    "text_items": [
+      {
+        "text": "10.3. Hợp đồng này có hiệu lực kể từ ngày 20 tháng 04 năm 2025",
+        "bbox": [
+          54.0,
+          437.05,
+          375.97,
+          449.32
+        ]
+      }
+    ],
+    "block_index": 13,
+    "line_index": 0
+  },
+  {
+    "content": "Hợp đồng được lập thành 02 bản (hai) bản, mỗi bên giữ một bản và có giá trị như",
+    "canonical": "Hợp đồng được lập thành 02 bản (hai) bản, mỗi bên giữ một bản và có giá trị như",
+    "retrieval": "hợp đồng được lập thành 02 bản (hai) bản, mỗi bên giữ một bản và có giá trị như",
+    "char_start": 4737,
+    "char_end": 4816,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      457.05,
+      452.22,
+      469.32
+    ],
+    "text_items": [
+      {
+        "text": "Hợp đồng được lập thành 02 bản (hai) bản, mỗi bên giữ một bản và có giá trị như",
+        "bbox": [
+          54.0,
+          457.05,
+          452.22,
+          469.32
+        ]
+      }
+    ],
+    "block_index": 14,
+    "line_index": 0
+  },
+  {
+    "content": "nhau.",
+    "canonical": "nhau.",
+    "retrieval": "nhau.",
+    "char_start": 4817,
+    "char_end": 4822,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      473.05,
+      81.51,
+      485.32
+    ],
+    "text_items": [
+      {
+        "text": "nhau.",
+        "bbox": [
+          54.0,
+          473.05,
+          81.51,
+          485.32
+        ]
+      }
+    ],
+    "block_index": 14,
+    "line_index": 1
+  },
+  {
+    "content": "BÊN TẶNG CHO (Bên A) BÊN ĐƯỢC TẶNG CHO (Bên B)",
+    "canonical": "BÊN TẶNG CHO (Bên A) BÊN ĐƯỢC TẶNG CHO (Bên B)",
+    "retrieval": "bên tặng cho (bên a) bên được tặng cho (bên b)",
+    "char_start": 4823,
+    "char_end": 4869,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      501.05,
+      342.69,
+      513.32
+    ],
+    "text_items": [
+      {
+        "text": "BÊN TẶNG CHO (Bên A) BÊN ĐƯỢC TẶNG CHO (Bên B)",
+        "bbox": [
+          54.0,
+          501.05,
+          342.69,
+          513.32
+        ]
+      }
+    ],
+    "block_index": 15,
+    "line_index": 0
+  },
+  {
+    "content": "(Ký/ điểm chỉ, ghi rõ họ tên) (Ký/ điểm chỉ, ghi rõ họ tên)",
+    "canonical": "(Ký/ điểm chỉ, ghi rõ họ tên) (Ký/ điểm chỉ, ghi rõ họ tên)",
+    "retrieval": "(ký/ điểm chỉ, ghi rõ họ tên) (ký/ điểm chỉ, ghi rõ họ tên)",
+    "char_start": 4870,
+    "char_end": 4929,
+    "page_number": 4,
+    "source_file": "data\\cache\\normalized_pdf\\workflow_mwfjdbucf_file_1_6345d6a3.pdf",
+    "bbox": [
+      54.0,
+      521.04,
+      325.82,
+      533.32
+    ],
+    "text_items": [
+      {
+        "text": "(Ký/ điểm chỉ, ghi rõ họ tên) (Ký/ điểm chỉ, ghi rõ họ tên)",
+        "bbox": [
+          54.0,
+          521.04,
+          325.82,
+          533.32
+        ]
+      }
+    ],
+    "block_index": 16,
+    "line_index": 0
+  }
+]

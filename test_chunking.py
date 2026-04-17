@@ -1,9 +1,8 @@
-import sys
-import os
 import io
+import sys
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-sys.path.append('e:/TTCS-Light-rag/legal-comparator')
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+sys.path.append("e:/TTCS-Light-rag/legal-comparator")
 
 from src.core.chunking import structural_chunking
 

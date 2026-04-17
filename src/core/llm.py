@@ -4,9 +4,8 @@ import urllib.request
 
 from src.core.cache import cache
 
-
 OLLAMA_URL = "http://localhost:11434/api/generate"
-DEFAULT_MODEL = "qwen2.5:7b"
+DEFAULT_MODEL = "qwen2.5:3b"
 
 
 def _call_ollama(prompt: str, model: str = DEFAULT_MODEL, timeout: int = 300) -> str:
@@ -63,7 +62,7 @@ def _parse_json_response(raw: str) -> dict:
         start = cleaned.find("{")
         end = cleaned.rfind("}")
         if start != -1 and end != -1 and end > start:
-            return json.loads(cleaned[start:end + 1])
+            return json.loads(cleaned[start : end + 1])
         raise
 
 
@@ -124,7 +123,15 @@ QUY TAC:
     raw = _call_ollama(prompt, model=model)
     try:
         result = _parse_json_response(raw)
-        for key in ("status", "summary", "exact_difference", "change_type", "impact_level", "citation_a", "citation_b"):
+        for key in (
+            "status",
+            "summary",
+            "exact_difference",
+            "change_type",
+            "impact_level",
+            "citation_a",
+            "citation_b",
+        ):
             result.setdefault(key, "")
         cache.set(prompt, model, result)
         return result

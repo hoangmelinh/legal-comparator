@@ -1,0 +1,290 @@
+﻿diff --git a/src/core/chunking.py b/src/core/chunking.py
+index 163ee93..079eedc 100644
+--- a/src/core/chunking.py
++++ b/src/core/chunking.py
+@@ -345,6 +345,7 @@ def legal_chunker(
+             "char_end": char_end,
+             "page": page_number,
+             "bbox": record.get("bbox"),
++            "text_items": record.get("text_items"),
+             "block_index": record.get("block_index"),
+             "line_index": record.get("line_index"),
+         })
+diff --git a/src/core/comparator.py b/src/core/comparator.py
+index 1c3dcaa..f84b177 100644
+--- a/src/core/comparator.py
++++ b/src/core/comparator.py
+@@ -368,7 +368,10 @@ def _text_match_score(needle: str, haystack: str) -> int:
+ def _build_bbox_from_text_items(anchor: dict, span_text: str) -> Optional[list[float]]:
+     text_items = anchor.get("text_items") or []
+     if not text_items:
+-        return None
++        if anchor.get("text") and anchor.get("bbox"):
++            text_items = [{"text": anchor.get("text"), "bbox": anchor.get("bbox")}]
++        else:
++            return None
+ 
+     needle = _normalize_anchor_text(span_text)
+     if not needle:
+@@ -385,8 +388,6 @@ def _build_bbox_from_text_items(anchor: dict, span_text: str) -> Optional[list[f
+ 
+     best_exact_boxes = None
+     best_exact_score = None
+-    best_fuzzy_boxes = None
+-    best_fuzzy_score = -1
+     max_window = min(6, len(item_payload))
+ 
+     for start_index in range(len(item_payload)):
+@@ -402,25 +403,28 @@ def _build_bbox_from_text_items(anchor: dict, span_text: str) -> Optional[list[f
+                 score = (size, abs(len(combined) - len(needle)))
+                 if best_exact_score is None or score < best_exact_score:
+                     best_exact_score = score
+-                    best_exact_boxes = [item["bbox"] for item in window if item.get("bbox")]
++                    if len(window) == 1 and needle in combined and len(combined) > 0 and len(needle) < len(combined):
++                        box = window[0]["bbox"]
++                        start_idx = combined.find(needle)
++                        if box and len(box) == 4:
++                            char_w = (box[2] - box[0]) / max(1, len(combined))
++                            new_x0 = box[0] + start_idx * char_w
++                            new_x1 = new_x0 + len(needle) * char_w
++                            best_exact_boxes = [[new_x0, box[1], new_x1, box[3]]]
++                        else:
++                            best_exact_boxes = [item["bbox"] for item in window if item.get("bbox")]
++                    else:
++                        best_exact_boxes = [item["bbox"] for item in window if item.get("bbox")]
+                 continue
+ 
+-            overlap = len(set(needle.split()) & set(combined.split()))
+-            if overlap > best_fuzzy_score:
+-                best_fuzzy_score = overlap
+-                best_fuzzy_boxes = [item["bbox"] for item in window if item.get("bbox")]
+-
+     if best_exact_boxes:
+         return _merge_bboxes(best_exact_boxes or [])
+-    if best_fuzzy_score > 0:
+-        return _merge_bboxes(best_fuzzy_boxes or [])
+     return None
+ 
+ 
+ def _resolve_window_entries(window: list[dict], span_text: str) -> list[dict]:
+     resolved = []
+     needle = _normalize_anchor_text(span_text)
+-    needle_tokens = _token_set(span_text)
+ 
+     for anchor in window:
+         anchor_text = anchor.get("text", "")
+@@ -430,10 +434,11 @@ def _resolve_window_entries(window: list[dict], span_text: str) -> list[dict]:
+ 
+         bbox = _build_bbox_from_text_items(anchor, span_text)
+         if not bbox:
+-            overlap = len(needle_tokens & _token_set(anchor_text))
+-            if overlap <= 0 and needle not in anchor_norm and anchor_norm not in needle:
++            # Chß╗ë d├╣ng full bbox khi to├án bß╗Ö anchor nß║▒m trong span (span bao tr├╣m cß║ú d├▓ng)
++            if anchor_norm in needle and len(anchor_norm) > 0:
++                bbox = anchor.get("bbox")
++            else:
+                 continue
+-            bbox = anchor.get("bbox")
+ 
+         if not bbox:
+             continue
+@@ -447,6 +452,38 @@ def _resolve_window_entries(window: list[dict], span_text: str) -> list[dict]:
+                 "bbox": bbox,
+             }
+         )
++
++    # Cross-anchor fallback: span crosses line boundaries (e.g., "60 (s├íu" split across 2 lines)
++    if not resolved and len(window) > 1:
++        combined_norm = " ".join(_normalize_anchor_text(a.get("text", "")) for a in window)
++        if needle in combined_norm:
++            needle_parts = needle.split()
++            used_parts = set()
++            for anchor in window:
++                a_norm = _normalize_anchor_text(anchor.get("text", ""))
++                a_box = anchor.get("bbox")
++                if not a_norm or not a_box or len(a_box) != 4:
++                    continue
++                for part in needle_parts:
++                    if part in used_parts:
++                        continue
++                    if part in a_norm:
++                        char_w = (a_box[2] - a_box[0]) / max(1, len(a_norm))
++                        idx = a_norm.find(part)
++                        new_x0 = a_box[0] + idx * char_w
++                        new_x1 = new_x0 + len(part) * char_w
++                        resolved.append(
++                            {
++                                "text": part,
++                                "page": anchor.get("page"),
++                                "block_index": anchor.get("block_index"),
++                                "line_index": anchor.get("line_index"),
++                                "bbox": [new_x0, a_box[1], new_x1, a_box[3]],
++                            }
++                        )
++                        used_parts.add(part)
++                        break
++
+     return resolved
+ 
+ 
+@@ -491,17 +528,112 @@ def _cleanup_resolved_entries(entries: list[dict]) -> list[dict]:
+     return cleaned
+ 
+ 
+-def _resolve_changed_spans_to_anchors(spans: list[dict], provenance: dict) -> list[dict]:
++def _resolve_changed_spans_to_anchors(spans: list[dict], provenance: dict, source_text: str = "") -> list[dict]:
+     anchors = provenance.get("anchors", []) or []
+     if not spans or not anchors:
+         return []
+ 
++    # Strategy 1: Position-based resolution using character offsets
++    # Build a mapping from clause text character positions to anchor indices
++    anchor_char_map: list[tuple[int, int, int]] = []  # (text_start, text_end, anchor_index)
++    if source_text:
++        search_pos = 0
++        for i, anchor in enumerate(anchors):
++            a_text = anchor.get("text", "")
++            if not a_text:
++                continue
++            idx = source_text.find(a_text, search_pos)
++            if idx >= 0:
++                anchor_char_map.append((idx, idx + len(a_text), i))
++                search_pos = idx + len(a_text)
++
+     resolved = []
+     for span in spans:
+         span_text = span.get("text", "")
++        span_start = span.get("start", -1)
++        span_end = span.get("end", -1)
+         if not span_text:
+             continue
+ 
++        # Try position-based resolution first
++        if anchor_char_map and span_start >= 0 and span_end > span_start:
++            position_entries = []
++            for a_start, a_end, a_idx in anchor_char_map:
++                # Check if the span overlaps with this anchor's range
++                if span_start >= a_end or span_end <= a_start:
++                    continue
++                anchor = anchors[a_idx]
++                bbox = anchor.get("bbox")
++                a_text = anchor.get("text", "")
++                if not bbox or len(bbox) != 4 or not a_text:
++                    continue
++
++                # Calculate precise offsets within this anchor
++                offset_start = max(0, span_start - a_start)
++                offset_end = min(len(a_text), span_end - a_start)
++                if offset_end <= offset_start:
++                    continue
++
++                text_items = anchor.get("text_items", [])
++                if text_items:
++                    current_idx = 0
++                    start_box = None
++                    end_box = None
++                    for item in text_items:
++                        item_text = item.get("text", "")
++                        item_len = len(item_text)
++                        item_start = current_idx
++                        item_end = current_idx + item_len
++                        
++                        if start_box is None and item_start <= offset_start < item_end:
++                            ibox = item.get("bbox")
++                            if ibox and len(ibox) == 4:
++                                local_offset = offset_start - item_start
++                                char_w = (ibox[2] - ibox[0]) / max(1, item_len)
++                                start_box = ibox[0] + local_offset * char_w
++                                
++                        if end_box is None and item_start < offset_end <= item_end:
++                            ibox = item.get("bbox")
++                            if ibox and len(ibox) == 4:
++                                local_offset = offset_end - item_start
++                                char_w = (ibox[2] - ibox[0]) / max(1, item_len)
++                                end_box = ibox[0] + local_offset * char_w
++                                
++                        current_idx += item_len
++                        
++                    if start_box is not None and end_box is not None:
++                        new_x0, new_x1 = start_box, end_box
++                    elif start_box is not None:
++                        new_x0, new_x1 = start_box, bbox[2]
++                    elif end_box is not None:
++                        new_x0, new_x1 = bbox[0], end_box
++                    else:
++                        char_w = (bbox[2] - bbox[0]) / max(1, len(a_text))
++                        new_x0 = bbox[0] + offset_start * char_w
++                        new_x1 = bbox[0] + offset_end * char_w
++                else:
++                    char_w = (bbox[2] - bbox[0]) / max(1, len(a_text))
++                    new_x0 = bbox[0] + offset_start * char_w
++                    new_x1 = bbox[0] + offset_end * char_w
++
++                position_entries.append(
++                    {
++                        "text": span_text,
++                        "page": anchor.get("page"),
++                        "block_index": anchor.get("block_index"),
++                        "line_index": anchor.get("line_index"),
++                        "bbox": [round(new_x0, 2), bbox[1], round(new_x1, 2), bbox[3]],
++                        "start": span_start,
++                        "end": span_end,
++                        "token_count": span.get("token_count", 0),
++                    }
++                )
++
++            if position_entries:
++                resolved.extend(position_entries)
++                continue
++
++        # Fallback: text-based resolution (when source_text is unavailable)
+         exact_entries = []
+         for anchor in anchors:
+             exact_entries.extend(_resolve_window_entries([anchor], span_text))
+@@ -586,8 +718,8 @@ def _should_use_block_highlight_for_modified(is_numeric: bool, token_stats: dict
+         len(highlight_payload.get("changed_spans_a", [])),
+         len(highlight_payload.get("changed_spans_b", [])),
+     )
+-    return coverage >= 0.36 or spans_count >= 5
+-
++    # T─âng ngã░ß╗íng ─æß╗â hß║ºu hß║┐t c├íc thay ─æß╗òi ─æß╗üu c├│ thß╗â highlight ch├¡nh x├íc tß╗½ng tß╗½ (inline mode)
++    return coverage >= 0.85 or spans_count >= 20
+ 
+ def _is_minor_wording_change(text_a: str, text_b: str) -> bool:
+     if not text_a or not text_b:
+@@ -611,8 +743,8 @@ def _build_highlight_payload(text_a: str, text_b: str, provenance_a: dict, prove
+     changed = _build_minimal_changed_spans(text_a, text_b)
+     spans_a = changed.get("spans_a", [])
+     spans_b = changed.get("spans_b", [])
+-    highlights_a = _resolve_changed_spans_to_anchors(spans_a, provenance_a)
+-    highlights_b = _resolve_changed_spans_to_anchors(spans_b, provenance_b)
++    highlights_a = _resolve_changed_spans_to_anchors(spans_a, provenance_a, source_text=text_a)
++    highlights_b = _resolve_changed_spans_to_anchors(spans_b, provenance_b, source_text=text_b)
+ 
+     citation_a = spans_a[0]["text"] if spans_a else ""
+     citation_b = spans_b[0]["text"] if spans_b else ""
+@@ -968,6 +1100,11 @@ def run_comparison(
+                 )
+                 status = llm_result.get("status", "ERROR")
+                 change_type = llm_result.get("change_type", "")
++                if status == "ERROR":
++                    status = "MODIFIED"
++                    change_type = "Kh├íc biß╗çt nß╗Öi dung (Chã░a qua AI)"
++                    llm_result["summary"] = llm_result.get("summary", "─É├ú ph├ít hiß╗çn kh├íc biß╗çt. Kh├┤ng c├│ AI ─æß╗â t├│m tß║»t chi tiß║┐t.")
++
+                 if task["is_numeric"] and status not in {"ADDED", "REMOVED", "MOVED"}:
+                     status = "MODIFIED"
+                     if not change_type or "nhß╗Å" in change_type.lower() or "c├óu chß╗»" in change_type.lower():
+diff --git a/src/core/ingestion.py b/src/core/ingestion.py
+index 5fc819e..3526672 100644
+--- a/src/core/ingestion.py
++++ b/src/core/ingestion.py
+@@ -571,7 +571,7 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
+     average_chars = total_chars / page_count
+     scan_based = low_text_pages / page_count >= 0.6 and image_heavy_pages > 0
+     weak_extraction = total_chars < max(160, page_count * 60)
+-    can_ingest = total_chars >= max(80, page_count * 25)
++    can_ingest = total_chars > 0
+ 
+     warning = None
+     if scan_based and weak_extraction:

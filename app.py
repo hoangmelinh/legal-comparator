@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import json
 import shutil
 import tempfile
 import threading
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Literal, Optional
+from typing import Any, Literal
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,7 +19,6 @@ from src.core.document_registry import DEFAULT_CACHE_ROOT
 from src.core.ingestion import ingest_document, prepare_document
 from src.core.llm import DEFAULT_MODEL
 from src.database.vector_store import LegalVectorDB
-
 
 DB_PATH = "legal_data.json"
 CACHE_ROOT = Path(DEFAULT_CACHE_ROOT)
@@ -92,26 +90,26 @@ class JobState(BaseModel):
     status: Literal["queued", "running", "completed", "failed"] = "queued"
     message: str = ""
     started_at: str
-    finished_at: Optional[str] = None
-    error: Optional[str] = None
-    document_id: Optional[str] = None
-    compare_job_id: Optional[str] = None
+    finished_at: str | None = None
+    error: str | None = None
+    document_id: str | None = None
+    compare_job_id: str | None = None
 
 
 class CompareRequest(BaseModel):
     workflow_id: str = "default"
-    document_id_a: Optional[str] = None
-    document_id_b: Optional[str] = None
+    document_id_a: str | None = None
+    document_id_b: str | None = None
     model: str = DEFAULT_MODEL
 
 
 state_lock = threading.Lock()
-jobs: Dict[str, JobState] = {}
-workflow_state: Dict[str, Dict[str, Any]] = {}
-compare_results: Dict[str, Dict[str, Any]] = {}
+jobs: dict[str, JobState] = {}
+workflow_state: dict[str, dict[str, Any]] = {}
+compare_results: dict[str, dict[str, Any]] = {}
 
 
-def _get_workflow(workflow_id: str) -> Dict[str, Any]:
+def _get_workflow(workflow_id: str) -> dict[str, Any]:
     with state_lock:
         workflow = workflow_state.get(workflow_id)
         if not workflow:
@@ -138,18 +136,18 @@ def _set_job_progress(job_id: str, percent: float, message: str) -> None:
         jobs[job_id] = job
 
 
-def _build_pdf_url(document_id: Optional[str], workflow_id: str) -> str:
+def _build_pdf_url(document_id: str | None, workflow_id: str) -> str:
     if not document_id:
         return ""
     return f"/api/documents/{document_id}/pdf?workflow_id={workflow_id}"
 
 
-def _is_reportable_change(change: Dict[str, Any]) -> bool:
+def _is_reportable_change(change: dict[str, Any]) -> bool:
     status = (change.get("status") or "").upper()
     return status in {"ADDED", "REMOVED", "MOVED", "MODIFIED"}
 
 
-def _normalize_change_payload(change: Dict[str, Any]) -> Dict[str, Any]:
+def _normalize_change_payload(change: dict[str, Any]) -> dict[str, Any]:
     normalized = dict(change)
     evidence = normalized.get("evidence") or {}
     citation_a = normalized.get("citation_a") or evidence.get("citation_a") or ""
@@ -164,12 +162,14 @@ def _normalize_change_payload(change: Dict[str, Any]) -> Dict[str, Any]:
 
 def _clear_workflow_jobs(workflow_id: str) -> None:
     with state_lock:
-        remove_ids = [job_id for job_id, job in jobs.items() if job.workflow_id == workflow_id]
+        remove_ids = [
+            job_id for job_id, job in jobs.items() if job.workflow_id == workflow_id
+        ]
         for job_id in remove_ids:
             jobs.pop(job_id, None)
 
 
-def _cleanup_document_artifacts(doc: Optional[Dict[str, Any]]) -> None:
+def _cleanup_document_artifacts(doc: dict[str, Any] | None) -> None:
     if not doc:
         return
     for key in (
@@ -184,8 +184,12 @@ def _cleanup_document_artifacts(doc: Optional[Dict[str, Any]]) -> None:
         _safe_unlink(doc.get(key))
 
 
-def _delete_workflow_docs_from_db(workflow: Dict[str, Any]) -> None:
-    doc_ids = {doc.get("document_id") for doc in (workflow.get("file_1"), workflow.get("file_2")) if doc and doc.get("document_id")}
+def _delete_workflow_docs_from_db(workflow: dict[str, Any]) -> None:
+    doc_ids = {
+        doc.get("document_id")
+        for doc in (workflow.get("file_1"), workflow.get("file_2"))
+        if doc and doc.get("document_id")
+    }
     if not doc_ids:
         return
     try:
@@ -246,7 +250,9 @@ def _reset_slot_state(workflow_id: str, slot: Literal["file_1", "file_2"]) -> No
 
 async def _save_upload_file(upload_file: UploadFile, suffix: str) -> Path:
     UPLOAD_ROOT.mkdir(parents=True, exist_ok=True)
-    temp_file = tempfile.NamedTemporaryFile(delete=False, dir=UPLOAD_ROOT, suffix=suffix)
+    temp_file = tempfile.NamedTemporaryFile(
+        delete=False, dir=UPLOAD_ROOT, suffix=suffix
+    )
     temp_path = Path(temp_file.name)
     try:
         with temp_file:
@@ -261,7 +267,13 @@ async def _save_upload_file(upload_file: UploadFile, suffix: str) -> Path:
     return temp_path
 
 
-def _prepare_job_payload(change_list: list[dict], workflow_id: str, doc_a: Dict[str, Any], doc_b: Dict[str, Any], compare_job_id: str) -> Dict[str, Any]:
+def _prepare_job_payload(
+    change_list: list[dict],
+    workflow_id: str,
+    doc_a: dict[str, Any],
+    doc_b: dict[str, Any],
+    compare_job_id: str,
+) -> dict[str, Any]:
     normalized_changes = []
     for idx, item in enumerate(change_list, start=1):
         if not item or item.get("status") == "IDENTICAL":
@@ -270,12 +282,20 @@ def _prepare_job_payload(change_list: list[dict], workflow_id: str, doc_a: Dict[
         citation_b = item.get("citation_b", "")
         highlight_anchors_a = item.get("highlight_anchors_a", [])
         highlight_anchors_b = item.get("highlight_anchors_b", [])
-        page_a = (item.get("citation_anchor_a") or {}).get("page_start") or (item.get("pdf_anchor_a") or {}).get("page_start")
-        page_b = (item.get("citation_anchor_b") or {}).get("page_start") or (item.get("pdf_anchor_b") or {}).get("page_start")
+        page_a = (item.get("citation_anchor_a") or {}).get("page_start") or (
+            item.get("pdf_anchor_a") or {}
+        ).get("page_start")
+        page_b = (item.get("citation_anchor_b") or {}).get("page_start") or (
+            item.get("pdf_anchor_b") or {}
+        ).get("page_start")
         if not page_a and highlight_anchors_a:
-            page_a = highlight_anchors_a[0].get("page") or highlight_anchors_a[0].get("page_start")
+            page_a = highlight_anchors_a[0].get("page") or highlight_anchors_a[0].get(
+                "page_start"
+            )
         if not page_b and highlight_anchors_b:
-            page_b = highlight_anchors_b[0].get("page") or highlight_anchors_b[0].get("page_start")
+            page_b = highlight_anchors_b[0].get("page") or highlight_anchors_b[0].get(
+                "page_start"
+            )
         normalized_changes.append(
             {
                 "id": f"chg_{idx}",
@@ -299,7 +319,10 @@ def _prepare_job_payload(change_list: list[dict], workflow_id: str, doc_a: Dict[
         )
 
     visible_changes = []
-    for visible_index, change in enumerate((change for change in normalized_changes if _is_reportable_change(change)), start=1):
+    for visible_index, change in enumerate(
+        (change for change in normalized_changes if _is_reportable_change(change)),
+        start=1,
+    ):
         visible_change = dict(change)
         visible_change["id"] = f"chg_{visible_index}"
         visible_changes.append(visible_change)
@@ -329,8 +352,12 @@ def _prepare_job_payload(change_list: list[dict], workflow_id: str, doc_a: Dict[
             "total": len(visible_changes),
             "total_clauses": len(visible_changes),
             "added": len([c for c in visible_changes if c.get("status") == "ADDED"]),
-            "removed": len([c for c in visible_changes if c.get("status") == "REMOVED"]),
-            "modified": len([c for c in visible_changes if c.get("status") == "MODIFIED"]),
+            "removed": len(
+                [c for c in visible_changes if c.get("status") == "REMOVED"]
+            ),
+            "modified": len(
+                [c for c in visible_changes if c.get("status") == "MODIFIED"]
+            ),
             "minor_modified": 0,
             "moved": len([c for c in visible_changes if c.get("status") == "MOVED"]),
         },
@@ -339,7 +366,12 @@ def _prepare_job_payload(change_list: list[dict], workflow_id: str, doc_a: Dict[
     return payload
 
 
-def _start_process_job(workflow_id: str, slot: Literal["file_1", "file_2"], source_path: Path, document_id: str) -> str:
+def _start_process_job(
+    workflow_id: str,
+    slot: Literal["file_1", "file_2"],
+    source_path: Path,
+    document_id: str,
+) -> str:
     job_id = str(uuid.uuid4())
     with state_lock:
         jobs[job_id] = JobState(
@@ -377,7 +409,9 @@ def _start_process_job(workflow_id: str, slot: Literal["file_1", "file_2"], sour
                 db_path=DB_PATH,
                 cache_root=CACHE_ROOT,
                 cache_key=document_id,
-                progress_callback=lambda p, m: progress_cb(50 + max(0, min(50, p / 2)), m),
+                progress_callback=lambda p, m: progress_cb(
+                    50 + max(0, min(50, p / 2)), m
+                ),
             )
 
             with state_lock:
@@ -416,7 +450,9 @@ def _start_process_job(workflow_id: str, slot: Literal["file_1", "file_2"], sour
     return job_id
 
 
-def _start_compare_job(workflow_id: str, doc_a: Dict[str, Any], doc_b: Dict[str, Any], model: str) -> str:
+def _start_compare_job(
+    workflow_id: str, doc_a: dict[str, Any], doc_b: dict[str, Any], model: str
+) -> str:
     job_id = str(uuid.uuid4())
     with state_lock:
         jobs[job_id] = JobState(
@@ -473,7 +509,7 @@ def _start_compare_job(workflow_id: str, doc_a: Dict[str, Any], doc_b: Dict[str,
 
 
 @app.get("/api/health")
-def health() -> Dict[str, str]:
+def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
@@ -482,7 +518,7 @@ async def upload_document(
     file: UploadFile = File(...),
     slot: Literal["file_1", "file_2"] = Query(...),
     workflow_id: str = Query("default"),
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     workflow = _get_workflow(workflow_id)
 
     with state_lock:
@@ -508,7 +544,12 @@ async def upload_document(
         raise HTTPException(status_code=400, detail="Uploaded file is empty")
 
     document_id = f"{workflow_id}_{slot}_{uuid.uuid4().hex[:8]}"
-    job_id = _start_process_job(workflow_id=workflow_id, slot=slot, source_path=save_path, document_id=document_id)
+    job_id = _start_process_job(
+        workflow_id=workflow_id,
+        slot=slot,
+        source_path=save_path,
+        document_id=document_id,
+    )
 
     return {
         "workflow_id": workflow_id,
@@ -521,7 +562,7 @@ async def upload_document(
 
 
 @app.get("/api/progress/{job_id}")
-def get_job_progress(job_id: str) -> Dict[str, Any]:
+def get_job_progress(job_id: str) -> dict[str, Any]:
     with state_lock:
         job = jobs.get(job_id)
         if not job:
@@ -530,7 +571,7 @@ def get_job_progress(job_id: str) -> Dict[str, Any]:
 
 
 @app.post("/api/compare")
-def compare_documents(payload: CompareRequest) -> Dict[str, Any]:
+def compare_documents(payload: CompareRequest) -> dict[str, Any]:
     workflow = _get_workflow(payload.workflow_id)
 
     with state_lock:
@@ -542,19 +583,33 @@ def compare_documents(payload: CompareRequest) -> Dict[str, Any]:
 
         if payload.document_id_a:
             doc_a = next(
-                (candidate for candidate in (workflow.get("file_1"), workflow.get("file_2")) if candidate and candidate.get("document_id") == payload.document_id_a),
+                (
+                    candidate
+                    for candidate in (workflow.get("file_1"), workflow.get("file_2"))
+                    if candidate
+                    and candidate.get("document_id") == payload.document_id_a
+                ),
                 None,
             )
         if payload.document_id_b:
             doc_b = next(
-                (candidate for candidate in (workflow.get("file_1"), workflow.get("file_2")) if candidate and candidate.get("document_id") == payload.document_id_b),
+                (
+                    candidate
+                    for candidate in (workflow.get("file_1"), workflow.get("file_2"))
+                    if candidate
+                    and candidate.get("document_id") == payload.document_id_b
+                ),
                 None,
             )
 
         if not doc_a or not doc_b:
-            raise HTTPException(status_code=400, detail="File_1 and file_2 must be processed first")
+            raise HTTPException(
+                status_code=400, detail="File_1 and file_2 must be processed first"
+            )
 
-    compare_job_id = _start_compare_job(payload.workflow_id, doc_a, doc_b, payload.model)
+    compare_job_id = _start_compare_job(
+        payload.workflow_id, doc_a, doc_b, payload.model
+    )
     return {
         "workflow_id": payload.workflow_id,
         "compare_job_id": compare_job_id,
@@ -564,12 +619,12 @@ def compare_documents(payload: CompareRequest) -> Dict[str, Any]:
 
 
 @app.get("/api/compare/{compare_job_id}/progress")
-def compare_progress(compare_job_id: str) -> Dict[str, Any]:
+def compare_progress(compare_job_id: str) -> dict[str, Any]:
     return get_job_progress(compare_job_id)
 
 
 @app.get("/api/compare/{compare_job_id}/result")
-def compare_result(compare_job_id: str) -> Dict[str, Any]:
+def compare_result(compare_job_id: str) -> dict[str, Any]:
     payload = compare_results.get(compare_job_id)
     if not payload:
         with state_lock:
@@ -583,14 +638,21 @@ def compare_result(compare_job_id: str) -> Dict[str, Any]:
 
 
 @app.get("/api/workflows/{workflow_id}")
-def workflow_info(workflow_id: str) -> Dict[str, Any]:
+def workflow_info(workflow_id: str) -> dict[str, Any]:
     return _get_workflow(workflow_id)
 
 
 @app.get("/api/documents/{document_id}/pdf")
 def get_document_pdf(document_id: str, workflow_id: str = Query("default")):
     workflow = _get_workflow(workflow_id)
-    doc = next((candidate for candidate in (workflow.get("file_1"), workflow.get("file_2")) if candidate and candidate.get("document_id") == document_id), None)
+    doc = next(
+        (
+            candidate
+            for candidate in (workflow.get("file_1"), workflow.get("file_2"))
+            if candidate and candidate.get("document_id") == document_id
+        ),
+        None,
+    )
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found in workflow")
 
@@ -602,7 +664,9 @@ def get_document_pdf(document_id: str, workflow_id: str = Query("default")):
     if not path.exists():
         raise HTTPException(status_code=404, detail="PDF not found on server")
 
-    return FileResponse(path=str(path), media_type="application/pdf", filename=f"{document_id}.pdf")
+    return FileResponse(
+        path=str(path), media_type="application/pdf", filename=f"{document_id}.pdf"
+    )
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")

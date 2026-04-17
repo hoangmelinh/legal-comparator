@@ -1,17 +1,20 @@
 import re
 import uuid
 from dataclasses import asdict, dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-
-_RE_PART = re.compile(r"^(PHẦN|CHƯƠNG|PART|CHAPTER)\s+([IVXLCDM\d]+)\b(.*)", re.IGNORECASE)
+_RE_PART = re.compile(
+    r"^(PHẦN|CHƯƠNG|PART|CHAPTER)\s+([IVXLCDM\d]+)\b(.*)", re.IGNORECASE
+)
 _RE_SECTION = re.compile(r"^(MỤC|SECTION)\s+(\d+|[IVXLCDM]+)\b(.*)", re.IGNORECASE)
-_RE_ARTICLE = re.compile(r"^(?:Điều|Clause|Article)\s+(\d+)\s*[.:\-–]?\s*(.*)", re.IGNORECASE)
+_RE_ARTICLE = re.compile(
+    r"^(?:Điều|Clause|Article)\s+(\d+)\s*[.:\-–]?\s*(.*)", re.IGNORECASE
+)
 _RE_CLAUSE = re.compile(r"^(\d+)\.\s+(.+)", re.DOTALL)
 _RE_POINT = re.compile(r"^([a-zđ]{1,2})\)\s+(.+)", re.DOTALL)
 _RE_BULLET = re.compile(r"^[-•+]\s+(.+)", re.DOTALL)
 
-_STRUCTURAL_PATTERNS: List[Tuple[str, re.Pattern]] = [
+_STRUCTURAL_PATTERNS: list[tuple[str, re.Pattern]] = [
     ("part", _RE_PART),
     ("section", _RE_SECTION),
     ("article", _RE_ARTICLE),
@@ -25,24 +28,24 @@ _STRUCTURAL_PATTERNS: List[Tuple[str, re.Pattern]] = [
 class LegalChunk:
     chunk_id: str
     parent_law_id: str
-    clause_id: Optional[int]
-    point_id: Optional[str]
+    clause_id: int | None
+    point_id: str | None
     context: str
     breadcrumb: str
     content: str
     retrieval_text: str
     source_file: str
-    page_number: Optional[int]
+    page_number: int | None
     char_start: int
     char_end: int
     level: int
-    sub_points: List[str] = field(default_factory=list)
+    sub_points: list[str] = field(default_factory=list)
     token_count: int = 0
-    page_start: Optional[int] = None
-    page_end: Optional[int] = None
-    source_anchors: List[Dict[str, Any]] = field(default_factory=list)
+    page_start: int | None = None
+    page_end: int | None = None
+    source_anchors: list[dict[str, Any]] = field(default_factory=list)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
@@ -50,14 +53,14 @@ class LegalChunk:
 class _ArticleBuffer:
     article_num: int
     article_title: str
-    page_number: Optional[int]
+    page_number: int | None
     char_start: int
     source_file: str
     breadcrumb: str
-    lines: List[Dict[str, Any]] = field(default_factory=list)
+    lines: list[dict[str, Any]] = field(default_factory=list)
 
 
-def _classify_line(text: str) -> Tuple[str, Optional[re.Match]]:
+def _classify_line(text: str) -> tuple[str, re.Match | None]:
     stripped = text.strip()
     for line_type, pattern in _STRUCTURAL_PATTERNS:
         match = pattern.match(stripped)
@@ -71,10 +74,15 @@ def _estimate_tokens(text: str) -> int:
     return max(1, int(words / 0.75))
 
 
-def _compact_anchor(record: Dict[str, Any]) -> Dict[str, Any]:
+def _compact_anchor(record: dict[str, Any]) -> dict[str, Any]:
     anchor = {
-        "page": record.get("page") if record.get("page") is not None else record.get("page_number"),
-        "text": record.get("text") or record.get("content") or record.get("canonical") or "",
+        "page": record.get("page")
+        if record.get("page") is not None
+        else record.get("page_number"),
+        "text": record.get("text")
+        or record.get("content")
+        or record.get("canonical")
+        or "",
         "char_start": record.get("char_start"),
         "char_end": record.get("char_end"),
     }
@@ -89,7 +97,7 @@ def _compact_anchor(record: Dict[str, Any]) -> Dict[str, Any]:
     return anchor
 
 
-def _page_span(anchors: List[Dict[str, Any]]) -> Tuple[Optional[int], Optional[int]]:
+def _page_span(anchors: list[dict[str, Any]]) -> tuple[int | None, int | None]:
     pages = [anchor.get("page") for anchor in anchors if anchor.get("page") is not None]
     if not pages:
         return None, None
@@ -97,29 +105,29 @@ def _page_span(anchors: List[Dict[str, Any]]) -> Tuple[Optional[int], Optional[i
 
 
 def legal_chunker(
-    records: List[Dict[str, Any]],
+    records: list[dict[str, Any]],
     normalize: bool = True,
     merge_body_to_clause: bool = True,
     min_chunk_chars: int = 10,
-) -> List[LegalChunk]:
-    chunks: List[LegalChunk] = []
+) -> list[LegalChunk]:
+    chunks: list[LegalChunk] = []
     current_part = ""
     current_section = ""
-    current_article: Optional[_ArticleBuffer] = None
-    seen_article_labels: Dict[str, int] = {}
+    current_article: _ArticleBuffer | None = None
+    seen_article_labels: dict[str, int] = {}
 
-    def _get_text(record: Dict[str, Any]) -> str:
+    def _get_text(record: dict[str, Any]) -> str:
         return record.get("canonical") or record.get("content", "")
 
-    def _get_retrieval(record: Dict[str, Any]) -> str:
+    def _get_retrieval(record: dict[str, Any]) -> str:
         if normalize:
             return record.get("retrieval") or _get_text(record)
         return _get_text(record)
 
     def _build_breadcrumb(
-        article_num: Optional[int] = None,
-        clause_num: Optional[int] = None,
-        point_str: Optional[str] = None,
+        article_num: int | None = None,
+        clause_num: int | None = None,
+        point_str: str | None = None,
     ) -> str:
         parts = []
         if current_part:
@@ -134,8 +142,8 @@ def legal_chunker(
             parts.append(f"Điểm {point_str}")
         return " > ".join(parts) if parts else "Tổng quan"
 
-    def _flush_article_buffer(buf: _ArticleBuffer) -> List[LegalChunk]:
-        result: List[LegalChunk] = []
+    def _flush_article_buffer(buf: _ArticleBuffer) -> list[LegalChunk]:
+        result: list[LegalChunk] = []
 
         base_label = _build_breadcrumb(buf.article_num)
         seen_article_labels[base_label] = seen_article_labels.get(base_label, 0) + 1
@@ -144,12 +152,16 @@ def legal_chunker(
         else:
             article_label = base_label
 
-        article_context = f"{article_label}. {buf.article_title}" if buf.article_title else article_label
+        article_context = (
+            f"{article_label}. {buf.article_title}"
+            if buf.article_title
+            else article_label
+        )
 
-        groups: List[Dict[str, Any]] = []
-        current_clause: Optional[Dict[str, Any]] = None
-        current_point: Optional[Dict[str, Any]] = None
-        body_before_clause: List[Dict[str, Any]] = []
+        groups: list[dict[str, Any]] = []
+        current_clause: dict[str, Any] | None = None
+        current_point: dict[str, Any] | None = None
+        body_before_clause: list[dict[str, Any]] = []
 
         for line_info in buf.lines:
             line_type = line_info["line_type"]
@@ -220,30 +232,38 @@ def legal_chunker(
         if not groups:
             article_anchors = [_compact_anchor(line) for line in body_before_clause]
             page_start, page_end = _page_span(article_anchors)
-            all_body = " ".join(line.get("text", "") for line in body_before_clause).strip()
-            content = f"{article_context}\n{all_body}".strip() if all_body else article_context
+            all_body = " ".join(
+                line.get("text", "") for line in body_before_clause
+            ).strip()
+            content = (
+                f"{article_context}\n{all_body}".strip()
+                if all_body
+                else article_context
+            )
 
             if len(content) >= min_chunk_chars:
-                result.append(LegalChunk(
-                    chunk_id=str(uuid.uuid4()),
-                    parent_law_id=article_label,
-                    clause_id=None,
-                    point_id=None,
-                    context=article_context,
-                    breadcrumb=_build_breadcrumb(buf.article_num),
-                    content=content,
-                    retrieval_text=content.lower(),
-                    source_file=buf.source_file,
-                    page_number=buf.page_number,
-                    char_start=buf.char_start,
-                    char_end=buf.char_start + len(content),
-                    level=2,
-                    sub_points=[],
-                    token_count=_estimate_tokens(content),
-                    page_start=page_start,
-                    page_end=page_end,
-                    source_anchors=article_anchors,
-                ))
+                result.append(
+                    LegalChunk(
+                        chunk_id=str(uuid.uuid4()),
+                        parent_law_id=article_label,
+                        clause_id=None,
+                        point_id=None,
+                        context=article_context,
+                        breadcrumb=_build_breadcrumb(buf.article_num),
+                        content=content,
+                        retrieval_text=content.lower(),
+                        source_file=buf.source_file,
+                        page_number=buf.page_number,
+                        char_start=buf.char_start,
+                        char_end=buf.char_start + len(content),
+                        level=2,
+                        sub_points=[],
+                        token_count=_estimate_tokens(content),
+                        page_start=page_start,
+                        page_end=page_end,
+                        source_anchors=article_anchors,
+                    )
+                )
             return result
 
         for group in groups:
@@ -253,7 +273,9 @@ def legal_chunker(
             for point in group["points"]:
                 point_text = f"{point['point_id']}) {point['point_text']}"
                 if point["bullets"]:
-                    point_text += "\n" + "\n".join(f"  - {bullet}" for bullet in point["bullets"])
+                    point_text += "\n" + "\n".join(
+                        f"  - {bullet}" for bullet in point["bullets"]
+                    )
                 clause_lines.append(point_text)
                 sub_point_texts.append(point_text)
                 group["anchors"].extend(point.get("anchors", []))
@@ -264,26 +286,28 @@ def legal_chunker(
                 continue
 
             page_start, page_end = _page_span(group["anchors"])
-            result.append(LegalChunk(
-                chunk_id=str(uuid.uuid4()),
-                parent_law_id=article_label,
-                clause_id=group["clause_num"],
-                point_id=None,
-                context=article_context,
-                breadcrumb=_build_breadcrumb(buf.article_num, group["clause_num"]),
-                content=full_content,
-                retrieval_text=full_content.lower(),
-                source_file=buf.source_file,
-                page_number=group.get("page_number") or buf.page_number,
-                char_start=group["char_start"],
-                char_end=group["char_end"],
-                level=3,
-                sub_points=sub_point_texts,
-                token_count=_estimate_tokens(full_content),
-                page_start=page_start,
-                page_end=page_end,
-                source_anchors=group["anchors"],
-            ))
+            result.append(
+                LegalChunk(
+                    chunk_id=str(uuid.uuid4()),
+                    parent_law_id=article_label,
+                    clause_id=group["clause_num"],
+                    point_id=None,
+                    context=article_context,
+                    breadcrumb=_build_breadcrumb(buf.article_num, group["clause_num"]),
+                    content=full_content,
+                    retrieval_text=full_content.lower(),
+                    source_file=buf.source_file,
+                    page_number=group.get("page_number") or buf.page_number,
+                    char_start=group["char_start"],
+                    char_end=group["char_end"],
+                    level=3,
+                    sub_points=sub_point_texts,
+                    token_count=_estimate_tokens(full_content),
+                    page_start=page_start,
+                    page_end=page_end,
+                    source_anchors=group["anchors"],
+                )
+            )
 
         return result
 
@@ -338,16 +362,19 @@ def legal_chunker(
                 breadcrumb="Tổng quan",
             )
 
-        current_article.lines.append({
-            "text": text,
-            "line_type": line_type,
-            "char_start": char_start,
-            "char_end": char_end,
-            "page": page_number,
-            "bbox": record.get("bbox"),
-            "block_index": record.get("block_index"),
-            "line_index": record.get("line_index"),
-        })
+        current_article.lines.append(
+            {
+                "text": text,
+                "line_type": line_type,
+                "char_start": char_start,
+                "char_end": char_end,
+                "page": page_number,
+                "bbox": record.get("bbox"),
+                "text_items": record.get("text_items"),
+                "block_index": record.get("block_index"),
+                "line_index": record.get("line_index"),
+            }
+        )
 
     if current_article:
         chunks.extend(_flush_article_buffer(current_article))
@@ -355,9 +382,17 @@ def legal_chunker(
     return chunks
 
 
-def structural_chunking(text: str, doc_id: str = "doc1", records: Optional[List[Dict[str, Any]]] = None) -> List[Dict[str, Any]]:
-    if not re.search(r"^(?:Điều|Clause|Article)\s+(\d+)", text, re.IGNORECASE | re.MULTILINE):
-        line_records = records if records is not None else [{"content": line} for line in text.split("\n")]
+def structural_chunking(
+    text: str, doc_id: str = "doc1", records: list[dict[str, Any]] | None = None
+) -> list[dict[str, Any]]:
+    if not re.search(
+        r"^(?:Điều|Clause|Article)\s+(\d+)", text, re.IGNORECASE | re.MULTILINE
+    ):
+        line_records = (
+            records
+            if records is not None
+            else [{"content": line} for line in text.split("\n")]
+        )
         final_chunks = []
         current_chunk_lines = []
         current_chunk_anchors = []
@@ -376,14 +411,16 @@ def structural_chunking(text: str, doc_id: str = "doc1", records: Optional[List[
             if current_word_count >= 100:
                 para_text = "\n".join(current_chunk_lines)
                 page_start, page_end = _page_span(current_chunk_anchors)
-                final_chunks.append({
-                    "doc_id": doc_id,
-                    "article": f"Đoạn {chunk_index}",
-                    "content": para_text,
-                    "page_start": page_start,
-                    "page_end": page_end,
-                    "source_anchors": current_chunk_anchors,
-                })
+                final_chunks.append(
+                    {
+                        "doc_id": doc_id,
+                        "article": f"Đoạn {chunk_index}",
+                        "content": para_text,
+                        "page_start": page_start,
+                        "page_end": page_end,
+                        "source_anchors": current_chunk_anchors,
+                    }
+                )
                 chunk_index += 1
                 current_chunk_lines = []
                 current_chunk_anchors = []
@@ -392,14 +429,16 @@ def structural_chunking(text: str, doc_id: str = "doc1", records: Optional[List[
         if current_chunk_lines:
             para_text = "\n".join(current_chunk_lines)
             page_start, page_end = _page_span(current_chunk_anchors)
-            final_chunks.append({
-                "doc_id": doc_id,
-                "article": f"Đoạn {chunk_index}",
-                "content": para_text,
-                "page_start": page_start,
-                "page_end": page_end,
-                "source_anchors": current_chunk_anchors,
-            })
+            final_chunks.append(
+                {
+                    "doc_id": doc_id,
+                    "article": f"Đoạn {chunk_index}",
+                    "content": para_text,
+                    "page_start": page_start,
+                    "page_end": page_end,
+                    "source_anchors": current_chunk_anchors,
+                }
+            )
         return final_chunks
 
     if records is None:
@@ -407,12 +446,14 @@ def structural_chunking(text: str, doc_id: str = "doc1", records: Optional[List[
         current_char = 0
         for line in text.split("\n"):
             line_len = len(line)
-            records.append({
-                "content": line,
-                "char_start": current_char,
-                "char_end": current_char + line_len,
-                "source_file": doc_id,
-            })
+            records.append(
+                {
+                    "content": line,
+                    "char_start": current_char,
+                    "char_end": current_char + line_len,
+                    "source_file": doc_id,
+                }
+            )
             current_char += line_len + 1
 
     legal_chunks = legal_chunker(records, normalize=False)

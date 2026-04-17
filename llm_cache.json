@@ -526,5 +526,41 @@
     "impact_level": "Trung bình",
     "citation_a": "Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập PHỤ LỤC 01 DANH MỤC HẠNG MỤC, TIẾN ĐỘ DỰ KIẾN VÀ GIÁ TRỊ THAM CHIẾU",
     "citation_b": "Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập"
+  },
+  "54c01649f222867c75c113954bdc512c": {
+    "status": "MODIFIED",
+    "summary": "Ngày xác lập hợp đồng được thay đổi từ 05/01/2024 sang 07/01/2024, ảnh hưởng đến tính chính xác của thông tin.",
+    "exact_difference": "Ngày xác lập hợp đồng trong bản A là 05/01/2024, trong khi bản B là 07/01/2024.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Nho",
+    "citation_a": "Hợp đồng này được xác lập vào ngày 05/01/2024, trên cơ sở tuân thủ các quy định của pháp luật hiện hành và sự tự nguyện, bình đẳng của các bên tham gia.",
+    "citation_b": "Hợp đồng này được xác lập vào ngày 07/01/2024, trên cơ sở tuân thủ các quy định của pháp luật hiện hành và sự tự nguyện, bình đẳng của các bên tham gia."
+  },
+  "2c68ccad0aa31ada1fa3b56b95cc5cdf": {
+    "status": "MODIFIED",
+    "summary": "Số liệu định lượng trong điều kiện đơn phương chấm dứt hợp đồng lao động khác nhau. Trong bản A là 14 tháng, còn bản B là 12 tháng.",
+    "exact_difference": "Thời gian điều trị ốm đau liên tục để người sử dụng lao động có quyền đơn phương chấm dứt hợp đồng từ 14 tháng (bản A) giảm xuống còn 12 tháng (bản B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Người lao động làm theo hợp đồng lao động xác định thời hạn ốm đau đã điều trị 06 tháng liền và người lao động làm theo hợp đồng lao động dưới 01 năm ốm đau đã điều trị quá nửa thời hạn hợp đồng, mà khả năng lao động chưa hồi phục. Khi sức khoẻ của người lao động bình phục, thì được xem xét để giao kết tiếp hợp đồng lao động. Lao động đã tìm mọi biện pháp khắc phục nhưng vẫn buộc phải thu hẹp sản xuất, giảm chỗ làm việc. Trong thời hạn 07 ngày, kể từ ngày chấm dứt Hợp đồng la động, hai bên có trách nhiệm thanh toán đầy đủ các khoản có liên quan đến quyền lợi của mỗi bên, trường hợp đặc biệt, có thể kéo dài...",
+    "citation_b": "Người lao động làm theo hợp đồng lao động xác định thời hạn ốm đau đã điều trị 06 tháng liền và người lao động làm theo hợp đồng lao động dưới 01 năm ốm đau đã điều trị quá nửa thời hạn hợp đồng, mà khả năng lao động chưa hồi phục. Khi sức khoẻ của người lao động bình phục, thì được xem xét để giao kết tiếp hợp đồng la động. Lao động đã tìm mọi biện pháp khắc phục nhưng vẫn buộc phải thu hẹp sản xuất, giảm chỗ làm việc. Trong thời hạn 07 ngày, kể từ ngày chấm dứt Hợp đồng lao động, hai bên có trách nhiệm thanh toán đầy đủ các khoản có liên quan đến quyền lợi của mỗi bên, trường hợp đặc biệt, có thể kéo dài..."
+  },
+  "1bdd8e853cab9307e9878d56609bcd88": {
+    "status": "MODIFIED",
+    "summary": "Có sự khác biệt giữa hai phiên bản trong các nghĩa vụ của Bên B.",
+    "exact_difference": "-6.2: Bảo đảm quyền của người thứ ba đối với đất, tài sản gắn liền với đất được tặng cho\n-6.3: Không cần đảm bảo người thứ 3",
+    "change_type": "Them moi",
+    "impact_level": "Lon",
+    "citation_a": "Điều 6.2: Bảo đảm quyền của người thứ ba đối với đất, tài sản gắn liền với đất được tặng cho\nĐiều 6.3: Thực hiện các nghĩa vụ khác theo quy định của pháp luật về đất đai.",
+    "citation_b": "Điều 6.2: Thực hiện các nghĩa vụ khác theo quy định của pháp luật về đất đai.\nĐiều 6.3: Không cần đảm bảo người thứ 3"
+  },
+  "3dddfc05a79b13f6d379a0cc5d211029": {
+    "status": "MODIFIED",
+    "summary": "Cau 7.3 cua BAN A da xoa bo.",
+    "exact_difference": "- Cau 7.3: 'Được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất.'",
+    "change_type": "Xoa bo",
+    "impact_level": "Lon",
+    "citation_a": "Điều 7.2: 'Được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất.'",
+    "citation_b": "Không có citation B vì không có thay đổi."
   }
 }

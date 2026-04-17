@@ -8,23 +8,20 @@ CLI tool để:
 """
 
 import argparse
+import logging
 import sys
 import time
-import logging
-from typing import Optional
 
-from src.core.comparator import run_comparison, save_report, print_report
-from src.core.llm import is_ollama_running, DEFAULT_MODEL
-from src.database.vector_store import LegalVectorDB
+from src.core.comparator import print_report, run_comparison, save_report
 from src.core.ingestion import ingest_document
-
+from src.core.llm import DEFAULT_MODEL, is_ollama_running
+from src.database.vector_store import LegalVectorDB
 
 # ─────────────────────────────────────────────
 # Logging setup
 # ─────────────────────────────────────────────
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(message)s"
+    level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -37,9 +34,7 @@ def check_ollama(model: str):
     logger.info(f"Checking Ollama (model: {model})...")
 
     if not is_ollama_running(model):
-        raise RuntimeError(
-            f"Ollama not running. Please run: ollama run {model}"
-        )
+        raise RuntimeError(f"Ollama not running. Please run: ollama run {model}")
 
     logger.info("Ollama is ready.")
 
@@ -49,7 +44,7 @@ def list_docs(db_path: str):
     db = LegalVectorDB(db_name=db_path)
 
     try:
-        doc_ids = db.list_doc_ids()  # ✅ bạn cần implement function này trong DB
+        doc_ids = db.list_doc_ids()
     except AttributeError:
         logger.error("VectorDB chưa hỗ trợ list_doc_ids()")
         return
@@ -90,8 +85,8 @@ def run_compare_flow(
     doc_b: str,
     db_path: str,
     model: str,
-    output: Optional[str],
-    skip_check: bool
+    output: str | None,
+    skip_check: bool,
 ):
     """Main comparison flow."""
     if not skip_check:
@@ -123,9 +118,7 @@ def run_compare_flow(
 # CLI
 # ─────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(
-        description="Legal Document Comparator CLI"
-    )
+    parser = argparse.ArgumentParser(description="Legal Document Comparator CLI")
 
     parser.add_argument("--doc_a", type=str)
     parser.add_argument("--doc_b", type=str)
@@ -165,7 +158,7 @@ def main():
             db_path=args.db,
             model=args.model,
             output=args.output,
-            skip_check=args.no_check
+            skip_check=args.no_check,
         )
 
     except Exception as e:

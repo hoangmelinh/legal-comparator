@@ -15,14 +15,13 @@ import difflib
 import json
 import re
 import unicodedata
+from collections.abc import Callable
 from difflib import SequenceMatcher
-from typing import Callable, Dict, List, Optional
 
 import numpy as np
 
 from src.core.llm import DEFAULT_MODEL, compare_clauses
 from src.database.vector_store import LegalVectorDB
-
 
 _TOKEN_REGEX = re.compile(r"\d+(?:[.,]\d+)*%?|\w+|[^\w\s]", re.UNICODE)
 _NUMERIC_REGEX = re.compile(r"\b\d+(?:[.,]\d+)*\b")
@@ -104,7 +103,9 @@ def _tokenize_with_spans(text: str) -> list[dict]:
     return tokens
 
 
-def _merge_token_ranges(ranges: list[tuple[int, int]], max_gap_tokens: int = 1) -> list[tuple[int, int]]:
+def _merge_token_ranges(
+    ranges: list[tuple[int, int]], max_gap_tokens: int = 1
+) -> list[tuple[int, int]]:
     if not ranges:
         return []
 
@@ -157,7 +158,9 @@ def _build_minimal_changed_spans(text_a: str, text_b: str) -> dict:
     ranges_a = _merge_token_ranges(ranges_a, max_gap_tokens=0)
     ranges_b = _merge_token_ranges(ranges_b, max_gap_tokens=0)
 
-    def _to_spans(text: str, tokens: list[dict], ranges: list[tuple[int, int]]) -> list[dict]:
+    def _to_spans(
+        text: str, tokens: list[dict], ranges: list[tuple[int, int]]
+    ) -> list[dict]:
         spans = []
         for start_idx, end_idx in ranges:
             token_slice = _trim_noisy_edges(tokens[start_idx:end_idx])
@@ -202,7 +205,7 @@ def generate_word_diff(text_a: str, text_b: str) -> list:
     return result
 
 
-def _get_all_chunks_by_doc(db: LegalVectorDB, doc_id: str) -> List[dict]:
+def _get_all_chunks_by_doc(db: LegalVectorDB, doc_id: str) -> list[dict]:
     storage = db.db._NanoVectorDB__storage
     all_items = storage.get("data", [])
     result = []
@@ -226,7 +229,8 @@ def _get_all_chunks_by_doc(db: LegalVectorDB, doc_id: str) -> List[dict]:
                 "doc_id": meta.get("doc_id"),
                 "source_hash": meta.get("source_hash"),
                 "source_file": meta.get("source_file"),
-                "preview_pdf_path": meta.get("preview_pdf_path") or meta.get("source_file"),
+                "preview_pdf_path": meta.get("preview_pdf_path")
+                or meta.get("source_file"),
                 "page_start": chunk.get("page_start") or meta.get("page_start"),
                 "page_end": chunk.get("page_end") or meta.get("page_end"),
                 "source_anchors": chunk.get("source_anchors", []),
@@ -235,8 +239,8 @@ def _get_all_chunks_by_doc(db: LegalVectorDB, doc_id: str) -> List[dict]:
     return result
 
 
-def _group_by_article(chunks: List[dict]) -> Dict[str, List[dict]]:
-    grouped: Dict[str, List[dict]] = {}
+def _group_by_article(chunks: list[dict]) -> dict[str, list[dict]]:
+    grouped: dict[str, list[dict]] = {}
     for chunk in chunks:
         article = str(chunk.get("article", "")).strip()
         if not article:
@@ -245,12 +249,16 @@ def _group_by_article(chunks: List[dict]) -> Dict[str, List[dict]]:
     return grouped
 
 
-def _merge_chunks_text(chunks: List[dict]) -> str:
+def _merge_chunks_text(chunks: list[dict]) -> str:
     sorted_chunks = sorted(chunks, key=lambda item: item.get("clause_index", 0))
-    return "\n".join(chunk.get("content", "").strip() for chunk in sorted_chunks if chunk.get("content", "").strip())
+    return "\n".join(
+        chunk.get("content", "").strip()
+        for chunk in sorted_chunks
+        if chunk.get("content", "").strip()
+    )
 
 
-def _merge_chunk_provenance(chunks: List[dict]) -> dict:
+def _merge_chunk_provenance(chunks: list[dict]) -> dict:
     sorted_chunks = sorted(chunks, key=lambda item: item.get("clause_index", 0))
     anchors = []
     pages = []
@@ -261,10 +269,24 @@ def _merge_chunk_provenance(chunks: List[dict]) -> dict:
 
     for chunk in sorted_chunks:
         anchors.extend(chunk.get("source_anchors", []) or [])
-        preview_pdf_path = preview_pdf_path or chunk.get("preview_pdf_path") or chunk.get("metadata", {}).get("preview_pdf_path")
-        source_file = source_file or chunk.get("source_file") or chunk.get("metadata", {}).get("source_file")
-        source_hash = source_hash or chunk.get("source_hash") or chunk.get("metadata", {}).get("source_hash")
-        doc_id = doc_id or chunk.get("doc_id") or chunk.get("metadata", {}).get("doc_id")
+        preview_pdf_path = (
+            preview_pdf_path
+            or chunk.get("preview_pdf_path")
+            or chunk.get("metadata", {}).get("preview_pdf_path")
+        )
+        source_file = (
+            source_file
+            or chunk.get("source_file")
+            or chunk.get("metadata", {}).get("source_file")
+        )
+        source_hash = (
+            source_hash
+            or chunk.get("source_hash")
+            or chunk.get("metadata", {}).get("source_hash")
+        )
+        doc_id = (
+            doc_id or chunk.get("doc_id") or chunk.get("metadata", {}).get("doc_id")
+        )
         if chunk.get("page_start") is not None:
             pages.append(chunk.get("page_start"))
         if chunk.get("page_end") is not None:
@@ -287,7 +309,7 @@ def _normalize_anchor_text(value: str) -> str:
     return re.sub(r"[^\w\s%./-]", "", value)
 
 
-def _resolve_citation_anchor(citation: str, provenance: dict) -> Optional[dict]:
+def _resolve_citation_anchor(citation: str, provenance: dict) -> dict | None:
     anchors = provenance.get("anchors", []) or []
     if not citation or not anchors:
         return None
@@ -299,7 +321,7 @@ def _resolve_citation_anchor(citation: str, provenance: dict) -> Optional[dict]:
     best_match = None
     best_score = -1
     for index, _anchor in enumerate(anchors):
-        window = anchors[index:index + 3]
+        window = anchors[index : index + 3]
         combined_text = " ".join(item.get("text", "") for item in window)
         haystack = _normalize_anchor_text(combined_text)
         if not haystack:
@@ -323,22 +345,26 @@ def _resolve_citation_anchor(citation: str, provenance: dict) -> Optional[dict]:
                 "anchors": window,
             }
 
-    return best_match if best_score > 0 else {
-        "doc_id": provenance.get("doc_id"),
-        "source_hash": provenance.get("source_hash"),
-        "source_file": provenance.get("source_file"),
-        "preview_pdf_path": provenance.get("preview_pdf_path"),
-        "page_start": provenance.get("page_start"),
-        "page_end": provenance.get("page_end"),
-        "anchors": anchors[:3],
-    }
+    return (
+        best_match
+        if best_score > 0
+        else {
+            "doc_id": provenance.get("doc_id"),
+            "source_hash": provenance.get("source_hash"),
+            "source_file": provenance.get("source_file"),
+            "preview_pdf_path": provenance.get("preview_pdf_path"),
+            "page_start": provenance.get("page_start"),
+            "page_end": provenance.get("page_end"),
+            "anchors": anchors[:3],
+        }
+    )
 
 
 def _overlap_len(a_start: int, a_end: int, b_start: int, b_end: int) -> int:
     return max(0, min(a_end, b_end) - max(a_start, b_start))
 
 
-def _merge_bboxes(boxes: list[list[float]]) -> Optional[list[float]]:
+def _merge_bboxes(boxes: list[list[float]]) -> list[float] | None:
     valid = [box for box in boxes if box and len(box) == 4]
     if not valid:
         return None
@@ -351,7 +377,11 @@ def _merge_bboxes(boxes: list[list[float]]) -> Optional[list[float]]:
 
 
 def _token_set(value: str) -> set[str]:
-    return {token for token in re.findall(r"\w+|\d+(?:[.,]\d+)*%?", _normalize_anchor_text(value)) if token}
+    return {
+        token
+        for token in re.findall(r"\w+|\d+(?:[.,]\d+)*%?", _normalize_anchor_text(value))
+        if token
+    }
 
 
 def _text_match_score(needle: str, haystack: str) -> int:
@@ -365,10 +395,13 @@ def _text_match_score(needle: str, haystack: str) -> int:
     return overlap * 10
 
 
-def _build_bbox_from_text_items(anchor: dict, span_text: str) -> Optional[list[float]]:
+def _build_bbox_from_text_items(anchor: dict, span_text: str) -> list[float] | None:
     text_items = anchor.get("text_items") or []
     if not text_items:
-        return None
+        if anchor.get("text") and anchor.get("bbox"):
+            text_items = [{"text": anchor.get("text"), "bbox": anchor.get("bbox")}]
+        else:
+            return None
 
     needle = _normalize_anchor_text(span_text)
     if not needle:
@@ -385,13 +418,11 @@ def _build_bbox_from_text_items(anchor: dict, span_text: str) -> Optional[list[f
 
     best_exact_boxes = None
     best_exact_score = None
-    best_fuzzy_boxes = None
-    best_fuzzy_score = -1
     max_window = min(6, len(item_payload))
 
     for start_index in range(len(item_payload)):
         for size in range(1, max_window + 1):
-            window = item_payload[start_index:start_index + size]
+            window = item_payload[start_index : start_index + size]
             if not window:
                 continue
             combined = " ".join(item["norm"] for item in window).strip()
@@ -402,25 +433,37 @@ def _build_bbox_from_text_items(anchor: dict, span_text: str) -> Optional[list[f
                 score = (size, abs(len(combined) - len(needle)))
                 if best_exact_score is None or score < best_exact_score:
                     best_exact_score = score
-                    best_exact_boxes = [item["bbox"] for item in window if item.get("bbox")]
+                    if (
+                        len(window) == 1
+                        and needle in combined
+                        and len(combined) > 0
+                        and len(needle) < len(combined)
+                    ):
+                        box = window[0]["bbox"]
+                        start_idx = combined.find(needle)
+                        if box and len(box) == 4:
+                            char_w = (box[2] - box[0]) / max(1, len(combined))
+                            new_x0 = box[0] + start_idx * char_w
+                            new_x1 = new_x0 + len(needle) * char_w
+                            best_exact_boxes = [[new_x0, box[1], new_x1, box[3]]]
+                        else:
+                            best_exact_boxes = [
+                                item["bbox"] for item in window if item.get("bbox")
+                            ]
+                    else:
+                        best_exact_boxes = [
+                            item["bbox"] for item in window if item.get("bbox")
+                        ]
                 continue
-
-            overlap = len(set(needle.split()) & set(combined.split()))
-            if overlap > best_fuzzy_score:
-                best_fuzzy_score = overlap
-                best_fuzzy_boxes = [item["bbox"] for item in window if item.get("bbox")]
 
     if best_exact_boxes:
         return _merge_bboxes(best_exact_boxes or [])
-    if best_fuzzy_score > 0:
-        return _merge_bboxes(best_fuzzy_boxes or [])
     return None
 
 
 def _resolve_window_entries(window: list[dict], span_text: str) -> list[dict]:
     resolved = []
     needle = _normalize_anchor_text(span_text)
-    needle_tokens = _token_set(span_text)
 
     for anchor in window:
         anchor_text = anchor.get("text", "")
@@ -430,10 +473,10 @@ def _resolve_window_entries(window: list[dict], span_text: str) -> list[dict]:
 
         bbox = _build_bbox_from_text_items(anchor, span_text)
         if not bbox:
-            overlap = len(needle_tokens & _token_set(anchor_text))
-            if overlap <= 0 and needle not in anchor_norm and anchor_norm not in needle:
+            if anchor_norm in needle and len(anchor_norm) > 0:
+                bbox = anchor.get("bbox")
+            else:
                 continue
-            bbox = anchor.get("bbox")
 
         if not bbox:
             continue
@@ -447,6 +490,39 @@ def _resolve_window_entries(window: list[dict], span_text: str) -> list[dict]:
                 "bbox": bbox,
             }
         )
+
+    if not resolved and len(window) > 1:
+        combined_norm = " ".join(
+            _normalize_anchor_text(a.get("text", "")) for a in window
+        )
+        if needle in combined_norm:
+            needle_parts = needle.split()
+            used_parts = set()
+            for anchor in window:
+                a_norm = _normalize_anchor_text(anchor.get("text", ""))
+                a_box = anchor.get("bbox")
+                if not a_norm or not a_box or len(a_box) != 4:
+                    continue
+                for part in needle_parts:
+                    if part in used_parts:
+                        continue
+                    if part in a_norm:
+                        char_w = (a_box[2] - a_box[0]) / max(1, len(a_norm))
+                        idx = a_norm.find(part)
+                        new_x0 = a_box[0] + idx * char_w
+                        new_x1 = new_x0 + len(part) * char_w
+                        resolved.append(
+                            {
+                                "text": part,
+                                "page": anchor.get("page"),
+                                "block_index": anchor.get("block_index"),
+                                "line_index": anchor.get("line_index"),
+                                "bbox": [new_x0, a_box[1], new_x1, a_box[3]],
+                            }
+                        )
+                        used_parts.add(part)
+                        break
+
     return resolved
 
 
@@ -491,16 +567,107 @@ def _cleanup_resolved_entries(entries: list[dict]) -> list[dict]:
     return cleaned
 
 
-def _resolve_changed_spans_to_anchors(spans: list[dict], provenance: dict) -> list[dict]:
+def _resolve_changed_spans_to_anchors(
+    spans: list[dict], provenance: dict, source_text: str = ""
+) -> list[dict]:
     anchors = provenance.get("anchors", []) or []
     if not spans or not anchors:
         return []
 
+    anchor_char_map: list[tuple[int, int, int]] = []
+    if source_text:
+        search_pos = 0
+        for i, anchor in enumerate(anchors):
+            a_text = anchor.get("text", "")
+            if not a_text:
+                continue
+            idx = source_text.find(a_text, search_pos)
+            if idx >= 0:
+                anchor_char_map.append((idx, idx + len(a_text), i))
+                search_pos = idx + len(a_text)
+
     resolved = []
     for span in spans:
         span_text = span.get("text", "")
+        span_start = span.get("start", -1)
+        span_end = span.get("end", -1)
         if not span_text:
             continue
+
+        if anchor_char_map and span_start >= 0 and span_end > span_start:
+            position_entries = []
+            for a_start, a_end, a_idx in anchor_char_map:
+                if span_start >= a_end or span_end <= a_start:
+                    continue
+                anchor = anchors[a_idx]
+                bbox = anchor.get("bbox")
+                a_text = anchor.get("text", "")
+                if not bbox or len(bbox) != 4 or not a_text:
+                    continue
+
+                offset_start = max(0, span_start - a_start)
+                offset_end = min(len(a_text), span_end - a_start)
+                if offset_end <= offset_start:
+                    continue
+
+                text_items = anchor.get("text_items", [])
+                if text_items:
+                    current_idx = 0
+                    start_box = None
+                    end_box = None
+                    for item in text_items:
+                        item_text = item.get("text", "")
+                        item_len = len(item_text)
+                        item_start = current_idx
+                        item_end = current_idx + item_len
+
+                        if start_box is None and item_start <= offset_start < item_end:
+                            ibox = item.get("bbox")
+                            if ibox and len(ibox) == 4:
+                                local_offset = offset_start - item_start
+                                char_w = (ibox[2] - ibox[0]) / max(1, item_len)
+                                start_box = ibox[0] + local_offset * char_w
+
+                        if end_box is None and item_start < offset_end <= item_end:
+                            ibox = item.get("bbox")
+                            if ibox and len(ibox) == 4:
+                                local_offset = offset_end - item_start
+                                char_w = (ibox[2] - ibox[0]) / max(1, item_len)
+                                end_box = ibox[0] + local_offset * char_w
+
+                        current_idx += item_len
+
+                    if start_box is not None and end_box is not None:
+                        new_x0, new_x1 = start_box, end_box
+                    elif start_box is not None:
+                        new_x0, new_x1 = start_box, bbox[2]
+                    elif end_box is not None:
+                        new_x0, new_x1 = bbox[0], end_box
+                    else:
+                        char_w = (bbox[2] - bbox[0]) / max(1, len(a_text))
+                        new_x0 = bbox[0] + offset_start * char_w
+                        new_x1 = bbox[0] + offset_end * char_w
+                else:
+                    char_w = (bbox[2] - bbox[0]) / max(1, len(a_text))
+                    new_x0 = bbox[0] + offset_start * char_w
+                    new_x1 = bbox[0] + offset_end * char_w
+
+                position_entries.append(
+                    {
+                        "text": span_text,
+                        "page": anchor.get("page"),
+                        "block_index": anchor.get("block_index"),
+                        "line_index": anchor.get("line_index"),
+                        "bbox": [round(new_x0, 2), bbox[1], round(new_x1, 2), bbox[3]],
+                        "start": span_start,
+                        "end": span_end,
+                        "token_count": span.get("token_count", 0),
+                    }
+                )
+
+            if position_entries:
+                resolved.extend(position_entries)
+                continue
 
         exact_entries = []
         for anchor in anchors:
@@ -522,9 +689,11 @@ def _resolve_changed_spans_to_anchors(spans: list[dict], provenance: dict) -> li
         best_score = -1
         for start_index in range(len(anchors)):
             for size in range(1, min(4, len(anchors) - start_index) + 1):
-                window = anchors[start_index:start_index + size]
+                window = anchors[start_index : start_index + size]
                 combined = " ".join(anchor.get("text", "") for anchor in window)
-                score = _text_match_score(_normalize_anchor_text(span_text), _normalize_anchor_text(combined))
+                score = _text_match_score(
+                    _normalize_anchor_text(span_text), _normalize_anchor_text(combined)
+                )
                 if score > best_score:
                     best_score = score
                     best_window = window
@@ -532,7 +701,9 @@ def _resolve_changed_spans_to_anchors(spans: list[dict], provenance: dict) -> li
         if not best_window:
             continue
 
-        for entry in _cleanup_resolved_entries(_resolve_window_entries(best_window, span_text)):
+        for entry in _cleanup_resolved_entries(
+            _resolve_window_entries(best_window, span_text)
+        ):
             resolved.append(
                 {
                     **entry,
@@ -554,39 +725,64 @@ def _build_clause_highlights(provenance: dict, strike: bool = False) -> list[dic
         bbox = anchor.get("bbox")
         if page is None or not bbox or len(bbox) != 4:
             continue
-        key = (int(page), round(float(bbox[0]), 2), round(float(bbox[1]), 2), round(float(bbox[2]), 2), round(float(bbox[3]), 2))
+        key = (
+            int(page),
+            round(float(bbox[0]), 2),
+            round(float(bbox[1]), 2),
+            round(float(bbox[2]), 2),
+            round(float(bbox[3]), 2),
+        )
         if key in seen:
             continue
         seen.add(key)
         highlighted.append(
             {
                 "page": int(page),
-                "bbox": [round(float(bbox[0]), 2), round(float(bbox[1]), 2), round(float(bbox[2]), 2), round(float(bbox[3]), 2)],
+                "bbox": [
+                    round(float(bbox[0]), 2),
+                    round(float(bbox[1]), 2),
+                    round(float(bbox[2]), 2),
+                    round(float(bbox[3]), 2),
+                ],
                 "block_index": anchor.get("block_index"),
                 "line_index": anchor.get("line_index"),
                 "kind": "block",
                 "strike": bool(strike),
             }
         )
-    highlighted.sort(key=lambda item: (item.get("page", 0), item.get("block_index") or 0, item.get("line_index") or 0))
+    highlighted.sort(
+        key=lambda item: (
+            item.get("page", 0),
+            item.get("block_index") or 0,
+            item.get("line_index") or 0,
+        )
+    )
     return highlighted
 
 
-def _apply_inline_highlight_style(highlights: list[dict], strike: bool = False) -> list[dict]:
+def _apply_inline_highlight_style(
+    highlights: list[dict], strike: bool = False
+) -> list[dict]:
     return [{**item, "kind": "inline", "strike": bool(strike)} for item in highlights]
 
 
-def _should_use_block_highlight_for_modified(is_numeric: bool, token_stats: dict, highlight_payload: dict) -> bool:
+def _should_use_block_highlight_for_modified(
+    is_numeric: bool, token_stats: dict, highlight_payload: dict
+) -> bool:
     if is_numeric:
         return False
-    total_tokens = max(1, len(token_stats.get("tokens_a", [])), len(token_stats.get("tokens_b", [])))
-    changed_tokens = max(token_stats.get("changed_a", 0), token_stats.get("changed_b", 0))
+    total_tokens = max(
+        1, len(token_stats.get("tokens_a", [])), len(token_stats.get("tokens_b", []))
+    )
+    changed_tokens = max(
+        token_stats.get("changed_a", 0), token_stats.get("changed_b", 0)
+    )
     coverage = changed_tokens / total_tokens
     spans_count = max(
         len(highlight_payload.get("changed_spans_a", [])),
         len(highlight_payload.get("changed_spans_b", [])),
     )
-    return coverage >= 0.36 or spans_count >= 5
+    return coverage >= 0.85 or spans_count >= 20
 
 
 def _is_minor_wording_change(text_a: str, text_b: str) -> bool:
@@ -607,12 +803,18 @@ def _is_minor_wording_change(text_a: str, text_b: str) -> bool:
     return False
 
 
-def _build_highlight_payload(text_a: str, text_b: str, provenance_a: dict, provenance_b: dict) -> dict:
+def _build_highlight_payload(
+    text_a: str, text_b: str, provenance_a: dict, provenance_b: dict
+) -> dict:
     changed = _build_minimal_changed_spans(text_a, text_b)
     spans_a = changed.get("spans_a", [])
     spans_b = changed.get("spans_b", [])
-    highlights_a = _resolve_changed_spans_to_anchors(spans_a, provenance_a)
-    highlights_b = _resolve_changed_spans_to_anchors(spans_b, provenance_b)
+    highlights_a = _resolve_changed_spans_to_anchors(
+        spans_a, provenance_a, source_text=text_a
+    )
+    highlights_b = _resolve_changed_spans_to_anchors(
+        spans_b, provenance_b, source_text=text_b
+    )
 
     citation_a = spans_a[0]["text"] if spans_a else ""
     citation_b = spans_b[0]["text"] if spans_b else ""
@@ -624,8 +826,12 @@ def _build_highlight_payload(text_a: str, text_b: str, provenance_a: dict, prove
         "highlight_anchors_b": highlights_b,
         "citation_a": citation_a,
         "citation_b": citation_b,
-        "citation_anchor_a": _resolve_citation_anchor(citation_a, provenance_a) if citation_a else None,
-        "citation_anchor_b": _resolve_citation_anchor(citation_b, provenance_b) if citation_b else None,
+        "citation_anchor_a": _resolve_citation_anchor(citation_a, provenance_a)
+        if citation_a
+        else None,
+        "citation_anchor_b": _resolve_citation_anchor(citation_b, provenance_b)
+        if citation_b
+        else None,
     }
 
 
@@ -648,8 +854,8 @@ def run_comparison(
     db_path: str = "legal_data.json",
     model: str = DEFAULT_MODEL,
     verbose: bool = True,
-    progress_callback: Optional[Callable[[float, str], None]] = None,
-) -> List[dict]:
+    progress_callback: Callable[[float, str], None] | None = None,
+) -> list[dict]:
     if progress_callback:
         progress_callback(5, "Đang khởi tạo so sánh")
 
@@ -658,9 +864,13 @@ def run_comparison(
     chunks_b = _get_all_chunks_by_doc(db, doc_id_b)
 
     if not chunks_a:
-        raise ValueError(f"Không tìm thấy dữ liệu cho doc_id='{doc_id_a}'. Hãy ingest file trước.")
+        raise ValueError(
+            f"Không tìm thấy dữ liệu cho doc_id='{doc_id_a}'. Hãy ingest file trước."
+        )
     if not chunks_b:
-        raise ValueError(f"Không tìm thấy dữ liệu cho doc_id='{doc_id_b}'. Hãy ingest file trước.")
+        raise ValueError(
+            f"Không tìm thấy dữ liệu cho doc_id='{doc_id_b}'. Hãy ingest file trước."
+        )
 
     grouped_a = _group_by_article(chunks_a)
     grouped_b = _group_by_article(chunks_b)
@@ -669,52 +879,93 @@ def run_comparison(
         nums = [float(n) for n in re.findall(r"\d+", label)]
         return tuple(nums) if nums else (999,)
 
-    all_articles = sorted(set(grouped_a.keys()) | set(grouped_b.keys()), key=article_sort_key)
+    all_articles = sorted(
+        set(grouped_a.keys()) | set(grouped_b.keys()), key=article_sort_key
+    )
 
     if verbose:
         print(f"[Comparator] So sánh {len(all_articles)} điều/khoản")
 
-    text_a_map = {article: _merge_chunks_text(chunks) for article, chunks in grouped_a.items()}
-    text_b_map = {article: _merge_chunks_text(chunks) for article, chunks in grouped_b.items()}
-    prov_a_map = {article: _merge_chunk_provenance(chunks) for article, chunks in grouped_a.items()}
-    prov_b_map = {article: _merge_chunk_provenance(chunks) for article, chunks in grouped_b.items()}
+    text_a_map = {
+        article: _merge_chunks_text(chunks) for article, chunks in grouped_a.items()
+    }
+    text_b_map = {
+        article: _merge_chunks_text(chunks) for article, chunks in grouped_b.items()
+    }
+    prov_a_map = {
+        article: _merge_chunk_provenance(chunks)
+        for article, chunks in grouped_a.items()
+    }
+    prov_b_map = {
+        article: _merge_chunk_provenance(chunks)
+        for article, chunks in grouped_b.items()
+    }
 
-    vec_a_map: Dict[str, np.ndarray] = {}
-    vec_b_map: Dict[str, np.ndarray] = {}
-    norm_a_map: Dict[str, float] = {}
-    norm_b_map: Dict[str, float] = {}
+    vec_a_map: dict[str, np.ndarray] = {}
+    vec_b_map: dict[str, np.ndarray] = {}
+    norm_a_map: dict[str, float] = {}
+    norm_b_map: dict[str, float] = {}
+
+    # Tối ưu: Batch-processing embedding toàn bộ văn bản cùng lúc để tận dụng CPU/GPU parallel math
+    articles_a = list(text_a_map.keys())
+    texts_a = [text_a_map[art] for art in articles_a]
+    if texts_a:
+        embeddings_a = db.embedder.get_embeddings(texts_a)
+        for art, vec in zip(articles_a, embeddings_a):
+            vec_a_map[art] = vec
+            norm_a_map[art] = float(np.linalg.norm(vec))
+
+    articles_b = list(text_b_map.keys())
+    texts_b = [text_b_map[art] for art in articles_b]
+    if texts_b:
+        embeddings_b = db.embedder.get_embeddings(texts_b)
+        for art, vec in zip(articles_b, embeddings_b):
+            vec_b_map[art] = vec
+            norm_b_map[art] = float(np.linalg.norm(vec))
 
     def get_vec_a(article: str):
-        if article not in vec_a_map:
+        if article not in vec_a_map and article in text_a_map:
             vec = db.embedder.get_embeddings([text_a_map[article]])[0]
             vec_a_map[article] = vec
             norm_a_map[article] = float(np.linalg.norm(vec))
-        return vec_a_map[article], norm_a_map[article]
+        return vec_a_map.get(article), norm_a_map.get(article)
 
     def get_vec_b(article: str):
-        if article not in vec_b_map:
+        if article not in vec_b_map and article in text_b_map:
             vec = db.embedder.get_embeddings([text_b_map[article]])[0]
             vec_b_map[article] = vec
             norm_b_map[article] = float(np.linalg.norm(vec))
-        return vec_b_map[article], norm_b_map[article]
+        return vec_b_map.get(article), norm_b_map.get(article)
 
-    results: List[Optional[dict]] = []
+    results: list[dict | None] = []
     pending_llm_tasks = []
     total_articles = max(1, len(all_articles))
 
     for article_index, article in enumerate(all_articles, start=1):
         if progress_callback:
             pct = 10 + int((article_index - 1) / total_articles * 75)
-            progress_callback(pct, f"Đang so sánh {article_index}/{total_articles} điều khoản")
+            progress_callback(
+                pct, f"Đang so sánh {article_index}/{total_articles} điều khoản"
+            )
 
         in_a = article in grouped_a
         in_b = article in grouped_b
 
         text_a = text_a_map.get(article, "") if in_a else ""
         text_b = text_b_map.get(article, "") if in_b else ""
-        provenance_a = prov_a_map.get(article) if in_a else {"page_start": None, "page_end": None, "anchors": []}
-        provenance_b = prov_b_map.get(article) if in_b else {"page_start": None, "page_end": None, "anchors": []}
-        article_label = article if "Dieu" in article or "Điều" in article else f"Dieu {article}"
+        provenance_a = (
+            prov_a_map.get(article)
+            if in_a
+            else {"page_start": None, "page_end": None, "anchors": []}
+        )
+        provenance_b = (
+            prov_b_map.get(article)
+            if in_b
+            else {"page_start": None, "page_end": None, "anchors": []}
+        )
+        article_label = (
+            article if "Dieu" in article or "Điều" in article else f"Dieu {article}"
+        )
 
         if not in_a and in_b:
             block_highlights_b = _build_clause_highlights(provenance_b, strike=False)
@@ -732,7 +983,9 @@ def run_comparison(
                     "pdf_anchor_a": None,
                     "pdf_anchor_b": provenance_b,
                     "citation_anchor_a": None,
-                    "citation_anchor_b": _resolve_citation_anchor(text_b[:300], provenance_b),
+                    "citation_anchor_b": _resolve_citation_anchor(
+                        text_b[:300], provenance_b
+                    ),
                     "highlight_anchors_a": [],
                     "highlight_anchors_b": block_highlights_b,
                     "changed_spans_a": [],
@@ -753,17 +1006,29 @@ def run_comparison(
                 if not candidate_text_b.strip():
                     continue
                 vec_b, norm_b = get_vec_b(article_b)
-                sim = float(np.dot(vec_a, vec_b) / (norm_a * norm_b)) if (norm_a > 0 and norm_b > 0) else 0.0
+                sim = (
+                    float(np.dot(vec_a, vec_b) / (norm_a * norm_b))
+                    if (norm_a > 0 and norm_b > 0)
+                    else 0.0
+                )
                 if sim > best_sim:
                     best_sim = sim
-                    best_match_article = article_b if "Dieu" in article_b or "Điều" in article_b else f"Dieu {article_b}"
+                    best_match_article = (
+                        article_b
+                        if "Dieu" in article_b or "Điều" in article_b
+                        else f"Dieu {article_b}"
+                    )
                     best_text_b = candidate_text_b
                     best_provenance_b = prov_b_map[article_b]
 
             if best_sim >= 0.85 and best_provenance_b:
-                highlight_payload = _build_highlight_payload(text_a, best_text_b, provenance_a, best_provenance_b)
+                highlight_payload = _build_highlight_payload(
+                    text_a, best_text_b, provenance_a, best_provenance_b
+                )
                 moved_highlights_a = _build_clause_highlights(provenance_a, strike=True)
-                moved_highlights_b = _build_clause_highlights(best_provenance_b, strike=False)
+                moved_highlights_b = _build_clause_highlights(
+                    best_provenance_b, strike=False
+                )
                 results.append(
                     {
                         "article": article,
@@ -788,7 +1053,9 @@ def run_comparison(
                     }
                 )
             else:
-                removed_highlights_a = _build_clause_highlights(provenance_a, strike=True)
+                removed_highlights_a = _build_clause_highlights(
+                    provenance_a, strike=True
+                )
                 results.append(
                     {
                         "article": article,
@@ -796,13 +1063,16 @@ def run_comparison(
                         "summary": f"{article_label} chỉ xuất hiện trong bản A. Điều khoản này đã bị xóa bỏ.",
                         "exact_difference": "Toàn bộ điều khoản",
                         "change_type": "Xóa bỏ",
-                        "citation_a": text_a[:300] + ("..." if len(text_a) > 300 else ""),
+                        "citation_a": text_a[:300]
+                        + ("..." if len(text_a) > 300 else ""),
                         "citation_b": "",
                         "text_a": text_a,
                         "text_b": "",
                         "pdf_anchor_a": provenance_a,
                         "pdf_anchor_b": None,
-                        "citation_anchor_a": _resolve_citation_anchor(text_a[:300], provenance_a),
+                        "citation_anchor_a": _resolve_citation_anchor(
+                            text_a[:300], provenance_a
+                        ),
                         "citation_anchor_b": None,
                         "highlight_anchors_a": removed_highlights_a,
                         "highlight_anchors_b": [],
@@ -848,7 +1118,11 @@ def run_comparison(
         elif not is_numeric and not is_minor:
             vec_a, norm_a = get_vec_a(article)
             vec_b, norm_b = get_vec_b(article)
-            semantic_sim = float(np.dot(vec_a, vec_b) / (norm_a * norm_b)) if (norm_a > 0 and norm_b > 0) else 0.0
+            semantic_sim = (
+                float(np.dot(vec_a, vec_b) / (norm_a * norm_b))
+                if (norm_a > 0 and norm_b > 0)
+                else 0.0
+            )
 
         if is_minor:
             results.append(
@@ -878,15 +1152,23 @@ def run_comparison(
             continue
 
         if not is_numeric and semantic_sim >= 0.93:
-            highlight_payload = _build_highlight_payload(text_a, text_b, provenance_a, provenance_b)
-            use_block = _should_use_block_highlight_for_modified(is_numeric, token_stats, highlight_payload)
+            highlight_payload = _build_highlight_payload(
+                text_a, text_b, provenance_a, provenance_b
+            )
+            use_block = _should_use_block_highlight_for_modified(
+                is_numeric, token_stats, highlight_payload
+            )
             if use_block:
                 highlights_a = _build_clause_highlights(provenance_a, strike=True)
                 highlights_b = _build_clause_highlights(provenance_b, strike=False)
                 highlight_mode = "block"
             else:
-                highlights_a = _apply_inline_highlight_style(highlight_payload["highlight_anchors_a"], strike=True)
-                highlights_b = _apply_inline_highlight_style(highlight_payload["highlight_anchors_b"], strike=False)
+                highlights_a = _apply_inline_highlight_style(
+                    highlight_payload["highlight_anchors_a"], strike=True
+                )
+                highlights_b = _apply_inline_highlight_style(
+                    highlight_payload["highlight_anchors_b"], strike=False
+                )
                 highlight_mode = "inline"
             results.append(
                 {
@@ -931,7 +1213,9 @@ def run_comparison(
 
     if pending_llm_tasks:
         if progress_callback:
-            progress_callback(88, f"Đang phân tích {len(pending_llm_tasks)} điều khoản bằng LLM")
+            progress_callback(
+                88, f"Đang phân tích {len(pending_llm_tasks)} điều khoản bằng LLM"
+            )
 
         def _run_llm(task):
             return task, compare_clauses(
@@ -942,9 +1226,11 @@ def run_comparison(
                 has_numeric_change=task["is_numeric"],
             )
 
-        max_workers = min(2, len(pending_llm_tasks))
+        max_workers = 1
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = {executor.submit(_run_llm, task): task for task in pending_llm_tasks}
+            futures = {
+                executor.submit(_run_llm, task): task for task in pending_llm_tasks
+            }
             completed = 0
             total_pending = max(1, len(pending_llm_tasks))
 
@@ -953,12 +1239,15 @@ def run_comparison(
                 try:
                     _, llm_result = future.result()
                 except Exception as exc:
-                    llm_result = {"status": "ERROR", "summary": f"Lỗi gọi LLM đâ luồng: {exc}"}
+                    llm_result = {"status": "ERROR", "summary": f"Lỗi gọi LLM: {exc}"}
 
                 completed += 1
                 if progress_callback:
                     llm_progress = 88 + int(completed / total_pending * 10)
-                    progress_callback(min(98, llm_progress), f"LLM {completed}/{total_pending} điều khoản")
+                    progress_callback(
+                        min(98, llm_progress),
+                        f"LLM {completed}/{total_pending} điều khoản",
+                    )
 
                 highlight_payload = _build_highlight_payload(
                     task["text_a"],
@@ -968,39 +1257,72 @@ def run_comparison(
                 )
                 status = llm_result.get("status", "ERROR")
                 change_type = llm_result.get("change_type", "")
+                if status == "ERROR":
+                    status = "MODIFIED"
+                    change_type = "Khác biệt nội dung (Chưa qua AI)"
+                    llm_result["summary"] = llm_result.get(
+                        "summary",
+                        "Đã phát hiện khác biệt. Không có AI để tóm tắt chi tiết.",
+                    )
+
                 if task["is_numeric"] and status not in {"ADDED", "REMOVED", "MOVED"}:
                     status = "MODIFIED"
-                    if not change_type or "nhỏ" in change_type.lower() or "câu chữ" in change_type.lower():
+                    if (
+                        not change_type
+                        or "nhỏ" in change_type.lower()
+                        or "câu chữ" in change_type.lower()
+                    ):
                         change_type = "Thay đổi số liệu"
                 if status == "MODIFIED":
                     use_block = _should_use_block_highlight_for_modified(
                         task["is_numeric"],
-                        task.get("token_stats") or _token_change_stats(task["text_a"], task["text_b"]),
+                        task.get("token_stats")
+                        or _token_change_stats(task["text_a"], task["text_b"]),
                         highlight_payload,
                     )
                     if use_block:
-                        highlights_a = _build_clause_highlights(task["provenance_a"], strike=True)
-                        highlights_b = _build_clause_highlights(task["provenance_b"], strike=False)
+                        highlights_a = _build_clause_highlights(
+                            task["provenance_a"], strike=True
+                        )
+                        highlights_b = _build_clause_highlights(
+                            task["provenance_b"], strike=False
+                        )
                         highlight_mode = "block"
                     else:
-                        highlights_a = _apply_inline_highlight_style(highlight_payload["highlight_anchors_a"], strike=True)
-                        highlights_b = _apply_inline_highlight_style(highlight_payload["highlight_anchors_b"], strike=False)
+                        highlights_a = _apply_inline_highlight_style(
+                            highlight_payload["highlight_anchors_a"], strike=True
+                        )
+                        highlights_b = _apply_inline_highlight_style(
+                            highlight_payload["highlight_anchors_b"], strike=False
+                        )
                         highlight_mode = "inline"
                 elif status == "REMOVED":
-                    highlights_a = _build_clause_highlights(task["provenance_a"], strike=True)
+                    highlights_a = _build_clause_highlights(
+                        task["provenance_a"], strike=True
+                    )
                     highlights_b = []
                     highlight_mode = "block"
                 elif status == "ADDED":
                     highlights_a = []
-                    highlights_b = _build_clause_highlights(task["provenance_b"], strike=False)
+                    highlights_b = _build_clause_highlights(
+                        task["provenance_b"], strike=False
+                    )
                     highlight_mode = "block"
                 elif status == "MOVED":
-                    highlights_a = _build_clause_highlights(task["provenance_a"], strike=True)
-                    highlights_b = _build_clause_highlights(task["provenance_b"], strike=False)
+                    highlights_a = _build_clause_highlights(
+                        task["provenance_a"], strike=True
+                    )
+                    highlights_b = _build_clause_highlights(
+                        task["provenance_b"], strike=False
+                    )
                     highlight_mode = "block"
                 else:
-                    highlights_a = _apply_inline_highlight_style(highlight_payload["highlight_anchors_a"], strike=False)
-                    highlights_b = _apply_inline_highlight_style(highlight_payload["highlight_anchors_b"], strike=False)
+                    highlights_a = _apply_inline_highlight_style(
+                        highlight_payload["highlight_anchors_a"], strike=False
+                    )
+                    highlights_b = _apply_inline_highlight_style(
+                        highlight_payload["highlight_anchors_b"], strike=False
+                    )
                     highlight_mode = "inline"
                 results[task["result_index"]] = {
                     "article": task["article"],
@@ -1008,8 +1330,10 @@ def run_comparison(
                     "summary": llm_result.get("summary", ""),
                     "exact_difference": llm_result.get("exact_difference", ""),
                     "change_type": change_type,
-                    "citation_a": highlight_payload["citation_a"] or llm_result.get("citation_a", ""),
-                    "citation_b": highlight_payload["citation_b"] or llm_result.get("citation_b", ""),
+                    "citation_a": highlight_payload["citation_a"]
+                    or llm_result.get("citation_a", ""),
+                    "citation_b": highlight_payload["citation_b"]
+                    or llm_result.get("citation_b", ""),
                     "text_a": task["text_a"],
                     "text_b": task["text_b"],
                     "word_diff": highlight_payload["word_diff"],
@@ -1020,9 +1344,13 @@ def run_comparison(
                     "pdf_anchor_a": task["provenance_a"],
                     "pdf_anchor_b": task["provenance_b"],
                     "citation_anchor_a": highlight_payload["citation_anchor_a"]
-                    or _resolve_citation_anchor(llm_result.get("citation_a", ""), task["provenance_a"]),
+                    or _resolve_citation_anchor(
+                        llm_result.get("citation_a", ""), task["provenance_a"]
+                    ),
                     "citation_anchor_b": highlight_payload["citation_anchor_b"]
-                    or _resolve_citation_anchor(llm_result.get("citation_b", ""), task["provenance_b"]),
+                    or _resolve_citation_anchor(
+                        llm_result.get("citation_b", ""), task["provenance_b"]
+                    ),
                     "highlight_mode": highlight_mode,
                 }
 
@@ -1044,7 +1372,7 @@ def run_comparison(
     return [entry for entry in results if entry]
 
 
-def save_report(results: List[dict], output_path: str = "comparison_report.json"):
+def save_report(results: list[dict], output_path: str = "comparison_report.json"):
     skip_statuses = {"IDENTICAL", "MINOR-MODIFIED"}
     skip_fields = {"word_diff"}
     filtered = [
@@ -1057,7 +1385,7 @@ def save_report(results: List[dict], output_path: str = "comparison_report.json"
         json.dump(filtered, handle, ensure_ascii=False, indent=2)
 
 
-def print_report(results: List[dict]):
+def print_report(results: list[dict]):
     added = [item for item in results if item["status"] == "ADDED"]
     removed = [item for item in results if item["status"] == "REMOVED"]
     moved = [item for item in results if item["status"] == "MOVED"]

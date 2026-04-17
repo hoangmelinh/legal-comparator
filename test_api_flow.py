@@ -1,14 +1,16 @@
 import time
 import unittest
-from unittest.mock import patch
 from pathlib import Path
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
 import app as app_module
 
 
-def _fake_ingest_document(file_path, doc_id, db_path, cache_root, cache_key=None, progress_callback=None):
+def _fake_ingest_document(
+    file_path, doc_id, db_path, cache_root, cache_key=None, progress_callback=None
+):
     if progress_callback:
         progress_callback(20, "prepare")
         progress_callback(80, "ingest")
@@ -23,7 +25,9 @@ def _fake_ingest_document(file_path, doc_id, db_path, cache_root, cache_key=None
     }
 
 
-def _fake_prepare_document(file_path, cache_root, cache_key=None, progress_callback=None):
+def _fake_prepare_document(
+    file_path, cache_root, cache_key=None, progress_callback=None
+):
     if progress_callback:
         progress_callback(5, "check")
         progress_callback(20, "normalize")
@@ -47,7 +51,9 @@ def _fake_prepare_document(file_path, cache_root, cache_key=None, progress_callb
     }
 
 
-def _fake_run_comparison(doc_id_a, doc_id_b, db_path, model, verbose, progress_callback=None):
+def _fake_run_comparison(
+    doc_id_a, doc_id_b, db_path, model, verbose, progress_callback=None
+):
     if progress_callback:
         progress_callback(25, "scan")
         progress_callback(75, "llm")
@@ -62,16 +68,30 @@ def _fake_run_comparison(doc_id_a, doc_id_b, db_path, model, verbose, progress_c
             "citation_b": "Ban moi",
             "text_a": "Ban cu",
             "text_b": "Ban moi",
-            "citation_anchor_a": {"page_start": 1, "anchors": [{"page": 1, "bbox": [10, 10, 40, 20]}]},
-            "citation_anchor_b": {"page_start": 1, "anchors": [{"page": 1, "bbox": [12, 12, 42, 24]}]},
-            "pdf_anchor_a": {"page_start": 1, "source_hash": "hash_a", "anchors": [{"page": 1, "bbox": [0, 0, 100, 20]}]},
-            "pdf_anchor_b": {"page_start": 1, "source_hash": "hash_b", "anchors": [{"page": 1, "bbox": [0, 0, 100, 20]}]},
+            "citation_anchor_a": {
+                "page_start": 1,
+                "anchors": [{"page": 1, "bbox": [10, 10, 40, 20]}],
+            },
+            "citation_anchor_b": {
+                "page_start": 1,
+                "anchors": [{"page": 1, "bbox": [12, 12, 42, 24]}],
+            },
+            "pdf_anchor_a": {
+                "page_start": 1,
+                "source_hash": "hash_a",
+                "anchors": [{"page": 1, "bbox": [0, 0, 100, 20]}],
+            },
+            "pdf_anchor_b": {
+                "page_start": 1,
+                "source_hash": "hash_b",
+                "anchors": [{"page": 1, "bbox": [0, 0, 100, 20]}],
+            },
             "highlight_anchors_a": [{"page": 1, "bbox": [10, 10, 40, 20]}],
             "highlight_anchors_b": [{"page": 1, "bbox": [12, 12, 42, 24]}],
             "changed_spans_a": [{"text": "cu", "start": 4, "end": 6}],
             "changed_spans_b": [{"text": "moi", "start": 4, "end": 7}],
         }
-        ]
+    ]
 
 
 class ApiFlowTests(unittest.TestCase):
@@ -114,10 +134,16 @@ class ApiFlowTests(unittest.TestCase):
     def test_compare_payload_and_workflow_reset(self):
         workflow_id = "wf_full"
 
-        with patch.object(app_module, "prepare_document", side_effect=_fake_prepare_document), patch.object(
-            app_module, "ingest_document", side_effect=_fake_ingest_document
-        ), patch.object(
-            app_module, "run_comparison", side_effect=_fake_run_comparison
+        with (
+            patch.object(
+                app_module, "prepare_document", side_effect=_fake_prepare_document
+            ),
+            patch.object(
+                app_module, "ingest_document", side_effect=_fake_ingest_document
+            ),
+            patch.object(
+                app_module, "run_comparison", side_effect=_fake_run_comparison
+            ),
         ):
             upload_a = self.client.post(
                 f"/api/documents/upload?slot=file_1&workflow_id={workflow_id}",
@@ -135,7 +161,9 @@ class ApiFlowTests(unittest.TestCase):
             job_b = upload_b.json()["job_id"]
             self.assertEqual(self._wait_for_job(job_b)["status"], "completed")
 
-            compare = self.client.post("/api/compare", json={"workflow_id": workflow_id})
+            compare = self.client.post(
+                "/api/compare", json={"workflow_id": workflow_id}
+            )
             self.assertEqual(compare.status_code, 200)
             compare_job_id = compare.json()["compare_job_id"]
             self.assertEqual(self._wait_for_job(compare_job_id)["status"], "completed")
@@ -144,8 +172,12 @@ class ApiFlowTests(unittest.TestCase):
             self.assertEqual(result.status_code, 200)
             payload = result.json()
 
-            self.assertIn(f"workflow_id={workflow_id}", payload["document_a"]["pdf_url"])
-            self.assertIn(f"workflow_id={workflow_id}", payload["document_b"]["pdf_url"])
+            self.assertIn(
+                f"workflow_id={workflow_id}", payload["document_a"]["pdf_url"]
+            )
+            self.assertIn(
+                f"workflow_id={workflow_id}", payload["document_b"]["pdf_url"]
+            )
             self.assertEqual(len(payload["changes"][0]["highlight_anchors_a"]), 1)
             self.assertEqual(payload["report"]["modified"], 1)
             self.assertEqual(payload["changes"][0]["evidence"]["citation_a"], "Ban cu")

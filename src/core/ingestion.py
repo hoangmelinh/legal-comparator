@@ -6,11 +6,12 @@ import shutil
 import subprocess
 import tempfile
 from collections import defaultdict
+from collections.abc import Callable, Iterable
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, Optional
+from typing import Any
 
-import fitz  # PyMuPDF
+import fitz
 from docx import Document
 from docx.document import Document as DocxDocument
 from docx.oxml.table import CT_Tbl
@@ -21,7 +22,6 @@ from docx.text.paragraph import Paragraph
 from src.core.chunking import structural_chunking
 from src.core.document_registry import DEFAULT_CACHE_ROOT
 from src.database.vector_store import LegalVectorDB
-
 
 SUPPORTED_INPUT_EXTENSIONS = {".pdf", ".docx", ".txt"}
 WD_FORMAT_PDF = 17
@@ -38,7 +38,7 @@ def _utc_now() -> str:
     return datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
 
-def _ensure_cache_dirs(cache_root: Path) -> Dict[str, Path]:
+def _ensure_cache_dirs(cache_root: Path) -> dict[str, Path]:
     directories = {
         "root": cache_root,
         "normalized": cache_root / "normalized_pdf",
@@ -52,14 +52,14 @@ def _ensure_cache_dirs(cache_root: Path) -> Dict[str, Path]:
     return directories
 
 
-def _find_unicode_font_file() -> Optional[str]:
+def _find_unicode_font_file() -> str | None:
     for candidate in UNICODE_FONT_CANDIDATES:
         if Path(candidate).exists():
             return candidate
     return None
 
 
-def _font_kwargs(font_size: float) -> Dict[str, Any]:
+def _font_kwargs(font_size: float) -> dict[str, Any]:
     font_file = _find_unicode_font_file()
     if font_file:
         return {
@@ -120,7 +120,7 @@ def _copy_to_canonical_pdf(source_path: Path, destination_pdf: Path) -> str:
     return "pdf_passthrough"
 
 
-def _find_soffice_executable() -> Optional[str]:
+def _find_soffice_executable() -> str | None:
     candidates = [
         shutil.which("soffice"),
         shutil.which("libreoffice"),
@@ -217,7 +217,9 @@ def _new_pdf_page(pdf_doc: fitz.Document):
     return page, 56
 
 
-def _ensure_page_space(pdf_doc: fitz.Document, page, cursor_y: float, needed_height: float):
+def _ensure_page_space(
+    pdf_doc: fitz.Document, page, cursor_y: float, needed_height: float
+):
     usable_bottom = page.rect.height - 56
     if cursor_y + needed_height <= usable_bottom:
         return page, cursor_y
@@ -287,7 +289,9 @@ def _list_prefix(paragraph: Paragraph, counters: defaultdict[int, int]) -> str:
     return ""
 
 
-def _render_paragraph_to_pdf(pdf_doc: fitz.Document, page, cursor_y: float, paragraph: Paragraph, counters) -> tuple:
+def _render_paragraph_to_pdf(
+    pdf_doc: fitz.Document, page, cursor_y: float, paragraph: Paragraph, counters
+) -> tuple:
     text = paragraph.text or ""
     has_page_break = _paragraph_has_page_break(paragraph)
 
@@ -340,7 +344,9 @@ def _render_paragraph_to_pdf(pdf_doc: fitz.Document, page, cursor_y: float, para
     return page, cursor_y
 
 
-def _render_table_to_pdf(pdf_doc: fitz.Document, page, cursor_y: float, table: Table) -> tuple:
+def _render_table_to_pdf(
+    pdf_doc: fitz.Document, page, cursor_y: float, table: Table
+) -> tuple:
     rows = [[cell.text.strip() for cell in row.cells] for row in table.rows]
     rows = [row for row in rows if any(cell for cell in row)]
     if not rows:
@@ -350,7 +356,9 @@ def _render_table_to_pdf(pdf_doc: fitz.Document, page, cursor_y: float, table: T
     cell_width = (page.rect.width - 108) / max(1, column_count)
 
     for row in rows:
-        max_lines = max((cell.count("\n") + max(1, len(cell) // 28) + 1) for cell in row)
+        max_lines = max(
+            (cell.count("\n") + max(1, len(cell) // 28) + 1) for cell in row
+        )
         row_height = max(28, max_lines * 14)
         page, cursor_y = _ensure_page_space(pdf_doc, page, cursor_y, row_height + 6)
 
@@ -359,7 +367,9 @@ def _render_table_to_pdf(pdf_doc: fitz.Document, page, cursor_y: float, table: T
             y0 = cursor_y
             x1 = x0 + cell_width
             y1 = cursor_y + row_height
-            page.draw_rect(fitz.Rect(x0, y0, x1, y1), color=(0.75, 0.79, 0.89), width=0.8)
+            page.draw_rect(
+                fitz.Rect(x0, y0, x1, y1), color=(0.75, 0.79, 0.89), width=0.8
+            )
 
             text = row[index] if index < len(row) else ""
             page.insert_textbox(
@@ -375,7 +385,9 @@ def _render_table_to_pdf(pdf_doc: fitz.Document, page, cursor_y: float, table: T
     return page, cursor_y + 10
 
 
-def _convert_docx_with_internal_renderer(source_path: Path, destination_pdf: Path) -> str:
+def _convert_docx_with_internal_renderer(
+    source_path: Path, destination_pdf: Path
+) -> str:
     document = Document(str(source_path))
     pdf_doc = fitz.open()
     page, cursor_y = _new_pdf_page(pdf_doc)
@@ -383,7 +395,9 @@ def _convert_docx_with_internal_renderer(source_path: Path, destination_pdf: Pat
 
     for block in _iter_block_items(document):
         if isinstance(block, Paragraph):
-            page, cursor_y = _render_paragraph_to_pdf(pdf_doc, page, cursor_y, block, numbering_counters)
+            page, cursor_y = _render_paragraph_to_pdf(
+                pdf_doc, page, cursor_y, block, numbering_counters
+            )
         else:
             page, cursor_y = _render_table_to_pdf(pdf_doc, page, cursor_y, block)
 
@@ -392,7 +406,9 @@ def _convert_docx_with_internal_renderer(source_path: Path, destination_pdf: Pat
     return "internal_docx_renderer"
 
 
-def _convert_txt_with_internal_renderer(source_path: Path, destination_pdf: Path) -> str:
+def _convert_txt_with_internal_renderer(
+    source_path: Path, destination_pdf: Path
+) -> str:
     pdf_doc = fitz.open()
     page, cursor_y = _new_pdf_page(pdf_doc)
     font_size = 11
@@ -407,7 +423,9 @@ def _convert_txt_with_internal_renderer(source_path: Path, destination_pdf: Path
                 fragments = [line]
 
             for fragment_index, fragment in enumerate(fragments):
-                page, cursor_y = _ensure_page_space(pdf_doc, page, cursor_y, line_height + 6)
+                page, cursor_y = _ensure_page_space(
+                    pdf_doc, page, cursor_y, line_height + 6
+                )
                 page.insert_text(
                     fitz.Point(54, cursor_y),
                     fragment,
@@ -423,30 +441,42 @@ def _convert_txt_with_internal_renderer(source_path: Path, destination_pdf: Path
 
 
 def _convert_via_gotenberg(source_path: Path, destination_pdf: Path) -> None:
-    import urllib.request
     import urllib.error
+    import urllib.request
     from uuid import uuid4
-    
+
     boundary = uuid4().hex
-    headers = {'Content-Type': f'multipart/form-data; boundary={boundary}'}
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
     filename = source_path.name
-    
-    with open(source_path, 'rb') as f:
+
+    with open(source_path, "rb") as f:
         file_content = f.read()
-        
+
     body = (
-        f"--{boundary}\r\n"
-        f"Content-Disposition: form-data; name=\"files\"; filename=\"{filename}\"\r\n"
-        f"Content-Type: application/octet-stream\r\n\r\n"
-    ).encode('utf-8') + file_content + f"\r\n--{boundary}--\r\n".encode('utf-8')
-    
-    req = urllib.request.Request("http://localhost:3000/forms/libreoffice/convert", data=body, headers=headers, method="POST")
+        (
+            f"--{boundary}\r\n"
+            f'Content-Disposition: form-data; name="files"; filename="{filename}"\r\n'
+            f"Content-Type: application/octet-stream\r\n\r\n"
+        ).encode()
+        + file_content
+        + f"\r\n--{boundary}--\r\n".encode()
+    )
+
+    req = urllib.request.Request(
+        "http://localhost:3000/forms/libreoffice/convert",
+        data=body,
+        headers=headers,
+        method="POST",
+    )
     try:
         with urllib.request.urlopen(req, timeout=300) as response:
             with open(destination_pdf, "wb") as f:
                 f.write(response.read())
     except urllib.error.URLError as e:
-        raise RuntimeError(f"Gotenberg API failed. Please ensure Gotenberg docker is running on port 3000. Detail: {e}")
+        raise RuntimeError(
+            f"Gotenberg API failed. Please ensure Gotenberg docker is running on port 3000. Detail: {e}"
+        )
+
 
 def convert_to_pdf(source_path: str | Path, destination_pdf: str | Path) -> str:
     source_path = Path(source_path)
@@ -465,17 +495,14 @@ def convert_to_pdf(source_path: str | Path, destination_pdf: str | Path) -> str:
         except OSError:
             pass
 
-    # Xử lý nhanh file txt
     if suffix == ".txt":
         return _convert_txt_with_internal_renderer(source_path, destination_pdf)
 
-    # 1. Thử dùng Gotenberg cho docx
     try:
         _convert_via_gotenberg(source_path, destination_pdf)
         return "gotenberg"
     except Exception as e:
-        print(f"Bypass Gotenberg conversion. Error: {e}")
-        pass  # Bypass and fallback
+        pass
 
     if suffix == ".docx":
         if os.name == "nt":
@@ -497,7 +524,7 @@ def convert_to_pdf(source_path: str | Path, destination_pdf: str | Path) -> str:
     raise ValueError(f"Cannot convert file to PDF: {source_path}")
 
 
-def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
+def _extract_text_and_analyse_pdf(pdf_path: Path) -> dict[str, Any]:
     pages = []
     total_chars = 0
     low_text_pages = 0
@@ -529,10 +556,12 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
                         if not span_text:
                             continue
                         span_bbox = [round(value, 2) for value in span.get("bbox", [])]
-                        text_items.append({
-                            "text": span_text,
-                            "bbox": span_bbox,
-                        })
+                        text_items.append(
+                            {
+                                "text": span_text,
+                                "bbox": span_bbox,
+                            }
+                        )
 
                     char_start = current_char
                     char_end = current_char + len(normalized_text)
@@ -571,7 +600,7 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
     average_chars = total_chars / page_count
     scan_based = low_text_pages / page_count >= 0.6 and image_heavy_pages > 0
     weak_extraction = total_chars < max(160, page_count * 60)
-    can_ingest = total_chars >= max(80, page_count * 25)
+    can_ingest = total_chars > 0
 
     warning = None
     if scan_based and weak_extraction:
@@ -580,9 +609,7 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
             "OCR is not implemented yet, so ingest/compare may be unreliable."
         )
     elif weak_extraction:
-        warning = (
-            "PDF extraction returned very little text. Please provide a PDF with a text layer for reliable ingest."
-        )
+        warning = "PDF extraction returned very little text. Please provide a PDF with a text layer for reliable ingest."
 
     return {
         "text": combined_text,
@@ -600,9 +627,9 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> Dict[str, Any]:
 def prepare_document(
     file_path: str,
     cache_root: str | Path = DEFAULT_CACHE_ROOT,
-    cache_key: Optional[str] = None,
-    progress_callback: Optional[Callable[[float, str], None]] = None,
-) -> Dict[str, Any]:
+    cache_key: str | None = None,
+    progress_callback: Callable[[float, str], None] | None = None,
+) -> dict[str, Any]:
     if progress_callback:
         progress_callback(5, "Đang kiểm tra file đầu vào")
 
@@ -667,7 +694,9 @@ def prepare_document(
     return prepared
 
 
-def build_chunk_metadata(chunk: Dict[str, Any], doc_id: str, clause_index: int, prepared_doc: Dict[str, Any]) -> Dict[str, Any]:
+def build_chunk_metadata(
+    chunk: dict[str, Any], doc_id: str, clause_index: int, prepared_doc: dict[str, Any]
+) -> dict[str, Any]:
     return {
         "doc_id": doc_id,
         "article": chunk.get("article", ""),
@@ -689,16 +718,18 @@ def ingest_document(
     doc_id: str,
     db_path: str = "legal_data.json",
     cache_root: str | Path = DEFAULT_CACHE_ROOT,
-    cache_key: Optional[str] = None,
-    progress_callback: Optional[Callable[[float, str], None]] = None,
-) -> Dict[str, Any]:
+    cache_key: str | None = None,
+    progress_callback: Callable[[float, str], None] | None = None,
+) -> dict[str, Any]:
     cache_root = Path(cache_root)
     directories = _ensure_cache_dirs(cache_root)
     prepared = prepare_document(
         file_path=file_path,
         cache_root=cache_root,
         cache_key=cache_key or doc_id,
-        progress_callback=(lambda p, m: progress_callback(min(75, p), m)) if progress_callback else None,
+        progress_callback=(lambda p, m: progress_callback(min(75, p), m))
+        if progress_callback
+        else None,
     )
     db = LegalVectorDB(db_name=db_path)
 
@@ -726,7 +757,9 @@ def ingest_document(
     if progress_callback:
         progress_callback(86, "Đang chunking văn bản")
 
-    chunks = structural_chunking(prepared["text"], doc_id=doc_id, records=prepared.get("records"))
+    chunks = structural_chunking(
+        prepared["text"], doc_id=doc_id, records=prepared.get("records")
+    )
     metadata_list = [
         build_chunk_metadata(chunk, doc_id, index, prepared)
         for index, chunk in enumerate(chunks)
@@ -734,7 +767,9 @@ def ingest_document(
     if progress_callback:
         progress_callback(92, "Đang tạo embedding và ingest VectorDB")
 
-    inserted_entries = db.insert_legal_chunks(chunks, metadata_list, doc_id_to_clear=doc_id)
+    inserted_entries = db.insert_legal_chunks(
+        chunks, metadata_list, doc_id_to_clear=doc_id
+    )
 
     _json_dump(vector_cache_path, inserted_entries)
     _json_dump(chunk_cache_path, chunks)
