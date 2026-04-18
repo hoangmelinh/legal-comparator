@@ -131,6 +131,7 @@ body {
     border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 16px;
     transition: all 0.3s;
 }
@@ -162,7 +163,8 @@ body {
 .upload-zone {
     border: 2px dashed #cbd5e0;
     border-radius: 8px;
-    padding: 40px 20px;
+    padding: 20px;
+    height: 220px;
     text-align: center;
     cursor: pointer;
     background: #fdfdfd;
@@ -171,7 +173,13 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 1;
+}
+
+.upload-zone i {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .upload-zone:hover:not(.disabled) {

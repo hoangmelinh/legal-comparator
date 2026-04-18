@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
     <header class="app-header">
         <div class="logo">
@@ -16,9 +18,12 @@
         </div>
         <nav class="main-nav">
             <a href="#" class="nav-item active" data-view="home"><i class="fa-solid fa-house"></i> Trang chủ</a>
-            <a href="#" class="nav-item disabled" id="nav-compare" data-view="compare"><i class="fa-solid fa-file-contract"></i> So sánh</a>
-            <a href="#" class="nav-item disabled" id="nav-report" data-view="report"><i class="fa-solid fa-chart-simple"></i> Báo cáo</a>
-            <a href="#" class="nav-item disabled" id="nav-chat" data-view="chat"><i class="fa-regular fa-comment"></i> Chatbot</a>
+            <a href="#" class="nav-item disabled" id="nav-compare" data-view="compare"><i
+                    class="fa-solid fa-file-contract"></i> So sánh</a>
+            <a href="#" class="nav-item disabled" id="nav-report" data-view="report"><i
+                    class="fa-solid fa-chart-simple"></i> Báo cáo</a>
+            <a href="#" class="nav-item disabled" id="nav-chat" data-view="chat"><i class="fa-regular fa-comment"></i>
+                Chatbot</a>
         </nav>
     </header>
 
@@ -43,28 +48,31 @@
                     <div class="upload-panel disabled" id="panel-b">
                         <div class="step-label"><span class="step-num disabled-step">2</span> Bản mới (File B)</div>
                         <div class="upload-zone" id="zone-b">
-                            <i class="fa-solid fa-clipboard-list icon-disabled"></i>
+                            <i class="fa-regular fa-file-lines icon-default"></i>
                             <h3 id="h3-b" class="text-disabled">Upload File 1 trước</h3>
                             <p id="p-b" class="text-disabled">File 2 sẽ khả dụng sau khi chọn File 1</p>
                             <input type="file" id="input-b" accept=".txt,.pdf,.docx" style="display: none;">
                         </div>
                         <div class="status-indicator">
                             <div class="dot gray" id="dot-b"></div>
-                            <span id="status-b" class="status-text text-disabled">Chờ File 1</span>
+                            <span id="status-b" class="status-text text-disabled">Chờ tải File</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="action-container">
                     <button id="btn-compare" class="btn-primary" disabled>
-                        <div class="inner-btn"><div class="compare-icon-wrapper"></div> So sánh 2 file</div>
+                        <div class="inner-btn">
+                            <div class="compare-icon-wrapper"></div> So sánh 2 file
+                        </div>
                     </button>
                     <p class="action-hint" id="action-hint">Vui lòng tải lên cả 2 file để tiếp tục</p>
                 </div>
 
                 <div class="features-row">
                     <div class="feature-item">
-                        <div class="feature-icon"><i class="fa-solid fa-magnifying-glass" style="color: #2b6cb0;"></i></div>
+                        <div class="feature-icon"><i class="fa-solid fa-magnifying-glass" style="color: #2b6cb0;"></i>
+                        </div>
                         <h4>Phát hiện chính xác</h4>
                         <p>Nhận diện các thay đổi chính và bám sát vị trí trên PDF gốc.</p>
                     </div>
@@ -89,7 +97,8 @@
                     <div class="compare-mode-note">Cuộn liên tục toàn tài liệu</div>
                 </div>
                 <div class="toolbar-right">
-                    <button class="btn-secondary" id="btn-view-report"><i class="fa-solid fa-chart-simple"></i> Xem báo cáo →</button>
+                    <button class="btn-secondary" id="btn-view-report"><i class="fa-solid fa-chart-simple"></i> Xem báo
+                        cáo →</button>
                 </div>
             </div>
 
@@ -136,7 +145,8 @@
                     <button class="btn-outline"><i class="fa-solid fa-print"></i> In báo cáo</button>
                 </div>
                 <div class="toolbar-right">
-                    <button class="btn-primary" id="btn-ask-chatbot"><i class="fa-regular fa-comment"></i> Hỏi chatbot →</button>
+                    <button class="btn-primary" id="btn-ask-chatbot"><i class="fa-regular fa-comment"></i> Hỏi chatbot
+                        →</button>
                 </div>
             </div>
 
@@ -177,22 +187,29 @@
                 <div class="chat-sidebar">
                     <div class="sidebar-header" style="border-bottom: 0;">
                         <i class="fa-regular fa-lightbulb" style="color: #d69e2e;"></i> Câu hỏi gợi ý
-                        <div style="font-size: 12px; color: #718096; margin-top: 4px; font-weight: normal;">Nhấn để hỏi nhanh về kết quả so sánh</div>
+                        <div style="font-size: 12px; color: #718096; margin-top: 4px; font-weight: normal;">Nhấn để hỏi
+                            nhanh về kết quả so sánh</div>
                     </div>
                     <div class="suggestion-group">
                         <div class="suggestion-title">TỔNG QUAN</div>
-                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Tóm tắt các thay đổi chính</div>
-                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Điều khoản nào thay đổi nhiều nhất?</div>
-                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Có phần nào bị xóa hoàn toàn không?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Tóm tắt các thay đổi chính
+                        </div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Điều khoản nào thay đổi nhiều
+                            nhất?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Có phần nào bị xóa hoàn toàn
+                            không?</div>
                     </div>
                     <div class="suggestion-group">
                         <div class="suggestion-title">TÀI CHÍNH</div>
-                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Các thay đổi về giá trị hợp đồng là gì?</div>
-                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Thay đổi điều khoản thanh toán như thế nào?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Các thay đổi về giá trị hợp
+                            đồng là gì?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Thay đổi điều khoản thanh
+                            toán như thế nào?</div>
                     </div>
                     <div class="suggestion-group">
                         <div class="suggestion-title">PHÁP LÝ</div>
-                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Thay đổi nào ảnh hưởng đến trách nhiệm pháp lý?</div>
+                        <div class="suggestion-item"><i class="fa-regular fa-comment"></i> Thay đổi nào ảnh hưởng đến
+                            trách nhiệm pháp lý?</div>
                     </div>
                 </div>
                 <div class="chat-main">
@@ -204,17 +221,21 @@
                                 <div class="agent-desc">Phân tích văn bản pháp lý thông minh</div>
                             </div>
                         </div>
-                        <button class="btn-outline" style="padding: 6px 12px; font-size: 13px;"><i class="fa-solid fa-trash-can"></i> Xóa chat</button>
+                        <button class="btn-outline" style="padding: 6px 12px; font-size: 13px;"><i
+                                class="fa-solid fa-trash-can"></i> Xóa chat</button>
                     </div>
                     <div class="chat-messages" id="chat-messages">
                         <div class="message assistant">
                             <div class="msg-bubble">
-                                <div style="margin-bottom: 8px;"><strong>Xin chào! Tôi là Legal AI Assistant.</strong></div>
-                                <div>Tôi có thể giúp bạn phân tích kết quả so sánh văn bản pháp lý. Hãy hỏi tôi bất cứ điều gì về các thay đổi điều khoản.</div>
+                                <div style="margin-bottom: 8px;"><strong>Xin chào! Tôi là Legal AI Assistant.</strong>
+                                </div>
+                                <div>Tôi có thể giúp bạn phân tích kết quả so sánh văn bản pháp lý. Hãy hỏi tôi bất cứ
+                                    điều gì về các thay đổi điều khoản.</div>
                             </div>
                         </div>
                         <div class="mock-warning">
-                            <i class="fa-solid fa-triangle-exclamation" style="color: #d69e2e;"></i> Chatbot đang dùng mock data. Chưa có kết nối API cho Chat.
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #d69e2e;"></i> Chatbot đang dùng
+                            mock data. Chưa có kết nối API cho Chat.
                         </div>
                     </div>
                     <div class="chat-input-area">
@@ -245,4 +266,5 @@
     <script src="/static/js/pdf-viewer.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>

@@ -175,12 +175,29 @@ class App {
         document.getElementById("status-b").textContent = "Chờ File 1";
         document.getElementById("status-b").className = "status-text text-disabled";
         document.getElementById("action-hint").textContent = "Vui lòng tải lên cả 2 file để tiếp tục";
+
+        const stepNum = document.querySelector("#panel-b .step-num");
+        if (stepNum) stepNum.classList.add("disabled-step");
+        
+        const iconB = document.querySelector("#zone-b i");
+        if (iconB) {
+            iconB.classList.remove("icon-default");
+            iconB.classList.add("icon-disabled");
+        }
     }
 
     unlockFile2Ui() {
         this.elements.panelB.classList.remove("disabled");
-        document.querySelector(".step-num.disabled-step")?.classList.remove("disabled-step");
-        document.querySelector(".icon-disabled")?.classList.remove("icon-disabled");
+        
+        const stepNum = document.querySelector("#panel-b .step-num");
+        if (stepNum) stepNum.classList.remove("disabled-step");
+        
+        const iconB = document.querySelector("#zone-b i");
+        if (iconB) {
+            iconB.classList.remove("icon-disabled");
+            iconB.classList.add("icon-default");
+        }
+
         document.getElementById("h3-b").textContent = "Kéo thả hoặc nhấn để chọn";
         document.getElementById("h3-b").classList.remove("text-disabled");
         document.getElementById("p-b").textContent = "Hỗ trợ: .txt, .pdf, .docx";
@@ -256,9 +273,9 @@ class App {
                 this.file1DocId = status.document_id || uploadResult.document_id;
                 document.getElementById("h3-a").textContent = file.name;
                 document.getElementById("p-a").textContent = `${file.name.split(".").pop().toUpperCase()} • ${Math.round(file.size / 1024)} KB`;
-                document.getElementById("dot-a").className = "dot blue";
+                document.getElementById("dot-a").className = "dot green";
                 document.getElementById("status-a").textContent = "Đã xử lý xong";
-                document.getElementById("status-a").className = "status-text text-blue";
+                document.getElementById("status-a").className = "status-text text-green";
                 this.unlockFile2Ui();
             } else {
                 this.file2DocId = status.document_id || uploadResult.document_id;

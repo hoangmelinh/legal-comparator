@@ -1,0 +1,36 @@
+[
+  {
+    "doc_id": "workflow_dvew5ahbd_file_1_09e3c9ad",
+    "article": "Đoạn 1",
+    "content": "Hôm nay tôi buồn",
+    "page_start": 1,
+    "page_end": 1,
+    "source_anchors": [
+      {
+        "page": 1,
+        "text": "Hôm nay tôi buồn",
+        "char_start": 0,
+        "char_end": 16,
+        "bbox": [
+          54.0,
+          57.04,
+          140.16,
+          69.32
+        ],
+        "text_items": [
+          {
+            "text": "Hôm nay tôi buồn",
+            "bbox": [
+              54.0,
+              57.04,
+              140.16,
+              69.32
+            ]
+          }
+        ],
+        "block_index": 0,
+        "line_index": 0
+      }
+    ]
+  }
+]
