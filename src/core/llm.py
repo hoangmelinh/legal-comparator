@@ -1,11 +1,63 @@
 import json
 import urllib.error
 import urllib.request
+from collections.abc import Generator
 
 from src.core.cache import cache
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_CHAT_URL = "http://localhost:11434/api/chat"
 DEFAULT_MODEL = "qwen2.5:3b"
+
+
+def stream_chat_ollama(
+    messages: list[dict],
+    model: str = DEFAULT_MODEL,
+    timeout: int = 300,
+) -> Generator[str, None, None]:
+    """
+    Gọi Ollama /api/chat với stream=True, pass danh sách messages.
+    """
+    payload = json.dumps(
+        {
+            "model": model,
+            "messages": messages,
+            "stream": True,
+            "options": {
+                "temperature": 0.2,
+                "num_ctx": 2048,
+                "num_predict": 400,
+            },
+        }
+    ).encode("utf-8")
+
+    req = urllib.request.Request(
+        OLLAMA_CHAT_URL,
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            for raw_line in resp:
+                line = raw_line.decode("utf-8").strip()
+                if not line:
+                    continue
+                try:
+                    data = json.loads(line)
+                    # /api/chat trả về data["message"]["content"]
+                    token = (data.get("message") or {}).get("content", "")
+                    if token:
+                        yield token
+                    if data.get("done", False):
+                        break
+                except json.JSONDecodeError:
+                    continue
+    except urllib.error.URLError as exc:
+        raise ConnectionError(
+            "Không thể kết nối Ollama. Hãy chắc chắn Ollama đang chạy.\n"
+            f"Chi tiết: {exc}"
+        )
 
 
 def _call_ollama(prompt: str, model: str = DEFAULT_MODEL, timeout: int = 300) -> str:

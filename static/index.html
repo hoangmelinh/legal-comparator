@@ -221,7 +221,7 @@
                                 <div class="agent-desc">Phân tích văn bản pháp lý thông minh</div>
                             </div>
                         </div>
-                        <button class="btn-outline" style="padding: 6px 12px; font-size: 13px;"><i
+                        <button class="btn-outline" id="btn-clear-chat" style="padding: 6px 12px; font-size: 13px;"><i
                                 class="fa-solid fa-trash-can"></i> Xóa chat</button>
                     </div>
                     <div class="chat-messages" id="chat-messages">
@@ -233,15 +233,11 @@
                                     điều gì về các thay đổi điều khoản.</div>
                             </div>
                         </div>
-                        <div class="mock-warning">
-                            <i class="fa-solid fa-triangle-exclamation" style="color: #d69e2e;"></i> Chatbot đang dùng
-                            mock data. Chưa có kết nối API cho Chat.
-                        </div>
                     </div>
                     <div class="chat-input-area">
                         <div class="input-wrapper">
                             <input type="text" placeholder="Nhập câu hỏi của bạn..." id="chat-input-field">
-                            <button class="btn-send"><i class="fa-solid fa-paper-plane"></i></button>
+                            <button class="btn-send" id="btn-send"><i class="fa-solid fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
@@ -262,9 +258,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
-    <script src="/static/js/api.js"></script>
-    <script src="/static/js/pdf-viewer.js"></script>
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/api.js?v=2"></script>
+    <script src="/static/js/pdf-viewer.js?v=2"></script>
+    <script src="/static/js/app.js?v=2"></script>
 </body>
 
 </html>

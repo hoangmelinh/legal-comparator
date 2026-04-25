@@ -74,6 +74,63 @@ class ApiClient {
     getPdfUrl(documentId, workflowId = "default") {
         return `${this.baseUrl}/documents/${encodeURIComponent(documentId)}/pdf?workflow_id=${encodeURIComponent(workflowId)}`;
     }
+
+    /**
+     * Gửi tin nhắn đến chatbot và stream phản hồi token-by-token.
+     * @param {string} workflowId
+     * @param {string|null} compareJobId
+     * @param {string} message
+     * @param {function(string)} onToken - gọi mỗi khi có token mới
+     * @param {function()} onDone - gọi khi stream kết thúc
+     * @param {function(string)} onError - gọi khi có lỗi
+     */
+    async sendChatMessage(workflowId, compareJobId, message, history, onToken, onDone, onError) {
+        try {
+            const response = await fetch(`${this.baseUrl}/chat`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    workflow_id: workflowId,
+                    compare_job_id: compareJobId || null,
+                    message: message,
+                    history: history,
+                }),
+            });
+
+            if (!response.ok) {
+                const msg = await this._readErrorMessage(response, "Chat request failed");
+                onError(msg);
+                return;
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let buffer = "";
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split("\n");
+                buffer = lines.pop(); // phần chưa hoàn chỉnh giữ lại
+
+                for (const line of lines) {
+                    if (!line.startsWith("data: ")) continue;
+                    const payload = line.slice(6); // bỏ "data: "
+                    if (payload === "[DONE]") {
+                        onDone();
+                        return;
+                    }
+                    // Khôi phục newlines đã escape
+                    const text = payload.replace(/\\n/g, "\n");
+                    onToken(text);
+                }
+            }
+            onDone();
+        } catch (err) {
+            onError(err.message || "Network error");
+        }
+    }
 }
 
 const api = new ApiClient();

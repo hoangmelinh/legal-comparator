@@ -562,5 +562,104 @@
     "impact_level": "Lon",
     "citation_a": "Điều 7.2: 'Được cấp giấy chứng nhận quyền sử dụng đất, quyền sở hữu tài sản gắn liền với đất.'",
     "citation_b": "Không có citation B vì không có thay đổi."
+  },
+  "6a517cbea14513a27465b39fafee128b": {
+    "status": "MODIFIED",
+    "summary": "Có sự khác biệt về nội dung giữa hai phiên bản.",
+    "exact_difference": "Ban A: 'Hôm nay tôi buồn' \nBan B: 'Hôm nay tôi vui'",
+    "change_type": "Sua noi dung",
+    "impact_level": "Lon",
+    "citation_a": "Hôm nay tôi buồn",
+    "citation_b": "Hôm nay tôi vui"
+  },
+  "dec3438aa5d71b26fc9bbb59bd7b2d2f": {
+    "status": "MODIFIED",
+    "summary": "So nguyen lieu dinh luong cua hai ban giong nhau. Chien duoc tu gi sang gi.",
+    "exact_difference": "So nguyen lieu dinh luong cua hai ban khac nhau, chien duoc tu 'HỢP ĐỒNG NGUYÊN TẮC CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM' sang 'HỢP ĐỒNG NGUYÊN TẮC CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM'.",
+    "change_type": "Them moi",
+    "impact_level": "Lon",
+    "citation_a": "HỢP ĐỒNG NGUYÊN TẮC CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM Độc lập – Tự do – Hạnh phúc HỢP ĐỒNG NGUYÊN TẮC",
+    "citation_b": "HỢP ĐỒNG NGUYÊN TẮC CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM Độc lập – Tự do – Hạnh phúc HỢP ĐỒNG NGUYÊN TẮC"
+  },
+  "fa8c9dd7b971e9d2c871aa7912bff9ff": {
+    "status": "MODIFIED",
+    "summary": "So sanh hai phien ban cua dieu 6.1 co mot diem khac nhau la so ngan gian du doan cua truyen ke.",
+    "exact_difference": "Ban A: '180 (một trăm tám mươi) ngày', Ban B: '210 (hai trăm mười) ngày'",
+    "change_type": "Sua noi dung",
+    "impact_level": "Trung binh",
+    "citation_a": "Điều 6.1. Tiến độ dự kiến của dự án là 180 (một trăm tám mươi) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể.",
+    "citation_b": "Điều 6.1. Tiến độ dự kiến của dự án là 210 (hai trăm mười) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể."
+  },
+  "227ed45979c952ff940fe15d2812516f": {
+    "status": "MODIFIED",
+    "summary": "So luong tien hop dong da thay doi.",
+    "exact_difference": "4.720.000.000 đồng (bốn tỷ bảy trăm hai mươi triệu đồng)",
+    "change_type": "Sua noi dung",
+    "impact_level": "Lon",
+    "citation_a": "Điều 11.1: 'Giá trị tạm tính của Hợp đồng là 4.850.000.000 đồng (bốn tỷ tám trăm năm mươi triệu đồng), chưa bao gồm thuế giá trị gia tăng.'",
+    "citation_b": "Điều 11.1: 'Giá trị tạm tính của Hợp đồng là 5.420.000.000 đồng (năm tỷ bốn trăm hai mươi triệu đồng), chưa bao gồm thuế giá trị gia tăng.'"
+  },
+  "2e85e85f47fa93a032f978ca7056d4a3": {
+    "status": "MODIFIED",
+    "summary": "So luong ngay thanh toan cua ban A khac nhau. So luong giam hoat dong lai thay doi.",
+    "exact_difference": "12.2. Thời hạn thanh toán cho mỗi đợt là 20 (hai mươi) ngày làm việc kể từ ngày Bên A nhận được đầy đủ hồ sơ thanh toán hợp lệ, bao gồm biên bản nghiệm thu/bàn giao, hóa đơn giá trị gia tăng hợp pháp và các chứng từ liên quan khác nếu có. \n\n12.3. Bên A có quyền tạm giữ tối đa 10% giá trị đợt thanh toán cuối cùng cho đến khi Bên B hoàn thành toàn bộ nghĩa vụ khắc phục lỗi trọng yếu phát sinh trong thời gian ổn định sau triển khai, nhưng tổng thời gian tạm giữ không vượt quá 90 (chín mươi) ngày kể từ ngày nghiệm thu cuối cùng. lãnh thực hiện hợp đồng (nếu có). yêu cầu nghiệp vụ.",
+    "change_type": "Them moi",
+    "impact_level": "Lon",
+    "citation_a": "Điều 12. LỊCH THANH TOÁN VÀ ĐIỀU KIỆN THANH TOÁN\n12.2. Thời hạn thanh toán cho mỗi đợt là 15 (mười lăm) ngày làm việc kể từ ngày Bên A nhận được đầy đủ hồ sơ thanh toán hợp lệ, bao gồm biên bản nghiệm thu/bàn giao, hóa đơn giá trị gia tăng hợp pháp và các chứng từ liên quan khác nếu có. \n\n12.3. Bên A có quyền tạm giữ tối đa 05% giá trị đợt thanh toán cuối cùng cho đến khi Bên B hoàn thành toàn bộ nghĩa vụ khắc phục lỗi trọng yếu phát sinh trong thời gian ổn định sau triển khai, nhưng tổng thời gian tạm giữ không vượt quá 60 (sáu mươi) ngày kể từ ngày nghiệm thu cuối cùng. lãnh thực hiện hợp đồng (nếu có). tả yêu cầu nghiệp vụ....",
+    "citation_b": "Điều 12. LỊCH THANH TOÁN VÀ ĐIỀU KIỆN THANH TOÁN\n12.2. Thời hạn thanh toán cho mỗi đợt là 20 (hai mươi) ngày làm việc kể từ ngày Bên A nhận được đầy đủ hồ sơ thanh toán hợp lệ, bao gồm biên bản nghiệm thu/bàn giao, hóa đơn giá trị gia tăng hợp pháp và các chứng từ liên quan khác nếu có. \n\n12.3. Bên A có quyền tạm giữ tối đa 10% giá trị đợt thanh toán cuối cùng cho đến khi Bên B hoàn thành toàn bộ nghĩa vụ khắc phục lỗi trọng yếu phát sinh trong thời gian ổn định sau triển khai, nhưng tổng thời gian tạm giữ không vượt quá 90 (chín mươi) ngày kể từ ngày nghiệm thu cuối cùng. lãnh thực hiện hợp đồng (nếu có). yêu cầu nghiệp vụ."
+  },
+  "2996290e7ae4e957b266efd78d2913ed": {
+    "status": "MODIFIED",
+    "summary": "So luong thay doi la 1. So luong tu trong trich nguyen van phan bi doi tu BAN A la 50, so luong tu trong trich nguyen van phan moi tu BAN B la 50.",
+    "exact_difference": "So luong tu: 'Điều 16. DỊCH VỤ BẢO HÀNH, HỖ TRỢ VÀ SLA' tu BAN A la 23, tu BAN B la 24.",
+    "change_type": "Them moi",
+    "impact_level": "Nho",
+    "citation_a": "Điều 16. DỊCH VỤ BẢO HÀNH, HỖ TRỢ VÀ SLA\n16.1. Thời gian bảo hành tối thiểu của hệ thống là 12 (mười hai) tháng kể từ ngày nghiệm thu cuối cùng. Trong thời gian này, Bên B phải khắc phục các lỗi phát sinh do thiết kế, cấu hình, lập trình hoặc triển khai không đúng yêu cầu đã cam kết mà không thu thêm phí.\n16.2. Sau thời gian bảo hành, nếu Hai Bên tiếp tục sử dụng dịch vụ bảo trì có thu phí, mức dịch vụ tối thiểu phải tương đương hoặc tốt hơn mức đã áp dụng trong giai đoạn bảo hành, trừ khi có thỏa thuận khác tại phụ lục bảo trì riêng. Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\n16.3. Bên B phải duy trì kênh tiếp nhận sự cố tối thiểu qua email, số điện thoại hỗ trợ và cổng quản lý yêu cầu; mọi sự cố phải được gắn mã theo dõi và có lịch sử xử lý.",
+    "citation_b": "Điều 16. DỊCH VỤ BẢO HÀNH, HỖ TRỢ VÀ SLA\n16.1. Thời gian bảo hành tối thiểu của hệ thống là 18 (mười tám) tháng kể từ ngày nghiệm thu cuối cùng. Trong thời gian này, Bên B phải khắc phục các lỗi phát sinh do thiết kế, cấu hình, lập trình hoặc triển khai không đúng yêu cầu đã cam kết mà không thu thêm phí.\n16.2. Sau thời gian bảo hành, nếu Hai Bên tiếp tục sử dụng dịch vụ bảo trì có thu phí, mức dịch vụ tối thiểu phải tương đương hoặc tốt hơn mức đã áp dụng trong giai đoạn bảo hành, trừ khi có thỏa thuận khác tại phụ lục bảo trì riêng. Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\n16.3. Bên B phải duy trì kênh tiếp nhận sự cố tối thiểu qua email, số điện thoại hỗ trợ và cổng quản lý yêu cầu; mọi sự cố phải được gắn mã theo dõi và có lịch sử xử lý."
+  },
+  "5d06b17bc1ecc7ecb3a0caf0f44fd77d": {
+    "status": "IDENTICAL",
+    "summary": "Noi dung hai ban giong nhau.",
+    "exact_difference": "",
+    "change_type": "Nho",
+    "impact_level": "Nho",
+    "citation_a": "Điều 19. BẢO MẬT THÔNG TIN\n19.1. Mỗi Bên cam kết giữ bí mật toàn bộ thông tin nhận được từ Bên kia trong quá trình đàm phán, ký kết và thực hiện Hợp đồng, bao gồm nhưng không giới hạn ở thông tin thương mại, tài chính, kỹ thuật, tài liệu nội bộ, dữ liệu khách hàng, chiến lược kinh doanh và thông tin liên quan đến hệ thống công nghệ. 19.2. Nghĩa vụ bảo mật áp dụng đối với cả thông tin được thể hiện bằng văn bản, lời nói, email, dữ liệu điện tử, bản trình diễn, dữ liệu sao lưu, mẫu thử, tài khoản truy cập tạm thời và thông tin mà một Bên phải hiểu một cách hợp lý là thông tin mật do tính chất hoặc bối cảnh cung cấp. 19.3. Bên nhận thông tin chỉ được phép sử dụng thông tin mật cho mục đích thực hiện Hợp đồng; không được sao chép, tiết lộ, chuyển giao hoặc cho phép bên thứ ba tiếp cận nếu khôn...",
+    "citation_b": "Điều 19. BẢO MẬT THÔNG TIN\n19.1. Mỗi Bên cam kết giữ bí mật toàn bộ thông tin nhận được từ Bên kia trong quá trình đàm phán, ký kết và thực hiện Hợp đồng, bao gồm nhưng không giới hạn ở thông tin thương mại, tài chính, kỹ thuật, tài liệu nội bộ, dữ liệu khách hàng, chiến lược kinh doanh và thông tin liên quan đến hệ thống công nghệ. 19.2. Nghĩa vụ bảo mật áp dụng đối với cả thông tin được thể hiện bằng văn bản, lời nói, email, dữ liệu điện tử, bản trình diễn, dữ liệu sao lưu, mẫu thử, tài khoản truy cập tạm thời và thông tin mà một Bên phải hiểu một cách hợp lý là thông tin mật do tính chất hoặc bối cảnh cung cấp. 19.3. Bên nhận thông tin chỉ được phép sử dụng thông tin mật cho mục đích thực hiện Hợp đồng; không được sao chép, tiết lộ, chuyển giao hoặc cho phép bên thứ ba tiếp cận nếu khôn..."
+  },
+  "0011d29a1e25c369c28b74e886f3251f": {
+    "status": "MODIFIED",
+    "summary": "So luong tu trong trich nguyen van hai ban giong nhau la 50 tu. Ban B khac bo so vi phai them moi 1 tu: 'hoặc'.",
+    "exact_difference": "'hoặc' ở vị trí 49 chuoi.",
+    "change_type": "Them moi",
+    "impact_level": "Nho",
+    "citation_a": "Trích nguyên văn từ BAN A: \"phạm vi Hợp đồng này, nếu Bên B tiếp cận hoặc xử lý dữ liệu cá nhân do Bên A quản lý, Bên B phải tuân thủ đầy đủ các quy định pháp luật hiện hành về bảo vệ dữ liệu cá nhân, an toàn thông tin mạng và các quy định nội bộ hợp lý mà Bên A đã thông báo bằng văn bản.\"",
+    "citation_b": "Trích nguyên văn từ BAN B: \"phạm vi Hợ đồng này, nếu Bên B tiếp cận hoặc xử lý dữ liệu cá nhân do Bên A quản lý, Bên B phải tuân thủ đầy đủ các quy định pháp luật hiện hành về bảo vệ dữ liệu cá nhân, an toàn thông tin mạng và các quy định nội bộ hợp lý mà Bên A đã thông báo bằng văn bản. Hoặc\""
+  },
+  "e2e947f9cb51db717f185019a63af278": {
+    "status": "MODIFIED",
+    "summary": "Cac diem khac biet trong phan 31.2 va 31.3.",
+    "exact_difference": "Trong phan 31.2, BAN A thay doi tu '0,05%' sang '0,07%', va truc tiep anh huong den diem khac biet trong phan 31.3 la quy luat cho so lich su nhan hao.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Lon",
+    "citation_a": "31.2: Nếu Bên B vi phạm nghĩa vụ bảo mật hoặc xử lý dữ liệu dẫn đến lộ, mất, sai lệch hoặc truy cập trái phép dữ liệu của Bên A, Bên B phải chịu mọi khoản phạt vi phạm, bồi thường thiệt hại thực tế, hợp lý và chi phí khắc phục phát sinh trực tiếp từ hành vi vi phạm đó. 31.3: Nếu Bên A chậm thanh toán không có căn cứ hợp lệ, Bên B có quyền yêu cầu lãi chậm trả tính trên số tiền chậm thanh toán theo mức lãi suất nợ quá hạn trung bình của 04 ngân hàng thương mại lớn tại thời điểm thanh toá...",
+    "citation_b": "31.2: Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,07% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm. 31.3: Nếu Bên A chậm thanh toán không có căn cứ hợp lệ, Bên B có quyền yêu cầu lãi chậm trả tính trên số tiền chậm thanh toán theo mức lãi suất nợ quá hạn trung bình của 04 ngân hàng thương mại lớn tại thời điểm thanh toá..."
+  },
+  "f33e5332af749a007cbc7985fb044b7e": {
+    "status": "MODIFIED",
+    "summary": "So luong tu trong hai ban khac nhau.",
+    "exact_difference": "50 tu trong trich nguyen van BAN A và 50 tu trong trich nguyen van BAN B.",
+    "change_type": "Them moi",
+    "impact_level": "Nho",
+    "citation_a": "Trích nguyên văn từ BAN A: 'Hợp đồng có hiệu lực kể từ ngày ký hoặc từ ngày Hai Bên hoàn thành điều kiện có hiệu lực được nêu tại Phụ lục, tùy thời điểm nào đến sau. Thời hạn của Hợp đồng là 36 (ba mươi sáu) tháng kể từ ngày có hiệu lực. Hết thời hạn này, nếu Hai Bên vẫn còn công việc dở dang hoặc còn nghĩa vụ bảo hành/bảo trì/chuyển giao chưa hoàn tất thì các điều khoản cần thiết vẫn tiếp tục có hiệu lực cho đến khi nghĩa vụ đó được thực hiện xong. Mỗi Bên có quyền chấm dứt Hợp đồng trước thời hạn nếu Bên kia vi phạm nghiêm trọng và không khắc phục trong vòng 15 (mười lăm) ngày làm việc kể từ ngày nhận được thông báo yêu cầu khắc phục, hoặc rơi vào tình trạng giải thể, phá sản, ngừng hoạt động kéo dài, bị thu hồi giấy phép mà không có biện pháp thay ...'",
+    "citation_b": "Trích nguyên văn từ BAN B: 'Hợp đồng có hiệu lực kể từ ngày ký hoặc từ ngày Hai Bên hoàn thành điều kiện có hiệu lực được nêu tại Phụ lục, tùy thời điểm nào đến sau. Thời hạn của Hợp đồng là 48 (bốn mươi tám) tháng kể từ ngày có hiệu lực. Hết thời hạn này, nếu Hai Bên vẫn còn công việc dở dang hoặc còn nghĩa vụ bảo hành/bảo trì/chuyển giao chưa hoàn tất thì các điều khoản cần thiết vẫn tiếp tục có hiệu lực cho đến khi nghĩa vụ đó được thực hiện xong. Mỗi Bên có quyền chấm dứt Hợp đồng trước thời hạn nếu Bên kia vi phạm nghiêm trọng và không khắc phục trong vòng 10 (mười) ngày làm việc kể từ ngày nhận được thông báo yêu cầu khắc phục, hoặc rơi vào tình trạng giải thể, phá sản, ngừng hoạt động kéo dài, bị thu hồi giấy phép mà không có biện pháp thay ...'"
+  },
+  "dbbc7e52d890f9bc07fd50a43f4375b3": {
+    "status": "MODIFIED",
+    "summary": "So luong ho tro trong danh muc hop le cua ban a khong ton tai o ban b.",
+    "exact_difference": "Ban A: 'Gói 01' - Ban B: '-'",
+    "change_type": "Them moi",
+    "impact_level": "Nho",
+    "citation_a": "Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\nĐiều 38. ĐIỀU KHOẢN KÝ KẾT Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận. Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\nHợp đồng khung: \nĐiều 38. ĐIỀU KHOẢN KÝ KẾT Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận.",
+    "citation_b": "Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\nĐiều 38. ĐIỀU KHOẢN KÝ KẾT Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận."
   }
 }

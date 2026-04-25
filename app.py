@@ -10,14 +10,14 @@ from typing import Any, Literal
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from src.core.comparator import run_comparison
 from src.core.document_registry import DEFAULT_CACHE_ROOT
 from src.core.ingestion import ingest_document, prepare_document
-from src.core.llm import DEFAULT_MODEL
+from src.core.llm import DEFAULT_MODEL, stream_chat_ollama
 from src.database.vector_store import LegalVectorDB
 
 DB_PATH = "legal_data.json"
@@ -100,6 +100,18 @@ class CompareRequest(BaseModel):
     workflow_id: str = "default"
     document_id_a: str | None = None
     document_id_b: str | None = None
+    model: str = DEFAULT_MODEL
+
+
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
+class ChatRequest(BaseModel):
+    workflow_id: str = "default"
+    compare_job_id: str | None = None
+    message: str
+    history: list[ChatMessage] = []
     model: str = DEFAULT_MODEL
 
 
@@ -666,6 +678,116 @@ def get_document_pdf(document_id: str, workflow_id: str = Query("default")):
 
     return FileResponse(
         path=str(path), media_type="application/pdf", filename=f"{document_id}.pdf"
+    )
+
+
+def _build_rag_context(compare_payload: dict[str, Any] | None) -> str:
+    """
+    Xây dựng context gọn, gỡ bỏ trùng lặp dựa trên article + summary.
+    """
+    if not compare_payload:
+        return "Không có dữ liệu so sánh."
+
+    changes = compare_payload.get("changes") or []
+    if not changes:
+        return "Tài liệu không có thay đổi nào được phát hiện."
+
+    # Dedup: gom nhóm các thay đổi trùng article + summary
+    seen: dict[str, dict] = {}
+    for ch in changes:
+        article = ch.get("article") or "N/A"
+        status  = ch.get("status") or ""
+        summary = (ch.get("summary") or "").strip()
+        key = f"{article}|{status}|{summary[:60]}"
+        if key not in seen:
+            seen[key] = {
+                "article": article, "status": status, "summary": summary, "count": 1,
+                "citation_a": (ch.get("evidence") or {}).get("citation_a") or ch.get("citation_a") or "",
+                "citation_b": (ch.get("evidence") or {}).get("citation_b") or ch.get("citation_b") or "",
+            }
+        else:
+            seen[key]["count"] += 1
+
+    lines = [f"Tài liệu có {len(changes)} thay đổi ({len(seen)} loại khác nhau):"]
+    for item in list(seen.values())[:10]:
+        count_note = f" (x{item['count']})" if item["count"] > 1 else ""
+        line = f"- {item['article']} [{item['status']}]{count_note}: {item['summary']}"
+        if item["citation_a"]:
+            line += f"\n  Bản cũ: {item['citation_a'][:100]}"
+        if item["citation_b"]:
+            line += f"\n  Bản mới: {item['citation_b'][:100]}"
+        lines.append(line)
+
+    return "\n".join(lines)
+
+
+def _build_chat_prompts(message: str, compare_payload: dict[str, Any] | None) -> tuple[str, str]:
+    """
+    Trả về (system_prompt, user_prompt) tách biệt để gọi /api/chat.
+    """
+    context_text = _build_rag_context(compare_payload)
+
+    system_prompt = (
+        "Bạn là Legal AI Assistant, thông minh và hữu ích.\n"
+        "QUY TẮC:\n"
+        "1. TRẢ LỜI NGẮN GỌN BẰNG TIẾNG VIỆT 100%.\n"
+        "2. Khi người dùng hỏi có bao nhiêu điểm sửa đổi hoặc yêu cầu liệt kê, hãy đếm/tổng hợp dữ liệu so sánh (tính cả số lượng nhân bản xN) và liệt kê rõ ràng.\n"
+        "3. Dữ liệu so sánh đưa ra là nền tảng, nếu không có dữ liệu, hãy nói không xác định được."
+    )
+
+    # Trả về User Prompt chứa context
+    user_context = f"DỮ LIỆU SO SÁNH HIỆN TẠI:\n{context_text}"
+    return system_prompt, user_context
+
+
+
+@app.post("/api/chat")
+def chat_with_document(payload: ChatRequest) -> StreamingResponse:
+    """
+    Nhận câu hỏi, build RAG prompt từ kết quả so sánh, stream trả lời từ Ollama qua SSE.
+    """
+    compare_payload: dict[str, Any] | None = None
+    if payload.compare_job_id:
+        compare_payload = compare_results.get(payload.compare_job_id)
+
+    if not compare_payload:
+        # Thử tìm compare result mới nhất của workflow
+        with state_lock:
+            workflow = workflow_state.get(payload.workflow_id) or {}
+            last_job_id = workflow.get("last_compare_job_id")
+        if last_job_id:
+            compare_payload = compare_results.get(last_job_id)
+
+    system_prompt, user_context = _build_chat_prompts(payload.message, compare_payload)
+    model = payload.model
+
+    messages = [{"role": "system", "content": system_prompt}]
+    messages.append({"role": "system", "content": user_context})
+
+    for h in payload.history[-8:]: # Giữ tối đa 8 tin nhắn gần nhất để tránh tràn context
+        messages.append({"role": h.role, "content": h.content})
+
+    messages.append({"role": "user", "content": payload.message})
+
+    def event_stream():
+        try:
+            for token in stream_chat_ollama(messages, model=model):
+                safe_token = token.replace("\n", "\\n")
+                yield f"data: {safe_token}\n\n"
+        except ConnectionError as exc:
+            yield f"data: [LỖI] {exc}\n\n"
+        except Exception as exc:
+            yield f"data: [LỖI] Lỗi không xác định: {exc}\n\n"
+        finally:
+            yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
     )
 
 

@@ -15,6 +15,8 @@ class App {
         this.currentView = "home";
         this.file1DocId = null;
         this.file2DocId = null;
+        this.chatIsBusy = false;
+        this.chatHistory = [];
 
         this.elements = {
             nav: document.querySelectorAll(".nav-item"),
@@ -36,6 +38,10 @@ class App {
             tocList: document.getElementById("toc-list"),
             reportContent: document.getElementById("report-content"),
             btnAskChatbot: document.getElementById("btn-ask-chatbot"),
+            chatMessages: document.getElementById("chat-messages"),
+            chatInputField: document.getElementById("chat-input-field"),
+            btnSend: document.getElementById("btn-send"),
+            btnClearChat: document.getElementById("btn-clear-chat"),
         };
 
         this.pdfA = new window.PdfRenderer("pdf-wrapper-a", "pdf-pages-a", "page-num-a", "page-count-a", {
@@ -88,6 +94,28 @@ class App {
             if (!this.elements.panelB.classList.contains("disabled")) {
                 this.handleFileUpload(event.dataTransfer.files[0], "file_2");
             }
+        });
+
+        // Chat bindings
+        if (this.elements.btnSend) {
+            this.elements.btnSend.addEventListener("click", () => this._handleSendChat());
+        }
+        if (this.elements.chatInputField) {
+            this.elements.chatInputField.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    this._handleSendChat();
+                }
+            });
+        }
+        if (this.elements.btnClearChat) {
+            this.elements.btnClearChat.addEventListener("click", () => this._clearChat());
+        }
+        document.querySelectorAll(".suggestion-item").forEach((item) => {
+            item.addEventListener("click", () => {
+                const text = item.textContent.trim();
+                this._handleSendChat(text);
+            });
         });
     }
 
@@ -154,6 +182,8 @@ class App {
         this.elements.changesCount.textContent = "0";
         this.elements.tocList.innerHTML = "";
         this.elements.reportContent.innerHTML = "";
+        this.compareJobId = null;
+        this._clearChat();
         ["stat-total", "stat-added", "stat-removed", "stat-modified", "stat-minor", "stat-moved"].forEach((id) => {
             const el = document.getElementById(id);
             if (el) el.textContent = "0";
@@ -482,6 +512,132 @@ class App {
         });
     }
 }
+
+// ─── Chat methods (mixed into prototype for clarity) ─────────────────────
+App.prototype._clearChat = function() {
+    this.chatHistory = [];
+    if (!this.elements.chatMessages) return;
+    this.elements.chatMessages.innerHTML = `
+        <div class="message assistant">
+            <div class="msg-bubble">
+                <div style="margin-bottom: 8px;"><strong>Xin chào! Tôi là Legal AI Assistant.</strong></div>
+                <div>Tôi có thể giúp bạn phân tích kết quả so sánh văn bản pháp lý. Hãy hỏi tôi bất cứ điều gì về các thay đổi điều khoản.</div>
+            </div>
+        </div>
+    `;
+};
+
+App.prototype._appendUserMessage = function(text) {
+    const div = document.createElement("div");
+    div.className = "message user";
+    div.innerHTML = `<div class="msg-bubble user-bubble">${escapeHtml(text)}</div>`;
+    this.elements.chatMessages.appendChild(div);
+    this._scrollChatToBottom();
+    return div;
+};
+
+App.prototype._appendAssistantMessage = function() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message assistant";
+    const bubble = document.createElement("div");
+    bubble.className = "msg-bubble";
+    bubble.innerHTML = `<span class="streaming-cursor"></span>`;
+    wrapper.appendChild(bubble);
+    this.elements.chatMessages.appendChild(wrapper);
+    this._scrollChatToBottom();
+    return bubble;
+};
+
+App.prototype._appendThinkingIndicator = function() {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message assistant";
+    wrapper.id = "chat-thinking";
+    wrapper.innerHTML = `
+        <div class="msg-bubble msg-thinking">
+            <span class="thinking-dot"></span>
+            <span class="thinking-dot"></span>
+            <span class="thinking-dot"></span>
+        </div>
+    `;
+    this.elements.chatMessages.appendChild(wrapper);
+    this._scrollChatToBottom();
+    return wrapper;
+};
+
+App.prototype._scrollChatToBottom = function() {
+    if (this.elements.chatMessages) {
+        this.elements.chatMessages.scrollTop = this.elements.chatMessages.scrollHeight;
+    }
+};
+
+App.prototype._handleSendChat = function(overrideText) {
+    if (this.chatIsBusy) return;
+    const input = this.elements.chatInputField;
+    const message = (overrideText !== undefined ? overrideText : (input ? input.value.trim() : ""));
+    if (!message) return;
+    if (input && !overrideText) input.value = "";
+
+    this.chatIsBusy = true;
+    if (this.elements.btnSend) this.elements.btnSend.disabled = true;
+    if (this.elements.chatInputField) this.elements.chatInputField.disabled = true;
+
+    this._appendUserMessage(message);
+    const thinkingEl = this._appendThinkingIndicator();
+
+    let bubble = null;
+    let accumulated = "";
+
+    const historyToSend = [...this.chatHistory];
+    this.chatHistory.push({ role: "user", content: message });
+
+    window.api.sendChatMessage(
+        this.workflowId,
+        this.compareJobId,
+        message,
+        historyToSend,
+        // onToken
+        (token) => {
+            if (!bubble) {
+                thinkingEl.remove();
+                bubble = this._appendAssistantMessage();
+            }
+            accumulated += token;
+            // Render với newlines → <br> và cursor nhấp nháy
+            bubble.innerHTML = accumulated.replace(/\n/g, "<br>") + `<span class="streaming-cursor"></span>`;
+            this._scrollChatToBottom();
+        },
+        // onDone
+        () => {
+            if (!bubble) {
+                thinkingEl.remove();
+                bubble = this._appendAssistantMessage();
+            }
+            // Xóa cursor khi xong
+            bubble.innerHTML = accumulated.replace(/\n/g, "<br>");
+            this.chatHistory.push({ role: "assistant", content: accumulated });
+            this.chatIsBusy = false;
+            if (this.elements.btnSend) this.elements.btnSend.disabled = false;
+            if (this.elements.chatInputField) {
+                this.elements.chatInputField.disabled = false;
+                this.elements.chatInputField.focus();
+            }
+            this._scrollChatToBottom();
+        },
+        // onError
+        (errMsg) => {
+            thinkingEl.remove();
+            const errBubble = this._appendAssistantMessage();
+            errBubble.innerHTML = `<span style="color:#e53e3e;">⚠ Lỗi: ${escapeHtml(errMsg)}</span>`;
+            this.chatHistory.pop(); // Remove the user message from history on error
+            this.chatIsBusy = false;
+            if (this.elements.btnSend) this.elements.btnSend.disabled = false;
+            if (this.elements.chatInputField) {
+                this.elements.chatInputField.disabled = false;
+                this.elements.chatInputField.focus();
+            }
+        }
+    );
+};
 
 document.addEventListener("DOMContentLoaded", () => {
     window.app = new App();

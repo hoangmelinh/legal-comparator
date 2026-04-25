@@ -252,12 +252,16 @@ class PdfRenderer {
         if (!target) {
             return false;
         }
-        const pageNode = target.closest(".pdf-page");
-        if (!pageNode || !this.wrapper) {
+        if (!this.wrapper) {
             return false;
         }
+        // Tính vị trí tuyệt đối của highlight box trong wrapper
+        const wrapperRect = this.wrapper.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        const absoluteTop = this.wrapper.scrollTop + (targetRect.top - wrapperRect.top);
+        const offset = 60; // khoảng cách padding phía trên khi cuộn đến
         this.wrapper.scrollTo({
-            top: Math.max(0, pageNode.offsetTop + target.offsetTop - 48),
+            top: Math.max(0, absoluteTop - offset),
             behavior: "smooth",
         });
         return true;
