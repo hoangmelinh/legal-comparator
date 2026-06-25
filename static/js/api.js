@@ -121,8 +121,12 @@ class ApiClient {
                         onDone();
                         return;
                     }
-                    // Khôi phục newlines đã escape
-                    const text = payload.replace(/\\n/g, "\n");
+                    if (payload.startsWith("[LỖI]") || payload.startsWith("[LOI]")) {
+                        onError(payload);
+                        return;
+                    }
+                    // Unescape: restore newlines and backslashes
+                    const text = payload.replace(/\\n/g, "\n").replace(/\\\\/g, "\\");
                     onToken(text);
                 }
             }

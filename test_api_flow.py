@@ -136,9 +136,6 @@ class ApiFlowTests(unittest.TestCase):
 
         with (
             patch.object(
-                app_module, "prepare_document", side_effect=_fake_prepare_document
-            ),
-            patch.object(
                 app_module, "ingest_document", side_effect=_fake_ingest_document
             ),
             patch.object(

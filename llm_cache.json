@@ -661,5 +661,23 @@
     "impact_level": "Nho",
     "citation_a": "Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\nĐiều 38. ĐIỀU KHOẢN KÝ KẾT Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận. Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\nHợp đồng khung: \nĐiều 38. ĐIỀU KHOẢN KÝ KẾT Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận.",
     "citation_b": "Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập\nĐiều 38. ĐIỀU KHOẢN KÝ KẾT Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận."
+  },
+  "9b3f468ed095c18ced391b1ea5e9c72f": {
+    "status": "MODIFIED",
+    "summary": "Ban B đã thêm nội dung cập nhật tiến độ và phân công công việc mới, trong khi Ban A tập trung vào việc bầu cử Nhóm trưởng và Thư ký.",
+    "exact_difference": "Ban B đã thêm phần 'Nội dung cuộc họp' với các điểm: Cập nhật tiến độ, rà soát lại các đầu việc, chốt lại phân công công việc. Đồng thời, Ban B cũng ghi rõ kết quả cuộc họp là mọi người thống nhất với phần chia việc và cuộc họp diễn ra suôn sẻ.",
+    "change_type": "Them moi",
+    "impact_level": "Trung bình",
+    "citation_a": "Ban A đã tiến hành cuộc họp để bầu hai vị trí Nhóm trưởng và Thư ký, kết quả là Hoàng Thanh Tùng được bầu làm Nhóm trưởng và Phạm Đình Trường làm Thư ký.",
+    "citation_b": "Ban B đã cập nhật tiến độ công việc, phân công vai trò cho các thành viên tham gia thuyết trình."
+  },
+  "4db14c1d5f10b28fe74c0993d359cf3e": {
+    "status": "MODIFIED",
+    "summary": "Có sự thay đổi về nội dung và cấu trúc của đoạn văn bản.",
+    "exact_difference": "Ban A không có phần 'Thư ký', 'Trường', 'Phạm Đình Trường' trong khi Ban B có. Ngoài ra, Ban B thiếu thông tin chi tiết về việc phân công công việc.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Nho",
+    "citation_a": "Chưa có phần 'Thư ký', 'Trường', 'Phạm Đình Trường' trong văn bản của Ban A.",
+    "citation_b": "Ban B có thêm thông tin về 'Thư ký', 'Trường', 'Phạm Đình Trường'."
   }
 }

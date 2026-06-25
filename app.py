@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import shutil
 import tempfile
 import threading
@@ -16,7 +17,7 @@ from pydantic import BaseModel
 
 from src.core.comparator import run_comparison
 from src.core.document_registry import DEFAULT_CACHE_ROOT
-from src.core.ingestion import ingest_document, prepare_document
+from src.core.ingestion import ingest_document
 from src.core.llm import DEFAULT_MODEL, stream_chat_ollama
 from src.database.vector_store import LegalVectorDB
 
@@ -190,6 +191,7 @@ def _cleanup_document_artifacts(doc: dict[str, Any] | None) -> None:
         "preview_pdf_path",
         "text_cache_path",
         "records_cache_path",
+        "records_meta_path",
         "vector_cache_path",
         "chunk_cache_path",
     ):
@@ -408,22 +410,13 @@ def _start_process_job(
             def progress_cb(pct: float, msg: str) -> None:
                 _set_job_progress(job_id, pct, msg)
 
-            prepared = prepare_document(
-                file_path=str(source_path),
-                cache_root=CACHE_ROOT,
-                cache_key=document_id,
-                progress_callback=lambda p, m: progress_cb(max(0, min(50, p / 2)), m),
-            )
-
             result = ingest_document(
                 file_path=str(source_path),
                 doc_id=document_id,
                 db_path=DB_PATH,
                 cache_root=CACHE_ROOT,
                 cache_key=document_id,
-                progress_callback=lambda p, m: progress_cb(
-                    50 + max(0, min(50, p / 2)), m
-                ),
+                progress_callback=progress_cb,
             )
 
             with state_lock:
@@ -436,11 +429,16 @@ def _start_process_job(
                     "original_file_path": str(source_path),
                     "normalized_pdf_path": result.get("normalized_pdf_path"),
                     "preview_pdf_path": result.get("preview_pdf_path"),
+                    "text_cache_path": result.get("text_cache_path"),
+                    "records_cache_path": result.get("records_cache_path"),
+                    "records_meta_path": result.get("records_meta_path"),
+                    "vector_cache_path": result.get("vector_cache_path"),
+                    "chunk_cache_path": result.get("chunk_cache_path"),
                     "convert_status": result.get("conversion_method"),
                     "ingest_status": result.get("ingest_status"),
                     "warning_message": result.get("warning"),
                     "metadata": result,
-                    "prepared_metadata": prepared,
+                    "prepared_metadata": result,
                     "updated_at": _utc_now(),
                 }
                 workflow["active_job_id"] = None
@@ -772,7 +770,8 @@ def chat_with_document(payload: ChatRequest) -> StreamingResponse:
     def event_stream():
         try:
             for token in stream_chat_ollama(messages, model=model):
-                safe_token = token.replace("\n", "\\n")
+                # Escape newlines for SSE single-line data format
+                safe_token = token.replace("\\", "\\\\").replace("\n", "\\n").replace("\r", "")
                 yield f"data: {safe_token}\n\n"
         except ConnectionError as exc:
             yield f"data: [LỖI] {exc}\n\n"
@@ -803,3 +802,4 @@ if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+

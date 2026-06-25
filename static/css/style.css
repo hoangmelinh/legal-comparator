@@ -634,6 +634,78 @@ body {
     border-radius: 12px 12px 12px 4px;
 }
 
+.md-content {
+    line-height: 1.7;
+    word-break: break-word;
+}
+
+.md-content h1,
+.md-content h2,
+.md-content h3,
+.md-content h4 {
+    margin: 12px 0 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.md-content h1:first-child,
+.md-content h2:first-child,
+.md-content h3:first-child,
+.md-content h4:first-child {
+    margin-top: 0;
+}
+
+.md-content p {
+    margin: 0 0 10px;
+}
+
+.md-content p:last-child {
+    margin-bottom: 0;
+}
+
+.md-content strong {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.md-content em {
+    font-style: italic;
+}
+
+.md-content ul,
+.md-content ol {
+    margin: 6px 0 10px 20px;
+    padding: 0;
+}
+
+.md-content ol {
+    list-style-type: decimal;
+}
+
+.md-content li {
+    margin: 4px 0;
+    padding-left: 2px;
+}
+
+.md-content li:last-child {
+    margin-bottom: 0;
+}
+
+.md-content code {
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: #f1f5f9;
+    font-size: 0.9em;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.md-content hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 12px 0;
+}
+
 /* Streaming cursor */
 @keyframes blink {
     0%, 100% { opacity: 1; }

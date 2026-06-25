@@ -7,7 +7,7 @@ from src.core.cache import cache
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_CHAT_URL = "http://localhost:11434/api/chat"
-DEFAULT_MODEL = "qwen2.5:3b"
+DEFAULT_MODEL = "qwen2.5:7b"
 
 
 def stream_chat_ollama(

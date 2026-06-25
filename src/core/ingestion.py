@@ -1,10 +1,12 @@
 import hashlib
 import json
+import logging
 import os
 import re
 import shutil
 import subprocess
 import tempfile
+import time
 from collections import defaultdict
 from collections.abc import Callable, Iterable
 from datetime import datetime
@@ -32,6 +34,7 @@ UNICODE_FONT_CANDIDATES = [
     r"C:\Windows\Fonts\tahoma.ttf",
     r"/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 ]
+logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> str:
@@ -50,6 +53,10 @@ def _ensure_cache_dirs(cache_root: Path) -> dict[str, Path]:
     for directory in directories.values():
         directory.mkdir(parents=True, exist_ok=True)
     return directories
+
+
+def _prepare_meta_path(records_path: Path) -> Path:
+    return records_path.with_name(f"{records_path.stem}.meta.json")
 
 
 def _find_unicode_font_file() -> str | None:
@@ -624,7 +631,7 @@ def _extract_text_and_analyse_pdf(pdf_path: Path) -> dict[str, Any]:
     }
 
 
-def prepare_document(
+def _prepare_document_legacy(
     file_path: str,
     cache_root: str | Path = DEFAULT_CACHE_ROOT,
     cache_key: str | None = None,
@@ -713,7 +720,7 @@ def build_chunk_metadata(
     }
 
 
-def ingest_document(
+def _ingest_document_legacy(
     file_path: str,
     doc_id: str,
     db_path: str = "legal_data.json",
@@ -794,3 +801,334 @@ def ingest_document(
 def extract_text(file_path: str) -> str:
     prepared = prepare_document(file_path)
     return prepared["text"]
+
+
+def prepare_document(
+    file_path: str,
+    cache_root: str | Path = DEFAULT_CACHE_ROOT,
+    cache_key: str | None = None,
+    progress_callback: Callable[[float, str], None] | None = None,
+) -> dict[str, Any]:
+    total_started = time.perf_counter()
+    if progress_callback:
+        progress_callback(5, "Dang kiem tra file dau vao")
+
+    source_path = Path(file_path).resolve()
+    if not source_path.exists():
+        raise FileNotFoundError(f"File not found: {source_path}")
+
+    suffix = source_path.suffix.lower()
+    if suffix not in SUPPORTED_INPUT_EXTENSIONS:
+        raise ValueError(f"Unsupported input format: {suffix}")
+
+    cache_root = Path(cache_root)
+    directories = _ensure_cache_dirs(cache_root)
+    hash_started = time.perf_counter()
+    source_hash = compute_file_hash(source_path)
+    hash_time = time.perf_counter() - hash_started
+    cache_key = cache_key or source_hash
+    normalized_pdf_path = directories["normalized"] / f"{cache_key}.pdf"
+    text_cache_path = directories["text"] / f"{cache_key}.txt"
+    records_cache_path = directories["records"] / f"{cache_key}.json"
+    records_meta_path = _prepare_meta_path(records_cache_path)
+
+    if progress_callback:
+        progress_callback(20, "Dang chuan hoa PDF")
+
+    cache_hit = False
+    conversion_method = None
+    normalize_time = 0.0
+    parse_time = 0.0
+    cache_io_time = 0.0
+    analysis: dict[str, Any] | None = None
+    extracted_text = ""
+    extracted_records: list[dict[str, Any]] = []
+
+    cache_meta = _json_load(records_meta_path, default={})
+    cache_usable = (
+        _is_nonempty_file(normalized_pdf_path)
+        and _is_nonempty_file(text_cache_path)
+        and records_cache_path.exists()
+        and bool(cache_meta)
+        and cache_meta.get("source_hash") == source_hash
+    )
+
+    if cache_usable:
+        cache_hit = True
+        cache_io_started = time.perf_counter()
+        extracted_text = text_cache_path.read_text(encoding="utf-8")
+        extracted_records = _json_load(records_cache_path, [])
+        page_count = max(1, int(cache_meta.get("page_count") or 1))
+        total_chars = int(cache_meta.get("total_chars") or len(extracted_text))
+        analysis = {
+            "text": extracted_text,
+            "records": extracted_records,
+            "page_count": page_count,
+            "total_chars": total_chars,
+            "average_chars_per_page": float(
+                cache_meta.get("average_chars_per_page")
+                or (total_chars / max(1, page_count))
+            ),
+            "scan_based": bool(cache_meta.get("scan_based", False)),
+            "weak_extraction": bool(cache_meta.get("weak_extraction", False)),
+            "can_ingest": bool(cache_meta.get("can_ingest", total_chars > 0)),
+            "warning": cache_meta.get("warning"),
+        }
+        conversion_method = cache_meta.get("conversion_method")
+        cache_io_time = time.perf_counter() - cache_io_started
+        if progress_callback:
+            progress_callback(45, "Dang tai ket qua trich xuat tu cache")
+    else:
+        normalize_started = time.perf_counter()
+        if suffix == ".pdf":
+            conversion_method = _copy_to_canonical_pdf(source_path, normalized_pdf_path)
+        else:
+            conversion_method = convert_to_pdf(source_path, normalized_pdf_path)
+        normalize_time = time.perf_counter() - normalize_started
+
+        if progress_callback:
+            progress_callback(45, "Dang trich xuat text tu PDF")
+        parse_started = time.perf_counter()
+        analysis = _extract_text_and_analyse_pdf(normalized_pdf_path)
+        parse_time = time.perf_counter() - parse_started
+        extracted_text = analysis["text"]
+        extracted_records = analysis["records"]
+
+        cache_io_started = time.perf_counter()
+        text_cache_path.write_text(extracted_text, encoding="utf-8")
+        _json_dump(records_cache_path, extracted_records)
+        _json_dump(
+            records_meta_path,
+            {
+                "source_hash": source_hash,
+                "conversion_method": conversion_method,
+                "page_count": analysis["page_count"],
+                "total_chars": analysis["total_chars"],
+                "average_chars_per_page": analysis["average_chars_per_page"],
+                "scan_based": analysis["scan_based"],
+                "weak_extraction": analysis["weak_extraction"],
+                "can_ingest": analysis["can_ingest"],
+                "warning": analysis["warning"],
+            },
+        )
+        cache_io_time = time.perf_counter() - cache_io_started
+
+    if progress_callback:
+        progress_callback(70, "Dang hoan tat metadata tai lieu")
+
+    if analysis is None:
+        raise RuntimeError("Document analysis was not produced.")
+
+    total_prepare_time = time.perf_counter() - total_started
+    timing = {
+        "file_type": suffix,
+        "hash_time_sec": round(hash_time, 4),
+        "normalize_time_sec": round(normalize_time, 4),
+        "parse_time_sec": round(parse_time, 4),
+        "cache_io_time_sec": round(cache_io_time, 4),
+        "total_prepare_time_sec": round(total_prepare_time, 4),
+        "cache_hit": cache_hit,
+    }
+
+    prepared = {
+        "source_path": str(source_path),
+        "source_hash": source_hash,
+        "cache_key": cache_key,
+        "original_extension": suffix,
+        "normalized_pdf_path": str(normalized_pdf_path.resolve()),
+        "preview_pdf_path": str(normalized_pdf_path.resolve()),
+        "conversion_method": conversion_method,
+        "text_cache_path": str(text_cache_path.resolve()),
+        "records_cache_path": str(records_cache_path.resolve()),
+        "records_meta_path": str(records_meta_path.resolve()),
+        "text": extracted_text,
+        "records": extracted_records,
+        "page_count": analysis["page_count"],
+        "total_chars": analysis["total_chars"],
+        "scan_based": analysis["scan_based"],
+        "weak_extraction": analysis["weak_extraction"],
+        "can_ingest": analysis["can_ingest"],
+        "warning": analysis["warning"],
+        "prepared_at": _utc_now(),
+        "provenance_schema_version": PROVENANCE_SCHEMA_VERSION,
+        "timing": timing,
+    }
+
+    logger.info(
+        (
+            "[ingest.prepare] ext=%s cache_key=%s cache_hit=%s "
+            "normalize=%.3fs parse=%.3fs total=%.3fs"
+        ),
+        suffix,
+        cache_key,
+        cache_hit,
+        normalize_time,
+        parse_time,
+        total_prepare_time,
+    )
+    return prepared
+
+
+def ingest_document(
+    file_path: str,
+    doc_id: str,
+    db_path: str = "legal_data.json",
+    cache_root: str | Path = DEFAULT_CACHE_ROOT,
+    cache_key: str | None = None,
+    prepared_doc: dict[str, Any] | None = None,
+    progress_callback: Callable[[float, str], None] | None = None,
+) -> dict[str, Any]:
+    ingest_started = time.perf_counter()
+    cache_root = Path(cache_root)
+    directories = _ensure_cache_dirs(cache_root)
+
+    prepare_started = time.perf_counter()
+    if prepared_doc is not None:
+        prepared = prepared_doc
+        if progress_callback:
+            progress_callback(75, "Su dung du lieu prepare co san")
+    else:
+        prepared = prepare_document(
+            file_path=file_path,
+            cache_root=cache_root,
+            cache_key=cache_key or doc_id,
+            progress_callback=(lambda p, m: progress_callback(min(75, p), m))
+            if progress_callback
+            else None,
+        )
+    prepare_phase_time = time.perf_counter() - prepare_started
+    db = LegalVectorDB(db_name=db_path)
+
+    if progress_callback:
+        progress_callback(78, "Dang kiem tra cache ingest")
+    vector_cache_path = directories["vectors"] / f"{prepared['cache_key']}.json"
+    chunk_cache_path = directories["chunks"] / f"{prepared['cache_key']}.json"
+    prepare_timing = prepared.get("timing", {})
+    chunk_time = 0.0
+    metadata_time = 0.0
+    embed_time = 0.0
+    vector_insert_time = 0.0
+    cache_write_time = 0.0
+
+    if not prepared["can_ingest"]:
+        if progress_callback:
+            progress_callback(90, "Text qua it, bo qua ingest va tra canh bao")
+        total_ingest_time = time.perf_counter() - ingest_started
+        result = {
+            **prepared,
+            "doc_id": doc_id,
+            "ingest_status": "warning_not_ingested",
+            "used_vector_cache": False,
+            "chunks_count": 0,
+            "vector_cache_path": str(vector_cache_path.resolve()),
+            "chunk_cache_path": str(chunk_cache_path.resolve()),
+            "timing": {
+                "file_type": prepared.get("original_extension"),
+                "prepare_time_sec": round(prepare_phase_time, 4),
+                "normalize_time_sec": round(
+                    float(prepare_timing.get("normalize_time_sec", 0.0)), 4
+                ),
+                "parse_time_sec": round(
+                    float(prepare_timing.get("parse_time_sec", 0.0)), 4
+                ),
+                "chunk_time_sec": 0.0,
+                "metadata_time_sec": 0.0,
+                "embed_time_sec": 0.0,
+                "vector_insert_time_sec": 0.0,
+                "cache_write_time_sec": 0.0,
+                "total_ingest_time_sec": round(total_ingest_time, 4),
+                "prepare_cache_hit": bool(prepare_timing.get("cache_hit", False)),
+            },
+        }
+        if progress_callback:
+            progress_callback(100, "Hoan tat voi canh bao")
+        logger.info(
+            "[ingest.total] doc_id=%s ext=%s chunk=%.3fs embed=%.3fs insert=%.3fs total=%.3fs",
+            doc_id,
+            prepared.get("original_extension"),
+            chunk_time,
+            embed_time,
+            vector_insert_time,
+            total_ingest_time,
+        )
+        return result
+
+    if progress_callback:
+        progress_callback(86, "Dang chunking van ban")
+
+    chunk_started = time.perf_counter()
+    chunks = structural_chunking(
+        prepared["text"], doc_id=doc_id, records=prepared.get("records")
+    )
+    chunk_time = time.perf_counter() - chunk_started
+    metadata_started = time.perf_counter()
+    metadata_list = [
+        build_chunk_metadata(chunk, doc_id, index, prepared)
+        for index, chunk in enumerate(chunks)
+    ]
+    metadata_time = time.perf_counter() - metadata_started
+
+    if progress_callback:
+        progress_callback(92, "Dang tao embedding va ingest VectorDB")
+
+    insert_started = time.perf_counter()
+    inserted_entries = db.insert_legal_chunks(
+        chunks, metadata_list, doc_id_to_clear=doc_id
+    )
+    insert_total_time = time.perf_counter() - insert_started
+    insert_timing = getattr(db, "last_insert_timing", {}) or {}
+    embed_time = float(insert_timing.get("embedding_time_sec", insert_total_time))
+    vector_insert_time = float(insert_timing.get("upsert_time_sec", 0.0))
+
+    cache_started = time.perf_counter()
+    _json_dump(vector_cache_path, inserted_entries)
+    _json_dump(chunk_cache_path, chunks)
+    cache_write_time = time.perf_counter() - cache_started
+
+    ingest_status = "completed_with_warning" if prepared["warning"] else "completed"
+    total_ingest_time = time.perf_counter() - ingest_started
+    result = {
+        **prepared,
+        "doc_id": doc_id,
+        "ingest_status": ingest_status,
+        "used_vector_cache": False,
+        "chunks_count": len(chunks),
+        "vector_cache_path": str(vector_cache_path.resolve()),
+        "chunk_cache_path": str(chunk_cache_path.resolve()),
+        "timing": {
+            "file_type": prepared.get("original_extension"),
+            "prepare_time_sec": round(prepare_phase_time, 4),
+            "normalize_time_sec": round(
+                float(prepare_timing.get("normalize_time_sec", 0.0)), 4
+            ),
+            "parse_time_sec": round(
+                float(prepare_timing.get("parse_time_sec", 0.0)), 4
+            ),
+            "chunk_time_sec": round(chunk_time, 4),
+            "metadata_time_sec": round(metadata_time, 4),
+            "embed_time_sec": round(embed_time, 4),
+            "vector_insert_time_sec": round(vector_insert_time, 4),
+            "cache_write_time_sec": round(cache_write_time, 4),
+            "total_ingest_time_sec": round(total_ingest_time, 4),
+            "prepare_cache_hit": bool(prepare_timing.get("cache_hit", False)),
+        },
+    }
+
+    if progress_callback:
+        progress_callback(100, "Ingest hoan tat")
+
+    logger.info(
+        (
+            "[ingest.total] doc_id=%s ext=%s chunk=%.3fs meta=%.3fs "
+            "embed=%.3fs insert=%.3fs cache=%.3fs total=%.3fs"
+        ),
+        doc_id,
+        prepared.get("original_extension"),
+        chunk_time,
+        metadata_time,
+        embed_time,
+        vector_insert_time,
+        cache_write_time,
+        total_ingest_time,
+    )
+    return result

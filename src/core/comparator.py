@@ -1226,7 +1226,7 @@ def run_comparison(
                 has_numeric_change=task["is_numeric"],
             )
 
-        max_workers = 1
+        max_workers = min(2, len(pending_llm_tasks))
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {
                 executor.submit(_run_llm, task): task for task in pending_llm_tasks

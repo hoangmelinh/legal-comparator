@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 from nano_vectordb import NanoVectorDB
 
@@ -10,6 +12,7 @@ class LegalVectorDB:
         Khởi tạo Vector Database cho hệ thống pháp lý.
         """
         self._embedder = None
+        self.last_insert_timing = {}
         self.db = NanoVectorDB(
             embedding_dim=1024, metric="cosine", storage_file=db_name
         )
@@ -49,18 +52,30 @@ class LegalVectorDB:
         return len(ids_to_delete)
 
     def insert_legal_chunks(self, chunks, metadata_list, doc_id_to_clear: str = None):
+        started = time.perf_counter()
         doc_ids = {meta.get("doc_id") for meta in metadata_list if meta.get("doc_id")}
         if doc_id_to_clear:
             doc_ids.add(doc_id_to_clear)
 
+        delete_time = 0.0
         if doc_ids:
+            delete_started = time.perf_counter()
             deleted = self.delete_doc_ids(doc_ids)
+            delete_time = time.perf_counter() - delete_started
             if deleted:
                 print(
                     f"--- Deleted {deleted} existing chunks for {list(doc_ids)} before ingest ---"
                 )
 
         if not chunks:
+            self.last_insert_timing = {
+                "delete_time_sec": round(delete_time, 4),
+                "embedding_time_sec": 0.0,
+                "upsert_time_sec": 0.0,
+                "persist_time_sec": 0.0,
+                "total_time_sec": round(time.perf_counter() - started, 4),
+                "chunks_count": 0,
+            }
             return []
 
         texts_to_embed = [
@@ -68,12 +83,14 @@ class LegalVectorDB:
             for chunk in chunks
         ]
 
+        embedding_started = time.perf_counter()
         if hasattr(self.embedder.model, "encode"):
             embeddings = self.embedder.model.encode(
                 texts_to_embed, normalize_embeddings=True
             )
         else:
             embeddings = self.embedder.get_embeddings(texts_to_embed)
+        embedding_time = time.perf_counter() - embedding_started
 
         data_to_upsert = []
         for chunk, vector, metadata in zip(chunks, embeddings, metadata_list):
@@ -98,8 +115,20 @@ class LegalVectorDB:
             for entry in data_to_upsert
         ]
 
+        upsert_started = time.perf_counter()
         self.db.upsert(data_to_upsert)
+        upsert_time = time.perf_counter() - upsert_started
+        persist_started = time.perf_counter()
         self._persist()
+        persist_time = time.perf_counter() - persist_started
+        self.last_insert_timing = {
+            "delete_time_sec": round(delete_time, 4),
+            "embedding_time_sec": round(embedding_time, 4),
+            "upsert_time_sec": round(upsert_time, 4),
+            "persist_time_sec": round(persist_time, 4),
+            "total_time_sec": round(time.perf_counter() - started, 4),
+            "chunks_count": len(chunks),
+        }
         return serializable_entries
 
     def insert_precomputed_entries(

@@ -7,6 +7,111 @@ function escapeHtml(value) {
         .replaceAll("'", "&#39;");
 }
 
+/**
+ * Render inline markdown: **bold**, *italic*, `code`
+ * Uses split-based approach (not regex) for bold — avoids regex failures on unicode text.
+ */
+function renderInlineMarkdown(text) {
+    const raw = String(text ?? "");
+
+    // --- Pass 1: Bold (**text**) via split ---
+    const boldParts = raw.split("**");
+    let result = "";
+    for (let i = 0; i < boldParts.length; i++) {
+        const escaped = escapeHtml(boldParts[i]);
+        if (i % 2 === 1 && i < boldParts.length - 1) {
+            // Odd index with a closing ** → bold
+            result += "<strong>" + escaped + "</strong>";
+        } else if (i % 2 === 1) {
+            // Odd index but no closing ** (unmatched) → show literal **
+            result += escapeHtml("**") + escaped;
+        } else {
+            result += escaped;
+        }
+    }
+
+    // --- Pass 2: Inline code (`code`) ---
+    result = result.replace(/`([^`]+)`/g, "<code>$1</code>");
+
+    // --- Pass 3: Italic (*text*) — only single * not inside <strong> ---
+    result = result.replace(/(?<!\w)\*([^*<>]+?)\*(?!\w)/g, "<em>$1</em>");
+
+    return result;
+}
+
+/**
+ * Convert markdown text → safe HTML for chat bubbles.
+ * Handles: headings, ordered/unordered lists, paragraphs, bold, italic, code.
+ */
+function renderMarkdownSafe(markdown) {
+    const lines = String(markdown ?? "").replace(/\r/g, "").split("\n");
+    const html = [];
+    let listType = null;
+
+    const closeList = () => {
+        if (!listType) return;
+        html.push("</" + listType + ">");
+        listType = null;
+    };
+
+    for (const rawLine of lines) {
+        const line = rawLine.trim();
+
+        // Empty line → close any open list, skip
+        if (!line) {
+            closeList();
+            continue;
+        }
+
+        // Horizontal rule
+        if (/^[-*_]{3,}$/.test(line)) {
+            closeList();
+            html.push("<hr>");
+            continue;
+        }
+
+        // Heading: # ... ####
+        const heading = line.match(/^(#{1,4})\s+(.+)$/);
+        if (heading) {
+            closeList();
+            const lvl = heading[1].length;
+            html.push("<h" + lvl + ">" + renderInlineMarkdown(heading[2]) + "</h" + lvl + ">");
+            continue;
+        }
+
+        // Unordered list: - item or * item (but NOT **bold**)
+        const ulMatch = line.match(/^[-]\s+(.+)$/) || line.match(/^\*(?!\*)\s+(.+)$/);
+        if (ulMatch) {
+            if (listType !== "ul") {
+                closeList();
+                html.push("<ul>");
+                listType = "ul";
+            }
+            html.push("<li>" + renderInlineMarkdown(ulMatch[1]) + "</li>");
+            continue;
+        }
+
+        // Ordered list: accepts both "1. item" and compact LLM output "1.**item**".
+        const olMatch = line.match(/^\d+[.)]\s*(.+)$/);
+        if (olMatch) {
+            if (listType !== "ol") {
+                closeList();
+                html.push("<ol>");
+                listType = "ol";
+            }
+            html.push("<li>" + renderInlineMarkdown(olMatch[1]) + "</li>");
+            continue;
+        }
+
+        // Default: paragraph
+        closeList();
+        html.push("<p>" + renderInlineMarkdown(line) + "</p>");
+    }
+
+    closeList();
+    return '<div class="md-content">' + html.join("") + "</div>";
+}
+
 class App {
     constructor() {
         this.workflowId = `workflow_${Math.random().toString(36).slice(2, 11)}`;
@@ -586,6 +691,20 @@ App.prototype._handleSendChat = function(overrideText) {
 
     let bubble = null;
     let accumulated = "";
+    let _renderTimer = null;
+    const self = this;
+
+    // Debounced render: batch DOM updates at ~50ms intervals during streaming
+    const _debouncedRender = () => {
+        if (_renderTimer) return; // already scheduled
+        _renderTimer = setTimeout(() => {
+            _renderTimer = null;
+            if (bubble) {
+                bubble.innerHTML = `${renderMarkdownSafe(accumulated)}<span class="streaming-cursor"></span>`;
+                self._scrollChatToBottom();
+            }
+        }, 50);
+    };
 
     const historyToSend = [...this.chatHistory];
     this.chatHistory.push({ role: "user", content: message });
@@ -602,18 +721,18 @@ App.prototype._handleSendChat = function(overrideText) {
                 bubble = this._appendAssistantMessage();
             }
             accumulated += token;
-            // Render với newlines → <br> và cursor nhấp nháy
-            bubble.innerHTML = accumulated.replace(/\n/g, "<br>") + `<span class="streaming-cursor"></span>`;
-            this._scrollChatToBottom();
+            _debouncedRender();
         },
         // onDone
         () => {
+            // Cancel any pending debounced render
+            if (_renderTimer) { clearTimeout(_renderTimer); _renderTimer = null; }
             if (!bubble) {
                 thinkingEl.remove();
                 bubble = this._appendAssistantMessage();
             }
-            // Xóa cursor khi xong
-            bubble.innerHTML = accumulated.replace(/\n/g, "<br>");
+            // Final render without cursor
+            bubble.innerHTML = renderMarkdownSafe(accumulated);
             this.chatHistory.push({ role: "assistant", content: accumulated });
             this.chatIsBusy = false;
             if (this.elements.btnSend) this.elements.btnSend.disabled = false;
