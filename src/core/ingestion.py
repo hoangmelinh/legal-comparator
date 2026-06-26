@@ -811,7 +811,7 @@ def prepare_document(
 ) -> dict[str, Any]:
     total_started = time.perf_counter()
     if progress_callback:
-        progress_callback(5, "Dang kiem tra file dau vao")
+        progress_callback(5, "Đang kiểm tra file đầu vào")
 
     source_path = Path(file_path).resolve()
     if not source_path.exists():
@@ -833,7 +833,7 @@ def prepare_document(
     records_meta_path = _prepare_meta_path(records_cache_path)
 
     if progress_callback:
-        progress_callback(20, "Dang chuan hoa PDF")
+        progress_callback(20, "Đang chuẩn hóa PDF")
 
     cache_hit = False
     conversion_method = None
@@ -877,7 +877,7 @@ def prepare_document(
         conversion_method = cache_meta.get("conversion_method")
         cache_io_time = time.perf_counter() - cache_io_started
         if progress_callback:
-            progress_callback(45, "Dang tai ket qua trich xuat tu cache")
+            progress_callback(45, "Đang tải kết quả trích xuất từ cache")
     else:
         normalize_started = time.perf_counter()
         if suffix == ".pdf":
@@ -887,7 +887,7 @@ def prepare_document(
         normalize_time = time.perf_counter() - normalize_started
 
         if progress_callback:
-            progress_callback(45, "Dang trich xuat text tu PDF")
+            progress_callback(45, "Đang trích xuất text từ PDF")
         parse_started = time.perf_counter()
         analysis = _extract_text_and_analyse_pdf(normalized_pdf_path)
         parse_time = time.perf_counter() - parse_started
@@ -914,7 +914,7 @@ def prepare_document(
         cache_io_time = time.perf_counter() - cache_io_started
 
     if progress_callback:
-        progress_callback(70, "Dang hoan tat metadata tai lieu")
+        progress_callback(70, "Đang hoàn tất metadata tài liệu")
 
     if analysis is None:
         raise RuntimeError("Document analysis was not produced.")
@@ -986,7 +986,7 @@ def ingest_document(
     if prepared_doc is not None:
         prepared = prepared_doc
         if progress_callback:
-            progress_callback(75, "Su dung du lieu prepare co san")
+            progress_callback(75, "Sử dụng dữ liệu prepare có sẵn")
     else:
         prepared = prepare_document(
             file_path=file_path,
@@ -1000,7 +1000,7 @@ def ingest_document(
     db = LegalVectorDB(db_name=db_path)
 
     if progress_callback:
-        progress_callback(78, "Dang kiem tra cache ingest")
+        progress_callback(78, "Đang kiểm tra cache ingest")
     vector_cache_path = directories["vectors"] / f"{prepared['cache_key']}.json"
     chunk_cache_path = directories["chunks"] / f"{prepared['cache_key']}.json"
     prepare_timing = prepared.get("timing", {})
@@ -1012,7 +1012,7 @@ def ingest_document(
 
     if not prepared["can_ingest"]:
         if progress_callback:
-            progress_callback(90, "Text qua it, bo qua ingest va tra canh bao")
+            progress_callback(90, "Text quá ít, bỏ qua ingest và trả cảnh báo")
         total_ingest_time = time.perf_counter() - ingest_started
         result = {
             **prepared,
@@ -1041,7 +1041,7 @@ def ingest_document(
             },
         }
         if progress_callback:
-            progress_callback(100, "Hoan tat voi canh bao")
+            progress_callback(100, "Hoàn tất với cảnh báo")
         logger.info(
             "[ingest.total] doc_id=%s ext=%s chunk=%.3fs embed=%.3fs insert=%.3fs total=%.3fs",
             doc_id,
@@ -1054,7 +1054,7 @@ def ingest_document(
         return result
 
     if progress_callback:
-        progress_callback(86, "Dang chunking van ban")
+        progress_callback(86, "Đang chunking văn bản")
 
     chunk_started = time.perf_counter()
     chunks = structural_chunking(
@@ -1069,7 +1069,7 @@ def ingest_document(
     metadata_time = time.perf_counter() - metadata_started
 
     if progress_callback:
-        progress_callback(92, "Dang tao embedding va ingest VectorDB")
+        progress_callback(92, "Đang tạo embedding và ingest VectorDB")
 
     insert_started = time.perf_counter()
     inserted_entries = db.insert_legal_chunks(
@@ -1115,7 +1115,7 @@ def ingest_document(
     }
 
     if progress_callback:
-        progress_callback(100, "Ingest hoan tat")
+        progress_callback(100, "Ingest hoàn tất")
 
     logger.info(
         (

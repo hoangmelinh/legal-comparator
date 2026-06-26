@@ -13,7 +13,9 @@ from __future__ import annotations
 import concurrent.futures
 import difflib
 import json
+import os
 import re
+import time
 import unicodedata
 from collections.abc import Callable
 from difflib import SequenceMatcher
@@ -27,6 +29,97 @@ _TOKEN_REGEX = re.compile(r"\d+(?:[.,]\d+)*%?|\w+|[^\w\s]", re.UNICODE)
 _NUMERIC_REGEX = re.compile(r"\b\d+(?:[.,]\d+)*\b")
 _DATE_REGEX = re.compile(r"\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b")
 _TIME_REGEX = re.compile(r"\b\d{1,2}:\d{2}(?:\s?(?:AM|PM|am|pm))?\b")
+_MONEY_REGEX = re.compile(
+    r"\b\d+(?:[.,]\d+)*\s*(?:vnd|vnđ|đồng|dong|usd|eur|triệu|trieu|tỷ|ty)\b",
+    re.IGNORECASE | re.UNICODE,
+)
+_PERCENT_REGEX = re.compile(r"\b\d+(?:[.,]\d+)*\s*%", re.UNICODE)
+_DURATION_REGEX = re.compile(
+    r"\b\d+(?:[.,]\d+)*\s*(?:ngày|ngay|tháng|thang|năm|nam|giờ|gio)\b",
+    re.IGNORECASE | re.UNICODE,
+)
+_LEGAL_IMPORTANT_TERMS = (
+    "bên a",
+    "ben a",
+    "bên b",
+    "ben b",
+    "bên mua",
+    "ben mua",
+    "bên bán",
+    "ben ban",
+    "bên thuê",
+    "ben thue",
+    "bên cho thuê",
+    "ben cho thue",
+    "không",
+    "khong",
+    "chưa",
+    "chua",
+    "không được",
+    "khong duoc",
+    "không phải",
+    "khong phai",
+    "phải",
+    "phai",
+    "có trách nhiệm",
+    "co trach nhiem",
+    "cam kết",
+    "cam ket",
+    "bảo đảm",
+    "bao dam",
+    "thanh toán",
+    "thanh toan",
+    "nghiệm thu",
+    "nghiem thu",
+    "phạt",
+    "phat",
+    "bồi thường",
+    "boi thuong",
+    "vi phạm",
+    "vi pham",
+    "bảo mật",
+    "bao mat",
+    "chấm dứt",
+    "cham dut",
+    "gia hạn",
+    "gia han",
+    "đơn phương",
+    "don phuong",
+    "quyền",
+    "quyen",
+    "nghĩa vụ",
+    "nghia vu",
+    "thời hạn",
+    "thoi han",
+)
+
+
+def _env_int(name: str, default: int, minimum: int = 1) -> int:
+    try:
+        return max(minimum, int(os.getenv(name, str(default))))
+    except ValueError:
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, str(default)))
+    except ValueError:
+        return default
+
+
+def _perf_log(verbose: bool, message: str):
+    if verbose:
+        print(f"[PERF][compare] {message}")
+
+
+def _normalize_vector_matrix(vectors) -> np.ndarray:
+    matrix = np.asarray(vectors, dtype=np.float32)
+    if matrix.ndim == 1:
+        matrix = matrix.reshape(1, -1)
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    norms[norms == 0] = 1.0
+    return matrix / norms
 
 
 def _comparison_tokens(text: str) -> list[dict]:
@@ -234,6 +327,7 @@ def _get_all_chunks_by_doc(db: LegalVectorDB, doc_id: str) -> list[dict]:
                 "page_start": chunk.get("page_start") or meta.get("page_start"),
                 "page_end": chunk.get("page_end") or meta.get("page_end"),
                 "source_anchors": chunk.get("source_anchors", []),
+                "__vector__": item.get("__vector__"),
             }
         )
     return result
@@ -301,6 +395,26 @@ def _merge_chunk_provenance(chunks: list[dict]) -> dict:
         "page_end": max(pages) if pages else None,
         "anchors": anchors,
     }
+
+
+def _merge_chunk_embedding(chunks: list[dict]) -> np.ndarray | None:
+    vectors = []
+    for chunk in chunks:
+        vector = chunk.get("__vector__")
+        if vector is None:
+            continue
+        arr = np.asarray(vector, dtype=np.float32)
+        if arr.size == 0:
+            continue
+        norm = float(np.linalg.norm(arr))
+        vectors.append(arr / norm if norm > 0 else arr)
+
+    if not vectors:
+        return None
+
+    merged = np.mean(np.vstack(vectors), axis=0)
+    norm = float(np.linalg.norm(merged))
+    return merged / norm if norm > 0 else merged
 
 
 def _normalize_anchor_text(value: str) -> str:
@@ -782,13 +896,15 @@ def _should_use_block_highlight_for_modified(
         len(highlight_payload.get("changed_spans_a", [])),
         len(highlight_payload.get("changed_spans_b", [])),
     )
-    return coverage >= 0.85 or spans_count >= 20
+    return coverage >= 0.5 or spans_count >= 20
 
 
 def _is_minor_wording_change(text_a: str, text_b: str) -> bool:
     if not text_a or not text_b:
         return False
     if _extract_numeric_signals(text_a) != _extract_numeric_signals(text_b):
+        return False
+    if _has_important_legal_diff(text_a, text_b):
         return False
 
     stats = _token_change_stats(text_a, text_b)
@@ -848,6 +964,46 @@ def normalize_for_compare(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip().lower()
 
 
+def _fold_text(text: str) -> str:
+    normalized = unicodedata.normalize("NFD", text or "")
+    without_marks = "".join(
+        char for char in normalized if unicodedata.category(char) != "Mn"
+    )
+    return re.sub(r"\s+", " ", without_marks.lower()).strip()
+
+
+def _changed_text_for_signal_scan(text_a: str, text_b: str) -> str:
+    stats = _token_change_stats(text_a, text_b)
+    tokens_a = stats["tokens_a"]
+    tokens_b = stats["tokens_b"]
+    matcher = SequenceMatcher(None, stats["norms_a"], stats["norms_b"])
+    changed_parts: list[str] = []
+
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        if tag == "equal":
+            continue
+        changed_parts.extend(token["value"] for token in tokens_a[i1:i2])
+        changed_parts.extend(token["value"] for token in tokens_b[j1:j2])
+
+    return " ".join(changed_parts)
+
+
+def _has_important_legal_diff(text_a: str, text_b: str) -> bool:
+    if has_numeric_diff(text_a, text_b):
+        return True
+
+    changed_text = _changed_text_for_signal_scan(text_a, text_b)
+    folded_changed = _fold_text(changed_text)
+    if not folded_changed:
+        return False
+
+    for pattern in (_MONEY_REGEX, _PERCENT_REGEX, _DATE_REGEX, _DURATION_REGEX):
+        if pattern.search(changed_text):
+            return True
+
+    return any(_fold_text(term) in folded_changed for term in _LEGAL_IMPORTANT_TERMS)
+
+
 def run_comparison(
     doc_id_a: str,
     doc_id_b: str,
@@ -856,12 +1012,14 @@ def run_comparison(
     verbose: bool = True,
     progress_callback: Callable[[float, str], None] | None = None,
 ) -> list[dict]:
+    compare_started = time.perf_counter()
     if progress_callback:
         progress_callback(5, "Đang khởi tạo so sánh")
 
     db = LegalVectorDB(db_name=db_path)
     chunks_a = _get_all_chunks_by_doc(db, doc_id_a)
     chunks_b = _get_all_chunks_by_doc(db, doc_id_b)
+    _perf_log(verbose, f"chunks_a={len(chunks_a)} chunks_b={len(chunks_b)}")
 
     if not chunks_a:
         raise ValueError(
@@ -872,6 +1030,7 @@ def run_comparison(
             f"Không tìm thấy dữ liệu cho doc_id='{doc_id_b}'. Hãy ingest file trước."
         )
 
+    structural_started = time.perf_counter()
     grouped_a = _group_by_article(chunks_a)
     grouped_b = _group_by_article(chunks_b)
 
@@ -881,6 +1040,12 @@ def run_comparison(
 
     all_articles = sorted(
         set(grouped_a.keys()) | set(grouped_b.keys()), key=article_sort_key
+    )
+    structural_matches = len(set(grouped_a.keys()) & set(grouped_b.keys()))
+    _perf_log(
+        verbose,
+        "structural_alignment: "
+        f"{time.perf_counter() - structural_started:.2f}s, matches={structural_matches}",
     )
 
     if verbose:
@@ -901,44 +1066,125 @@ def run_comparison(
         for article, chunks in grouped_b.items()
     }
 
-    vec_a_map: dict[str, np.ndarray] = {}
-    vec_b_map: dict[str, np.ndarray] = {}
-    norm_a_map: dict[str, float] = {}
-    norm_b_map: dict[str, float] = {}
+    top_k = _env_int("COMPARE_TOP_K_CANDIDATES", 3)
+    semantic_threshold = _env_float("COMPARE_SEMANTIC_THRESHOLD", 0.72)
+    strong_match_threshold = _env_float("COMPARE_STRONG_MATCH_THRESHOLD", 0.90)
+    exact_threshold = _env_float("COMPARE_EXACT_THRESHOLD", 0.98)
 
-    # Tối ưu: Batch-processing embedding toàn bộ văn bản cùng lúc để tận dụng CPU/GPU parallel math
+    vec_a_map: dict[str, np.ndarray] = {
+        article: vector
+        for article, chunks in grouped_a.items()
+        if (vector := _merge_chunk_embedding(chunks)) is not None
+    }
+    vec_b_map: dict[str, np.ndarray] = {
+        article: vector
+        for article, chunks in grouped_b.items()
+        if (vector := _merge_chunk_embedding(chunks)) is not None
+    }
+
     articles_a = list(text_a_map.keys())
-    texts_a = [text_a_map[art] for art in articles_a]
-    if texts_a:
-        embeddings_a = db.embedder.get_embeddings(texts_a)
-        for art, vec in zip(articles_a, embeddings_a):
-            vec_a_map[art] = vec
-            norm_a_map[art] = float(np.linalg.norm(vec))
-
     articles_b = list(text_b_map.keys())
-    texts_b = [text_b_map[art] for art in articles_b]
-    if texts_b:
-        embeddings_b = db.embedder.get_embeddings(texts_b)
-        for art, vec in zip(articles_b, embeddings_b):
-            vec_b_map[art] = vec
-            norm_b_map[art] = float(np.linalg.norm(vec))
+    missing_a_articles = [article for article in articles_a if article not in grouped_b]
+    missing_b_articles = [article for article in articles_b if article not in grouped_a]
+    semantic_started = time.perf_counter()
 
-    def get_vec_a(article: str):
-        if article not in vec_a_map and article in text_a_map:
-            vec = db.embedder.get_embeddings([text_a_map[article]])[0]
-            vec_a_map[article] = vec
-            norm_a_map[article] = float(np.linalg.norm(vec))
-        return vec_a_map.get(article), norm_a_map.get(article)
+    def get_article_vector(
+        article: str, text_map: dict[str, str], vec_map: dict[str, np.ndarray]
+    ) -> np.ndarray | None:
+        vector = vec_map.get(article)
+        if vector is None and article in text_map:
+            vector = np.asarray(
+                db.embedder.get_embeddings([text_map[article]])[0],
+                dtype=np.float32,
+            )
+            vec_map[article] = vector
+        if vector is None:
+            return None
+        matrix = _normalize_vector_matrix([vector])
+        return matrix[0] if matrix.size else None
 
-    def get_vec_b(article: str):
-        if article not in vec_b_map and article in text_b_map:
-            vec = db.embedder.get_embeddings([text_b_map[article]])[0]
-            vec_b_map[article] = vec
-            norm_b_map[article] = float(np.linalg.norm(vec))
-        return vec_b_map.get(article), norm_b_map.get(article)
+    def semantic_score(article_a: str, article_b: str) -> float:
+        vec_a = get_article_vector(article_a, text_a_map, vec_a_map)
+        vec_b = get_article_vector(article_b, text_b_map, vec_b_map)
+        if vec_a is None or vec_b is None:
+            return 0.0
+        return float(np.dot(vec_a, vec_b))
+
+    candidate_count = 0
+    candidate_pairs: list[tuple[float, str, str]] = []
+    moved_matches: dict[str, dict] = {}
+    moved_b_used: set[str] = set()
+
+    if missing_a_articles and missing_b_articles:
+        missing_vec_a = [
+            article for article in missing_a_articles if article not in vec_a_map
+        ]
+        missing_vec_b = [
+            article for article in missing_b_articles if article not in vec_b_map
+        ]
+        if missing_vec_a:
+            embeddings_a = db.embedder.get_embeddings(
+                [text_a_map[article] for article in missing_vec_a]
+            )
+            for article, vector in zip(missing_vec_a, embeddings_a):
+                vec_a_map[article] = np.asarray(vector, dtype=np.float32)
+        if missing_vec_b:
+            embeddings_b = db.embedder.get_embeddings(
+                [text_b_map[article] for article in missing_vec_b]
+            )
+            for article, vector in zip(missing_vec_b, embeddings_b):
+                vec_b_map[article] = np.asarray(vector, dtype=np.float32)
+
+        matrix_a = _normalize_vector_matrix(
+            [
+                get_article_vector(article, text_a_map, vec_a_map)
+                for article in missing_a_articles
+            ]
+        )
+        matrix_b = _normalize_vector_matrix(
+            [
+                get_article_vector(article, text_b_map, vec_b_map)
+                for article in missing_b_articles
+            ]
+        )
+        sim_matrix = matrix_a @ matrix_b.T if matrix_a.size and matrix_b.size else None
+
+        if sim_matrix is not None:
+            for row_index, article_a in enumerate(missing_a_articles):
+                scored_candidates = []
+                for col_index, article_b in enumerate(missing_b_articles):
+                    score = float(sim_matrix[row_index, col_index])
+                    if score >= semantic_threshold:
+                        scored_candidates.append((score, article_b))
+                scored_candidates.sort(reverse=True, key=lambda item: item[0])
+                for score, article_b in scored_candidates[:top_k]:
+                    candidate_count += 1
+                    candidate_pairs.append((score, article_a, article_b))
+
+    for score, article_a, article_b in sorted(
+        candidate_pairs, reverse=True, key=lambda item: item[0]
+    ):
+        if score < strong_match_threshold:
+            continue
+        if article_a in moved_matches or article_b in moved_b_used:
+            continue
+        moved_matches[article_a] = {"article_b": article_b, "score": score}
+        moved_b_used.add(article_b)
+
+    _perf_log(
+        verbose,
+        f"semantic_matching: {time.perf_counter() - semantic_started:.2f}s, "
+        f"candidates={candidate_count}",
+    )
 
     results: list[dict | None] = []
     pending_llm_tasks = []
+    exact_started = time.perf_counter()
+    exact_matches = 0
+    llm_skipped = 0
+    llm_skipped_by_exact = 0
+    llm_skipped_by_minor_rule = 0
+    cache_hits = 0
     total_articles = max(1, len(all_articles))
 
     for article_index, article in enumerate(all_articles, start=1):
@@ -968,7 +1214,10 @@ def run_comparison(
         )
 
         if not in_a and in_b:
+            if article in moved_b_used:
+                continue
             block_highlights_b = _build_clause_highlights(provenance_b, strike=False)
+            llm_skipped += 1
             results.append(
                 {
                     "article": article,
@@ -991,37 +1240,31 @@ def run_comparison(
                     "changed_spans_a": [],
                     "changed_spans_b": [],
                     "highlight_mode": "block",
+                    "decision_source": "structural",
+                    "match_reason": "present only in document B",
                 }
             )
             continue
 
         if in_a and not in_b:
-            vec_a, norm_a = get_vec_a(article)
+            moved_match = moved_matches.get(article)
             best_match_article = None
             best_sim = 0.0
             best_text_b = ""
             best_provenance_b = None
 
-            for article_b, candidate_text_b in text_b_map.items():
-                if not candidate_text_b.strip():
-                    continue
-                vec_b, norm_b = get_vec_b(article_b)
-                sim = (
-                    float(np.dot(vec_a, vec_b) / (norm_a * norm_b))
-                    if (norm_a > 0 and norm_b > 0)
-                    else 0.0
+            if moved_match:
+                article_b = moved_match["article_b"]
+                best_sim = moved_match["score"]
+                best_match_article = (
+                    article_b
+                    if "Dieu" in article_b or "Äiá»u" in article_b
+                    else f"Dieu {article_b}"
                 )
-                if sim > best_sim:
-                    best_sim = sim
-                    best_match_article = (
-                        article_b
-                        if "Dieu" in article_b or "Điều" in article_b
-                        else f"Dieu {article_b}"
-                    )
-                    best_text_b = candidate_text_b
-                    best_provenance_b = prov_b_map[article_b]
+                best_text_b = text_b_map.get(article_b, "")
+                best_provenance_b = prov_b_map.get(article_b)
 
-            if best_sim >= 0.85 and best_provenance_b:
+            if best_sim >= strong_match_threshold and best_provenance_b:
                 highlight_payload = _build_highlight_payload(
                     text_a, best_text_b, provenance_a, best_provenance_b
                 )
@@ -1029,6 +1272,7 @@ def run_comparison(
                 moved_highlights_b = _build_clause_highlights(
                     best_provenance_b, strike=False
                 )
+                llm_skipped += 1
                 results.append(
                     {
                         "article": article,
@@ -1050,12 +1294,16 @@ def run_comparison(
                         "citation_anchor_a": highlight_payload["citation_anchor_a"],
                         "citation_anchor_b": highlight_payload["citation_anchor_b"],
                         "highlight_mode": "block",
+                        "similarity_score": round(best_sim, 4),
+                        "decision_source": "semantic",
+                        "match_reason": "high semantic similarity with changed article/breadcrumb",
                     }
                 )
             else:
                 removed_highlights_a = _build_clause_highlights(
                     provenance_a, strike=True
                 )
+                llm_skipped += 1
                 results.append(
                     {
                         "article": article,
@@ -1079,11 +1327,16 @@ def run_comparison(
                         "changed_spans_a": [],
                         "changed_spans_b": [],
                         "highlight_mode": "block",
+                        "decision_source": "structural",
+                        "match_reason": "present only in document A",
                     }
                 )
             continue
 
         if normalize_for_compare(text_a) == normalize_for_compare(text_b):
+            exact_matches += 1
+            llm_skipped += 1
+            llm_skipped_by_exact += 1
             results.append(
                 {
                     "article": article,
@@ -1103,28 +1356,28 @@ def run_comparison(
                     "highlight_anchors_b": [],
                     "changed_spans_a": [],
                     "changed_spans_b": [],
+                    "similarity_score": 1.0,
+                    "decision_source": "exact",
+                    "match_reason": "normalized text is identical",
                 }
             )
             continue
 
         token_stats = _token_change_stats(text_a, text_b)
         is_numeric = has_numeric_diff(text_a, text_b)
+        important_diff = _has_important_legal_diff(text_a, text_b)
         is_minor = _is_minor_wording_change(text_a, text_b)
         lexical_sim = token_stats["ratio"]
         semantic_sim = 0.0
 
-        if not is_numeric and not is_minor and lexical_sim >= 0.93:
+        if not is_numeric and not is_minor and lexical_sim >= exact_threshold:
             semantic_sim = lexical_sim
         elif not is_numeric and not is_minor:
-            vec_a, norm_a = get_vec_a(article)
-            vec_b, norm_b = get_vec_b(article)
-            semantic_sim = (
-                float(np.dot(vec_a, vec_b) / (norm_a * norm_b))
-                if (norm_a > 0 and norm_b > 0)
-                else 0.0
-            )
+            semantic_sim = semantic_score(article, article)
 
-        if is_minor:
+        if is_minor or (not important_diff and semantic_sim >= strong_match_threshold):
+            llm_skipped += 1
+            llm_skipped_by_minor_rule += 1
             results.append(
                 {
                     "article": article,
@@ -1147,11 +1400,14 @@ def run_comparison(
                     "citation_anchor_a": None,
                     "citation_anchor_b": None,
                     "highlight_mode": "none",
+                    "similarity_score": round(max(lexical_sim, semantic_sim), 4),
+                    "decision_source": "heuristic",
+                    "match_reason": "high similarity without important legal diff",
                 }
             )
             continue
 
-        if not is_numeric and semantic_sim >= 0.93:
+        if not is_numeric and not important_diff and semantic_sim >= exact_threshold:
             highlight_payload = _build_highlight_payload(
                 text_a, text_b, provenance_a, provenance_b
             )
@@ -1170,6 +1426,7 @@ def run_comparison(
                     highlight_payload["highlight_anchors_b"], strike=False
                 )
                 highlight_mode = "inline"
+            llm_skipped += 1
             results.append(
                 {
                     "article": article,
@@ -1192,6 +1449,9 @@ def run_comparison(
                     "citation_anchor_a": highlight_payload["citation_anchor_a"],
                     "citation_anchor_b": highlight_payload["citation_anchor_b"],
                     "highlight_mode": highlight_mode,
+                    "similarity_score": round(semantic_sim, 4),
+                    "decision_source": "heuristic",
+                    "match_reason": "near-exact semantic match without important legal diff",
                 }
             )
             continue
@@ -1203,6 +1463,8 @@ def run_comparison(
                 "text_a": text_a,
                 "text_b": text_b,
                 "is_numeric": is_numeric,
+                "important_diff": important_diff,
+                "similarity_score": max(lexical_sim, semantic_sim),
                 "token_stats": token_stats,
                 "result_index": len(results),
                 "provenance_a": provenance_a,
@@ -1211,7 +1473,17 @@ def run_comparison(
         )
         results.append(None)
 
+    _perf_log(
+        verbose,
+        f"exact_matches={exact_matches}",
+    )
+    _perf_log(
+        verbose,
+        f"exact_near_exact: {time.perf_counter() - exact_started:.2f}s",
+    )
+
     if pending_llm_tasks:
+        llm_started = time.perf_counter()
         if progress_callback:
             progress_callback(
                 88, f"Đang phân tích {len(pending_llm_tasks)} điều khoản bằng LLM"
@@ -1224,9 +1496,14 @@ def run_comparison(
                 task["article_label"],
                 model=model,
                 has_numeric_change=task["is_numeric"],
+                compare_type="important_modified"
+                if task.get("important_diff")
+                else "modified",
             )
 
-        max_workers = min(2, len(pending_llm_tasks))
+        max_workers = min(
+            _env_int("COMPARE_LLM_PARALLEL", 2), len(pending_llm_tasks)
+        )
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {
                 executor.submit(_run_llm, task): task for task in pending_llm_tasks
@@ -1240,6 +1517,9 @@ def run_comparison(
                     _, llm_result = future.result()
                 except Exception as exc:
                     llm_result = {"status": "ERROR", "summary": f"Lỗi gọi LLM: {exc}"}
+
+                if llm_result.get("__cache_hit"):
+                    cache_hits += 1
 
                 completed += 1
                 if progress_callback:
@@ -1352,7 +1632,28 @@ def run_comparison(
                         llm_result.get("citation_b", ""), task["provenance_b"]
                     ),
                     "highlight_mode": highlight_mode,
+                    "similarity_score": round(task.get("similarity_score", 0.0), 4),
+                    "decision_source": "cache"
+                    if llm_result.get("__cache_hit")
+                    else "LLM",
+                    "match_reason": "LLM analysis required for important or uncertain diff",
                 }
+
+    if pending_llm_tasks:
+        _perf_log(verbose, f"llm_total: {time.perf_counter() - llm_started:.2f}s")
+    else:
+        _perf_log(verbose, "llm_total: 0.00s")
+
+    _perf_log(
+        verbose,
+        f"llm_required={len(pending_llm_tasks)}, llm_skipped={llm_skipped}, "
+        f"cache_hits={cache_hits}",
+    )
+    _perf_log(
+        verbose,
+        f"llm_skipped_by_exact={llm_skipped_by_exact}, "
+        f"llm_skipped_by_minor_rule={llm_skipped_by_minor_rule}",
+    )
 
     for entry in results:
         if not entry:
@@ -1365,9 +1666,14 @@ def run_comparison(
         entry.setdefault("preview_pdf_path_b", pdf_anchor_b.get("preview_pdf_path"))
         entry.setdefault("source_hash_a", pdf_anchor_a.get("source_hash"))
         entry.setdefault("source_hash_b", pdf_anchor_b.get("source_hash"))
+        entry.setdefault("decision_source", "heuristic")
+        entry.setdefault("match_reason", "")
+        entry.setdefault("similarity_score", None)
 
     if progress_callback:
         progress_callback(100, "So sanh hoan tat")
+
+    _perf_log(verbose, f"total: {time.perf_counter() - compare_started:.2f}s")
 
     return [entry for entry in results if entry]
 

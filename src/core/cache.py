@@ -29,11 +29,17 @@ class LLMCache:
 
     def get(self, prompt: str, model: str) -> dict:
         key = hashlib.md5(f"{model}_{prompt}".encode()).hexdigest()
-        with self._lock:
-            return self.cache.get(key)
+        return self.get_by_key(key)
 
     def set(self, prompt: str, model: str, result: dict):
         key = hashlib.md5(f"{model}_{prompt}".encode()).hexdigest()
+        self.set_by_key(key, result)
+
+    def get_by_key(self, key: str) -> dict:
+        with self._lock:
+            return self.cache.get(key)
+
+    def set_by_key(self, key: str, result: dict):
         with self._lock:
             self.cache[key] = result
             self._save()

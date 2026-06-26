@@ -679,5 +679,543 @@
     "impact_level": "Nho",
     "citation_a": "Chưa có phần 'Thư ký', 'Trường', 'Phạm Đình Trường' trong văn bản của Ban A.",
     "citation_b": "Ban B có thêm thông tin về 'Thư ký', 'Trường', 'Phạm Đình Trường'."
+  },
+  "098a20622e5d43df530d39361a5eec51": {
+    "status": "MODIFIED",
+    "summary": "Thời gian thực hiện hợp đồng được tăng từ 45 ngày lên 60 ngày. Điều này ảnh hưởng đến tiến độ dự án tổng thể.",
+    "exact_difference": "Thay đổi về thời gian thực hiện: từ 45 ngày trong bản A thành 60 ngày trong bản B.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tổng thời gian thực hiện Hợp đồng là 45 ngày kể từ ngày Bên A phê duyệt kịch bản tổng thể. Bên A có trách nhiệm phản hồi đối với từng đợt bàn giao trong vòng 03 ngày làm việc.",
+    "citation_b": "Tổng thời gian thực hiện Hợp đồng là 60 ngày kể từ ngày Bên A phê duyệt kịch bản tổng thể. Bên A có trách nhiệm phản hồi đối với từng đợt bàn giao trong vòng 03 ngày làm việc."
+  },
+  "c3c8fb8bb6f34db71dac5e7ab0f7900d": {
+    "status": "MODIFIED",
+    "summary": "Số lượng sản phẩm và số vòng chỉnh sửa đã được tăng lên.",
+    "exact_difference": "Trong bản A, Video dọc mạng xã hội có số lượng là 12 và số vòng chỉnh sửa là 03. Trong bản B, số lượng đã tăng lên thành 15 và số vòng chỉnh sửa cũng tăng lên thành 04. Tương tự, Bộ ảnh tĩnh từ 20 sản phẩm trong bản A đã được tăng lên thành 24 sản phẩm trong bản B.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Sản phẩm Video dọc mạng xã hội: Số lượng từ 12 (Bản A) đến 15 (Bản B); Số vòng chỉnh sửa từ 03 (Bản A) đến 04 (Bản B).",
+    "citation_b": "Sản phẩm Bộ ảnh tĩnh: Số lượng từ 20 (Bản A) đến 24 (Bản B)"
+  },
+  "3fa9ec6767d0621c907a230f14d04cd8": {
+    "status": "MODIFIED",
+    "summary": "Giá trị hợp đồng và tiến độ than toán được điều chỉnh.",
+    "exact_difference": "Giá trị hợp đồng từ 180.000.000 đồng trong bản A thành 225.000.000 đồng trong bản B; tiến độ than toán thay đổi từ 30% - 40% - 30% thành 20% - 50% - 30%.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tổng giá trị Hợp đồng là 180.000.000 đồng, chưa bao gồm VAT. Tiến độ than toán được thực hiện theo tỷ lệ 30% - 40% - 30% tương ứng với các mốc ký hợp đồng, duyệt bản dựng đầu tiên và nghiệm thu cuối cùng.",
+    "citation_b": "Tổng giá trị Hợp đồng là 225.000.000 đồng, chưa bao gồm VAT. Tiến độ than toán được thực hiện theo tỷ lệ 20% - 50% - 30% tương ứng với các mốc ký hợp đồng, duyệt bản dựng đầu tiên và nghiệm thu cuối cùng."
+  },
+  "322d6799186d786226afb809c03a7e4e": {
+    "status": "MODIFIED",
+    "summary": "Có sự khác biệt về thời lượng video và số ảnh tĩnh được phép sử dụng trong portfolio, cũng như việc công bố sản phẩm có sử dụng công cụ trí tuệ nhân tạo.",
+    "exact_difference": "Thời gian trích đoạn video từ 30 giây (Ban A) tăng lên 45 giây (Ban B); Số ảnh tĩnh từ 05 (Ban A) tăng lên 08 (Ban B). Bên B yêu cầu công bố bằng văn bản nếu sử dụng công cụ trí tuệ nhân tạo trong quá trình sản xuất.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Điều 5. QUYỀN SỞ HỮU TRÍ TUỆ: Bên B được quyền sử dụng tối đa 30 giây trích đoạn video và 05 ảnh tĩnh vào portfolio của mình sau khi chiến dịch chính thức công bố.",
+    "citation_b": "Điều 5. QUYỀN SỞ HỮU TRÍ TUỆ: Bên B được quyền sử dụng tối đa 45 giây trích đoạn video và 08 ảnh tĩnh vào portfolio của mình sau khi chiến dịch chính thức công bố, với điều kiện ghi rõ tên chiến dịch của Bên A. Bên B phải công bố bằng văn bản cho Bên A nếu bất kỳ sản phẩm nào có sử dụng công cụ trí tuệ nhân tạo tạo sinh trong quá trình lên ý tưởng, dựng ảnh hoặc xử lý hậu kỳ."
+  },
+  "7f591d6c58b5052327e0db9db2486328": {
+    "status": "MODIFIED",
+    "summary": "Thời gian bảo mật thông tin được tăng từ 3 năm thành 5 năm.",
+    "exact_difference": "Thời hạn bảo mật thông tin, ngân sách và dữ liệu khách hàng đã được thay đổi từ 03 năm thành 05 năm.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Các thông tin về chiến dịch, kế hoạch truyền thông, ngân sách và dữ liệu khách hàng phải được bảo mật trong thời hạn 03 năm kể từ ngày Hợp đồng chấm dứt.",
+    "citation_b": "Các thông tin về chiến dịch, kế hoạch truyền thông, ngân sách và dữ liệu khách hàng phải được bảo mật trong thời hạn 05 năm kể từ ngày Hợp đồng chấm dứt."
+  },
+  "ca95ef6149049335555aab2fd6c4c756": {
+    "status": "MODIFIED",
+    "summary": "Noi dung hai ban giong nhau.",
+    "exact_difference": "Không có sự thay đổi cụ thể nào trong phần chính của văn bản.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Lon",
+    "citation_a": "Trich nguyen van phan bi doi tu BAN A. Toi da 50 tu.",
+    "citation_b": "Trich nguyen van phan moi tu BAN B. Toi da 50 tu."
+  },
+  "b6e69d7c94b20f338df99bb457507090": {
+    "status": "IDENTICAL",
+    "summary": "Noi dung hai ban giong nhau.",
+    "exact_difference": "",
+    "change_type": "None",
+    "impact_level": "Nho",
+    "citation_a": "Trich nguyen van phan bi doi tu BAN A. Toi da 50 tu.",
+    "citation_b": "Trich nguyen van phan moi tu BAN B. Toi da 50 tu."
+  },
+  "1f2acb634407501632fe6513258b9b99": {
+    "status": "IDENTICAL",
+    "summary": "Noi dung hai ban giong nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "impact_level": "",
+    "citation_a": "",
+    "citation_b": ""
+  },
+  "7d82bbc61950cae7b17e494bcb8cc8cd": {
+    "status": "MODIFIED",
+    "summary": "BAN A và BAN B có sự khác biệt về thời hạn hợp đồng.",
+    "exact_difference": "Thời hạn của Hợp đồng trong BAN A là 36 tháng, trong khi BAN B là 48 tháng.",
+    "change_type": "Di chuyen vi tri",
+    "impact_level": "Lon",
+    "citation_a": "Trich nguyen van phan bi doi tu BAN A. Toi da 50 tu.",
+    "citation_b": "Trich nguyen van phan moi tu BAN B. Toi da 50 tu."
+  },
+  "5990218c1425c6c365bb4216cd02f280": {
+    "status": "MODIFIED",
+    "summary": "Noi dung hai ban khac nhau.",
+    "exact_difference": "Thay đổi trong các tiêu chí sau: Khảo sát hiện trạng và phân tích yêu cầu, Thiết kế giải pháp và cấu hình phân hệ lõi.",
+    "change_type": "Them moi",
+    "impact_level": "Lon",
+    "citation_a": "Trích nguồn văn bản của BAN A. Có 50 từ.",
+    "citation_b": "Trích nguồn văn bản của BAN B. Có 50 từ."
+  },
+  "c3a1672e10911d1f2d7b7933bc256747": {
+    "status": "MODIFIED",
+    "summary": "Thời gian thực hiện hợp đồng từ 45 ngày trong bản A được sửa đổi thành 60 ngày trong bản B.",
+    "exact_difference": "Thời gian thực hiện Hợp đồng: Bản A là 45 ngày, Bản B là 60 ngày.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tổng thời gian thực hiện Hợ合同期限在两个版本中从45天修改为了60天。",
+    "citation_b": "总执行时间在本B中被修改为60天。"
+  },
+  "6557ae92e0cd845e04b47c1bc92ea001": {
+    "status": "MODIFIED",
+    "summary": "Số lượng sản phẩm và số vòng chỉnh sửa đã được tăng lên trong bản B.",
+    "exact_difference": "Trong bản A, số lượng video dọc mạng xã hội là 12 với 3 vòng chỉnh sửa; trong bản B, số lượng này tăng lên 15 và số vòng chỉnh sửa tăng thêm 1. Số lượng bộ ảnh tĩnh cũng từ 20 tăng lên 24.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Lon",
+    "citation_a": "Sản phẩm Video dọc mạng xã hội: 12; Số vòng chỉnh sửa: 3.",
+    "citation_b": "Sản phẩm Video dọc mạng xã hội: 15; Số vòng chỉnh sửa: 4. Bộ ảnh tĩnh: 24."
+  },
+  "db06f2a25b1e967e7f4b2fcc04cd9d2b": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn thuê và thời điểm bàn giao có sự khác biệt giữa hai phiên bản.",
+    "exact_difference": "Thời hạn thuê từ 03 năm thành 05 năm; thời điểm bàn giao từ 01/05/2026 thành 15/05/2026.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn thuê là 03 năm kể từ ngày bàn giao thực tế mặt bằng. Bên A bàn giao mặt bằng cho Bên B chậm nhất vào ngày 01/05/2026.",
+    "citation_b": "Thời hạn thuê là 05 năm kể từ ngày bàn giao thực tế mặt bằng. Bên A bàn giao mặt bằng cho Bên B chậm nhất vào ngày 15/05/2026."
+  },
+  "c912ba5395bf7710e1fc9df0137f101d": {
+    "status": "MODIFIED",
+    "summary": "Tiền thuê cố định và tiền đặt cọc đã được điều chỉnh tăng lên. Giá thuê cũng có tốc độ điều chỉnh khác nhau.",
+    "exact_difference": "Tiền thuê cố định từ 45.000.000 đồng/tháng (Ban A) thay đổi thành 48.000.000 đồng/tháng (Ban B). Tiền đặt cọc từ 90.000.000 đồng (Ban A) tăng lên 120.000.000 đồng (Ban B). Tốc độ điều chỉnh giá thuê cũng thay đổi từ 5% mỗi 12 tháng sang 7% mỗi 24 tháng.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tiền thuê cố định là 45.000.000 đồng/tháng, chưa bao gồm VAT. Tiền đặt cọc là 90.000.000 đồng, được Bên B thanh toán trong vòng 03 ngày kể từ ngày ký Hợp đồng. Giá thuê được điều chỉnh tăng 5% mỗi 12 tháng kể từ năm thuê tiếp theo.",
+    "citation_b": "Tiền thuê cố định là 48.000.000 đồng/tháng, chưa bao gồm VAT. Tiền đặt cọc là 120.000.000 đồng, được Bên B thanh toán trong vòng 03 ngày kể từ ngày ký Hợp đồng. Giá thuê được điều chỉnh tăng 7% mỗi 24 tháng kể từ năm thuê tiếp theo."
+  },
+  "e2909166112095600a20eaa3fe5a6952": {
+    "status": "MODIFIED",
+    "summary": "Điều khoản này có sự khác biệt về việc phân chia chi phí bảo trì hệ thống PCCC và điện chung. Trong bản A, tất cả chi phí này do Bên B chịu, trong khi bản B quy định Bên B chỉ chịu 50%.",
+    "exact_difference": "Bên A không đề cập đến chi phí bảo trì hệ thống PCCC và điện chung, trong khi Bên B quy định Bên B phải chịu 50% của các chi phí này.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Bên A không đề cập đến chi phí bảo trì hệ thống PCCC và điện chung.",
+    "citation_b": "Bên B quy định Bên B phải chịu 50% của các chi phí bảo trì hệ thống PCCC và điện chung."
+  },
+  "888283c24293f918c66d8bb7e538a99f": {
+    "status": "MODIFIED",
+    "summary": "Điều khoản này có sự khác biệt về thời gian thông báo trước khi đơn phương chấm dứt hợp đồng và điều kiện sử dụng đặt cọc. Thời gian thông báo từ 60 ngày trong bản A giảm xuống còn 45 ngày trong bản B, và số lần nhắc nhở từ 1 trở lên tăng lên 2 lần trong bản B.",
+    "exact_difference": "Thời gian thông báo trước khi đơn phương chấm dứt hợp đồng: Bản A là 60 ngày, Bản B là 45 ngày. Số lần nhắc nhở về việc chậm thanh toán tiền thuê: Bản A chỉ cần 1 lần, Bản B yêu cầu 2 lần.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Bên muốn đơn phương chấm dứt Hợp đồng trước hạn phải thông báo cho bên còn lại trước ít nhất 60 ngày. Nếu Bên B chậm thanh toán tiền thuê từ 15 ngày trở lên sau khi đã được nhắc nhở bằng văn bản, Bên A có quyền tạm ngừng cung cấp quyền sử dụng mặt bằng và yêu cầu khắc phục trong thời hạn hợp lý.",
+    "citation_b": "Bên muốn đơn phương chấm dứt Hợp đồng trước hạn phải thông báo cho bên còn lại trước ít nhất 45 ngày. Nếu Bên B chậm thanh toán tiền thuê từ 10 ngày trở lên sau khi đã được nhắc nhở bằng văn bản 02 lần, Bên A có quyền chấm dứt Hợp đồng và khấu trừ khoản đặt cọc để bù trừ nghĩa vụ còn thiếu."
+  },
+  "91bd43c5bbac56fd6eff314565f22910": {
+    "status": "MODIFIED",
+    "summary": "Điều khoản số 7 trong bản A đề cập đến việc sửa đổi và bổ sung hợp đồng, trong khi bản B tập trung vào trách nhiệm bảo hiểm và sự kiện bất khả kháng. Điều này cho thấy sự thay đổi về nội dung chính của điều khoản.",
+    "exact_difference": "Bản A nói về việc sửa đổi và bổ sung hợp đồng phải được lập thành văn bản và có chữ ký hợp lệ, trong khi bản B đề cập đến trách nhiệm bảo hiểm cháy nổ và giảm tiền thuê do sự kiện bất khả kháng gây gián đoạn kinh doanh.",
+    "change_type": "Sửa đổi nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Mọi sửa đổi, bổ sung Hợp đồng phải được lập thành văn bản và có chữ ký hợp lệ của các bên.",
+    "citation_b": "Bên B có trách nhiệm mua bảo hiểm cháy nổ bắt buộc đối với tài sản do mình đầu tư, lắp đặt trong mặt bằng thuê."
+  },
+  "36c6d2cfdcaf986b6002131c362bb001": {
+    "status": "IDENTICAL",
+    "summary": "Noi dung hai ban giong nhau.",
+    "exact_difference": "",
+    "change_type": "",
+    "impact_level": "Nho",
+    "citation_a": "Cộng Hoà Xã Hội Chủ Nghĩa Việt Nam Độc lập ­ Tự do ­ Hạnh phúc Hà Nội, ngày 20 tháng 03 năm 2026 HỢP ĐỒNG THUÊ NHÀ – Căn cứ Bộ luật Dân sự số 91/2015/QH13 ngày 24/11/2015 – Căn cứ vào Luật Thương mại số 36/2005/QH11 ngày 14 tháng 06 năm 2005 – Căn cứ vào nhu cầu và sự thỏa thuận của các bên tham gia Hợp đồng Hôm nay, ngày 16 tháng 04 năm 2025, các Bên gồm: BÊN CHO THUÊ (Bên A): Ông: Nguyễn Văn A CMND số: 0012005005489 Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội BÊN THUÊ (Bên B) : Ông: Nguyễn Văn B CMND số:00120500467 Nơi ĐKTT: 67 Phùng Hưng, Hà Đông, Hà Nội Bên A và Bên B sau đây gọi chung là “Hai Bên” hoặc “Các Bên”. Sau khi thảo luận, Hai Bên thống nhất đi đến ký kết Hợp đồng thuê nhà (“Hợp Đồng”) với các điều khoản và điều kiện dưới đây:",
+    "citation_b": "Cộng Hoà Xã Hội Chủ Nghĩa Việt Nam Độc lập ­ Tự do ­ Hạnh phúc Hà Nội, ngày 18 tháng 03 năm 2026 HỢP ĐỒNG THUÊ NHÀ – Căn cứ Bộ luật Dân sự số 91/2015/QH13 ngày 24/11/2015 – Căn cứ vào Luật Thương mại số 36/2005/QH11 ngày 14 tháng 06 năm 2005 – Căn cứ vào nhu cầu và sự thỏa thuận của các bên tham gia Hợp đồng Hôm nay, ngày 16 tháng 04 năm 2025, các Bên gồm: BÊN CHO THUÊ (Bên A): Ông: Nguyễn Văn A CMND số: 0012005005489 Nơi ĐKTT: 89 Phùng Hưng, Hà Đông, Hà Nội BÊN THUÊ (Bên B) : Ông: Nguyễn Văn B CMND số:00120500467 Nơi ĐKTT: 67 Phùng Hưng, Hà Đông, Hà Nội Bên A và Bên B sau đây gọi chung là “Hai Bên” hoặc “Các Bên”. Sau khi thảo luận, Hai Bên thống nhất đi đến ký kết Hợp đồng thuê nhà (“Hợp Đồng”) với các điều khoản và điều kiện dưới đây:"
+  },
+  "2a0b87dc4241b6cddcefc402d16e4941": {
+    "status": "MODIFIED",
+    "summary": "Điểm khác biệt chính là trong Điều 4.2 của Bản B đã thêm 'tới bên B' vào câu điều kiện bồi thường khi Bên A đơn phương chấm dứt hợp đồng.",
+    "exact_difference": "Trong Bản B, câu 4.2 đã thay đổi từ 'bên A sẽ phải hoàn trả lại số tiền đặt cọc, bồi thường thêm một khoản bằng chính tiền đặt cọc và hỗ trợ Bên B thêm khoản phí di dời là 5.000.000 VNĐ' sang 'bên A sẽ phải hoàn trả lại Bên B số tiền đặt cọc và phải bồi thường thêm một khoản bằng chính tiền đặt cọc.'",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Nếu bên A đơn phương chấm dứt hợp đồng mà không thực hiện nghĩa vụ báo trước, bên A sẽ phải hoàn trả lại số tiền đặt cọc, bồi thường thêm một khoản bằng chính tiền đặt cọc và hỗ trợ Bên B thêm khoản phí di dời là 5.000.000 VNĐ",
+    "citation_b": "Nếu bên A đơn phương chấm dứt hợp đồng mà không thực hiện nghĩa vụ báo trước tới bên B thì bên A sẽ phải hoàn trả lại Bên B số tiền đặt cọc và phải bồi thường thêm một khoản bằng chính tiền đặt cọc."
+  },
+  "1704339b43896c4b6f04b4bde2e21a37": {
+    "status": "MODIFIED",
+    "summary": "Giá trị tạm tính của hợp đồng trong bản B cao hơn bản A khoảng 570 triệu đồng.",
+    "exact_difference": "Giá trị tạm tính từ 4.850.000.000 đồng (bản A) tăng lên 5.420.000.000 đồng (bản B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Giá trị tạm tính của Hợp đồng là 4.850.000.000 đồng, chưa bao gồm thuế giá trị gia tăng.",
+    "citation_b": "Giá trị tạm tính của Hợp đồng là 5.420.000.000 đồng, chưa bao gồm thuế giá trị gia tăng."
+  },
+  "32e81c9f58267336a3b65513daea2590": {
+    "status": "MODIFIED",
+    "summary": "Tiến độ dự án trong bản A là 180 ngày, trong khi bản B là 210 ngày. Mức báo cáo sự chậm trễ cũng khác nhau từ 7 ngày làm việc trong bản A so với 5 ngày làm việc trong bản B.",
+    "exact_difference": "Tiến độ dự kiến được thay đổi từ 180 ngày (bản A) sang 210 ngày (bản B). Mức báo cáo sự chậm trễ cũng thay đổi từ 7 ngày làm việc (bản A) thành 5 ngày làm việc (bản B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tiến độ dự kiến của dự án là 180 (một trăm tám mươi) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể.",
+    "citation_b": "Tiến độ dự kiến của dự án là 210 (hai trăm mười) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể."
+  },
+  "aa30cbc80f5fdc0828413d768be6cc21": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn than toán và tỷ lệ tạm giữ tiền thanh toán đã được sửa đổi từ bản A sang bản B.",
+    "exact_difference": "Thời hạn thanh toán từ 15 ngày làm việc (bản A) thành 20 ngày làm việc. Tỷ lệ tạm giữ tiền thanh toán cuối cùng từ 5% (bản A) tăng lên 10%, và thời gian tạm giữ tối đa từ 60 ngày (bản A) tăng lên 90 ngày (bản B).",
+    "change_type": "Sửa đổi nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn thanh toán là 15 ngày làm việc, tỷ lệ tạm giữ tiền thanh toán cuối cùng là 5%, thời gian tạm giữ tối đa không vượt quá 60 ngày.",
+    "citation_b": "Thời hạn thanh toán là 20 ngày làm việc, tỷ lệ tạm giữ tiền thanh toán cuối cùng là 10%, thời gian tạm giữ tối đa không vượt quá 90 ngày."
+  },
+  "32f04bfe84914b2d1d9c9c9e85cb5adb": {
+    "status": "MODIFIED",
+    "summary": "Thời gian bảo hành tối thiểu được tăng từ 12 tháng thành 18 tháng.",
+    "exact_difference": "Điều khoản 16.1 của bản B đã nâng thời gian bảo hành tối thiểu lên 18 tháng so với 12 tháng trong bản A.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời gian bảo hành tối thiểu của hệ thống là 12 (mười hai) tháng kể từ ngày nghiệm thu cuối cùng.",
+    "citation_b": "Thời gian bảo hành tối thiểu của hệ thống là 18 (mười tám) tháng kể từ ngày nghiệm thu cuối cùng."
+  },
+  "9ce24f3cbecbc2161b52b0fc5a9afa53": {
+    "status": "MODIFIED",
+    "summary": "Không có sự khác biệt đáng chú ý giữa hai phiên bản. Cả hai đều quy định về việc giữ bí mật thông tin trong quá trình đàm phán, ký kết và thực hiện hợp đồng, bao gồm cả thông tin được thể hiện bằng nhiều hình thức khác nhau. Tuy nhiên, phiên bản B có dấu hiệu bị cắt đứt ở cuối câu 19.3.",
+    "exact_difference": "Phiên bản B có đoạn văn cuối cùng của Điều 19.3 bị cắt đứt, trong khi đó phiên bản A hoàn chỉnh.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Nho",
+    "citation_a": "Bản A: 'Bên nhận thông tin chỉ được phép sử dụng thông tin mật cho mục đích thực hiện Hợp đồng; không được sao chép, tiết lộ, chuyển giao hoặc cho phép bên thứ ba tiếp cận nếu khôn...'",
+    "citation_b": "Bản B: 'Bên nhận thông tin chỉ được phép sử dụng thông tin mật cho mục đích thực hiện Hợp đồng; không được sao chép, tiết lộ, chuyển giao hoặc cho phép bên thứ ba tiếp cận nếu khôn...'"
+  },
+  "9e35131912ffe0a8693aefb4f34154d7": {
+    "status": "MODIFIED",
+    "summary": "Câu 20.2 của bản B thêm một từ 'và' trước 'Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập', không ảnh hưởng đến nội dung chính.",
+    "exact_difference": "Bản B có thêm từ 'và' trước 'Hợp đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập'.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Nho",
+    "citation_a": "Phần bị thay đổi từ Bản A: 'bao gồm nhưng không giới hạn ở: phân quyền truy cập theo nguyên tắc tối thiểu cần thiết, mã hóa trong quá trình truyền nhận khi phù hợp, ghi log hoạt động quản trị, cơ chế sao lưu, cơ chế khôi phục và kiểm soát thiết bị/lưu trữ có chứa dữ liệu của Bên A.'",
+    "citation_b": "Phần mới từ Bản B: 'bao gồm nhưng không giới hạn ở: phân quyền truy cập theo nguyên tắc tối thiểu cần thiết, mã hóa trong quá trình truyền nhận khi phù hợp, ghi log hoạt động quản trị, cơ chế sao lưu, cơ chế khôi phục và kiểm soát thiết bị/lưu trữ có chứa dữ liệu của Bên A. Hợ đồng mẫu phục vụ kiểm thử so sánh văn bản - Tài liệu giả lập.'"
+  },
+  "eba4586cb12c4117bc15ec5da9a66f33": {
+    "status": "MODIFIED",
+    "summary": "Cấp phạt vi phạm được điều chỉnh từ 0,05% thành 0,07%, ảnh hưởng trực tiếp đến mức phạt vi phạm.",
+    "exact_difference": "Mức phạt vi phạm được tăng từ 0,05% lên 0,07% theo giá trị công việc bị chậm.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,05% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm.",
+    "citation_b": "Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,07% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm."
+  },
+  "667db30f2819ee354551b1c345f8c02c": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn hợp đồng trong bản B dài hơn so với bản A từ 36 tháng thành 48 tháng. Đồng thời, thời gian yêu cầu khắc phục vi phạm trong điều khoản chấm dứt hợp đồng cũng được giảm từ 15 ngày làm việc xuống còn 10 ngày làm việc.",
+    "exact_difference": "Thời hạn hợp đồng đã tăng từ 36 tháng (bản A) thành 48 tháng (bản B). Thời gian yêu cầu khắc phục vi phạm trong điều khoản chấm dứt hợp đồng cũng đã giảm từ 15 ngày làm việc (bản A) xuống còn 10 ngày làm việc (bản B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn của Hợp đồng là 36 (ba mươi sáu) tháng kể từ ngày có hiệu lực.",
+    "citation_b": "Thời hạn của Hợp đồng là 48 (bốn mươi tám) tháng kể từ ngày có hiệu lực. Mỗi Bên có quyền chấm dứt Hợ hợp đồng trước thời hạn nếu Bên kia vi phạm nghiêm trọng và không khắc phục trong vòng 10 (mười) ngày làm việc kể từ ngày nhận được thông báo yêu cầu khắc phục, hoặc rơi vào tình trạng giải thể, phá sản, ngừng hoạt động kéo dài, bị thu hồi giấy phép mà không có biện pháp thay thế..."
+  },
+  "5c0026dd6a90dc103a1854605a126e7b": {
+    "status": "MODIFIED",
+    "summary": "Có sự thay đổi về số liệu định lượng trong Điều khoản ký kết. Số liệu cũ là 20 ngày và 420 triệu đồng, còn mới là 45 ngày và 1.250 triệu đồng.",
+    "exact_difference": "Thời gian khảo sát hiện trạng và phân tích yêu cầu từ 20 ngày (Ban A) thay đổi thành 45 ngày (Ban B). Giá trị của gói 01 cũng tăng từ 420.000.000 (Ban A) lên 1.250.000.000 (Ban B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợ đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận. ĐẠI DIỆN CÁC BÊN KÝ XÁC NHẬN Đại diện bên A Đại diện bên B (Ký, ghi rõ họ tên, chức vụ và đóng dấu)",
+    "citation_b": "Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợ đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận."
+  },
+  "5074c06c525bdfcf1439266c7743dd6677016129047e8823d1b84553a20fccc7": {
+    "status": "MODIFIED",
+    "summary": "Tiến độ dự kiến từ 180 ngày của Ban A được điều chỉnh thành 210 ngày của Ban B.",
+    "important_change": true,
+    "risk_note": "Thời gian dự kiến tăng lên, ảnh hưởng đến tiến độ tổng thể của dự án.",
+    "exact_difference": "Tiến độ dự kiến: từ 180 ngày (Ban A) sang 210 ngày (Ban B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tiến độ dự kiến của dự án là 180 (một trăm tám mươi) ngày kể từ Ngày khởi động dự án.",
+    "citation_b": "Tiến độ dự kiến của dự án là 210 (hai trăm mười) ngày kể từ Ngày khởi động dự án."
+  },
+  "27a435ce020c85c5f50c1b725c7bbe2bf04cf1fa4bae91b46d1b0b84a5a6a184": {
+    "status": "MODIFIED",
+    "summary": "Giá trị tạm tính trong bản A là 4.850.000.000 đồng, trong khi bản B là 5.420.000.000 đồng.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Giá trị tạm tính tăng từ 4.850.000.000 đồng (bản A) lên 5.420.000.000 đồng (bản B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Giá trị tạm tính của Hợp đồng là 4.850.000.000 đồng, chưa bao gồm thuế giá trị gia tăng.",
+    "citation_b": "Giá trị tạm tính của Hợp đồng là 5.420.000.000 đồng, chưa bao gồm thuế giá trị gia tăng."
+  },
+  "b0a773463981e1f2273429e80c10cc167e7364b1302796c077fda8efaa501954": {
+    "status": "MODIFIED",
+    "summary": "Thời gian bảo hành tối thiểu được tăng từ 12 tháng (Ban A) lên 18 tháng (Ban B).",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Thời gian bảo hành tối thiểu: Ban A - 12 tháng; Ban B - 18 tháng.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời gian bảo hành tối thiểu của hệ thống là 12 (mười hai) tháng kể từ ngày nghiệm thu cuối cùng.",
+    "citation_b": "Thời gian bảo hành tối thiểu của hệ thống là 18 (mười tám) tháng kể từ ngày nghiệm thu cuối cùng."
+  },
+  "5d154cecca79b611715612c4e79614a93bb5408116ed74ea1fa8f86fb10416e6": {
+    "status": "MODIFIED",
+    "summary": "2 cau, noi ro thay doi tu gi sang gi.",
+    "important_change": false,
+    "risk_note": "",
+    "exact_difference": "Không có sự khác biệt đáng chú ý giữa hai phiên bản.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Nho",
+    "citation_a": "Bên A cam kết giữ bí mật thông tin thương mại, tài chính, kỹ thuật, tài liệu nội bộ, dữ liệu khách hàng, chiến lược kinh doanh và thông tin liên quan đến hệ thống công nghệ.",
+    "citation_b": "Bên B cam kết giữ bí mật thông tin thương mại, tài chính, kỹ thuật, tài liệu nội bộ, dữ liệu khách hàng, chiến lược kinh doanh và thông tin liên quan đến hệ thống công nghệ."
+  },
+  "22626a0427cf2181c280e8c15b9b1b5bde1ec66bc95ef05a23e129ff8a56c46e": {
+    "status": "MODIFIED",
+    "summary": "Câu 20.2 của hai phiên bản có sự khác biệt về việc đề cập đến 'kiểm soát thiết bị/lưu trữ'.",
+    "important_change": true,
+    "risk_note": "Sự thay đổi này có thể ảnh hưởng đến cách thức bảo vệ dữ liệu cá nhân.",
+    "exact_difference": "'kiểm soát thiết bị/lưu trữ' được đề cập trong phiên bản BAN A, trong khi không có trong phiên bản BAN B.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Bên A: 'kiểm soát thiết bị/lưu trữ có chứa dữ liệu của Bên A.'",
+    "citation_b": "Bên B: Không đề cập đến 'kiểm soát thiết bị/lưu trữ'."
+  },
+  "eff1618ca5ab826f5bceb5194005b95e04b16d1b0c48906400962ce64ea49ded": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn thanh toán từ 15 ngày làm việc (BAN A) được sửa thành 20 ngày làm việc (BAN B). Tỷ lệ tạm giữ tiền cuối cùng cũng tăng từ 5% lên 10%, và thời gian tạm giữ tối đa tăng từ 60 ngày lên 90 ngày.",
+    "important_change": true,
+    "risk_note": "Thay đổi này có thể ảnh hưởng đến dòng tiền của Bên B, do thời hạn thanh toán dài hơn và tỷ lệ tạm giữ cao hơn.",
+    "exact_difference": "Thời hạn thanh toán: từ 15 ngày làm việc (BAN A) thành 20 ngày làm việc (BAN B). Tỷ lệ tạm giữ: từ 5% (BAN A) lên 10% (BAN B). Thời gian tạm giữ tối đa: từ 60 ngày (BAN A) lên 90 ngày (BAN B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn thanh toán là 15 ngày làm việc, trừ trường hợp có thỏa thuận khác trong từng đơn đặt hàng cụ thể.",
+    "citation_b": "Thời hạn thanh toán là 20 ngày làm việc, bao gồm biên bản nghiệm thu/bàn giao, hóa đơn giá trị gia tăng và các chứng từ liên quan."
+  },
+  "c47fb8b0d0ee0d62c2d6e9d29fdc03f0e6de0c9b9dca2a446f606436454fcecd": {
+    "status": "MODIFIED",
+    "summary": "Phạt vi phạm do chậm tiến độ từ 0,05% (Ban A) tăng lên 0,07% (Ban B).",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Mức phạt vi phạm do chậm tiến độ: Ban A - 0,05%, Ban B - 0,07%.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,05% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm.",
+    "citation_b": "Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,07% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm."
+  },
+  "65d416946ddbac6e338fd54e3ed0963073448068eb650f60936e9e68a9f3f747": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn hợp đồng từ 36 tháng trong bản A được sửa thành 48 tháng trong bản B.",
+    "important_change": true,
+    "risk_note": "Thay đổi thời gian này có thể ảnh hưởng đến kế hoạch và ngân sách dự án.",
+    "exact_difference": "Thời hạn của Hợp đồng là 36 (ba mươi sáu) tháng trong bản A, nhưng được sửa thành 48 (bốn mươi tám) tháng trong bản B.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Hợp đồng có hiệu lực kể từ ngày ký hoặc từ ngày Hai Bên hoàn thành điều kiện có hiệu lực được nêu tại Phụ lục, tùy thời điểm nào đến sau.",
+    "citation_b": "Thời hạn của Hợp đồng là 48 (bốn mươi tám) tháng kể từ ngày có hiệu lực."
+  },
+  "10faa05fa8cd092dbaf79655b55b4558d2c8d1f1f2dc01fd1ebb171b27f326f3": {
+    "status": "MODIFIED",
+    "summary": "Các số liệu trong phụ lục được cập nhật từ 420.000.000 đồng sang 1.250.000.000 đồng.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "STT 1: Giá trị (VNĐ) từ 420.000.000 đồng thay đổi thành 1.250.000.000 đồng.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "STT Hạng mục Đơn vị Khối lượng Thời gian Giá trị (VNĐ) 1 Khảo sát hiện trạng và phân tích yêu cầu Gói 01 20 ngày 420.000.000",
+    "citation_b": "STT Hạng mục Đơn vị Khối lượng Thời gian Giá trị (VNĐ) 1 Khảo sát hiện trạng và phân tích yêu cầu Gói 01 20 ngày 1.250.000.000"
+  },
+  "123e33d10002f5796dde3956b3183e0c35a5150e868bf86df4bdf86ad36748a9": {
+    "status": "MODIFIED",
+    "summary": "Số tài khoản truy cập đồng thời tăng từ 300 thành 350.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Tài khoản: 300 (Ban A) -> 350 (Ban B)",
+    "change_type": "Sua noi dung",
+    "impact_level": "Trung binh",
+    "citation_a": "Bên B cấp cho Bên A quyền sử dụng Phần mềm theo các hạng mục sau: Hạng mục Mô tả Đơn vị Giới hạn Người dùng Số lượng tài khoản truy cập đồng thời Tài khoản 300.",
+    "citation_b": "Bên B cấp cho Bên A quyền sử dụng Phần mềm theo các hạng mục sau: Hạng mục Mô tả Đơn vị Giới hạn Người dùng Số lượng tài khoản truy cập đồng thời Tài khoản 350."
+  },
+  "b6f89f36e422a1d8211c569ca25f819a4f8d9f47a94efd21f66ba9b1703fc1e3": {
+    "status": "MODIFIED",
+    "summary": "SLA từ 99.5% tăng lên 99.9%, phản hồi sự cố nghiêm trọng nhanh hơn (60 phút -> 30 phút), và BAN B yêu cầu duy trì kênh hỗ trợ khẩn cấp 24/7.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "SLA từ 99.5% tăng lên 99.9%; phản hồi sự cố nghiêm trọng: 60 phút -> 30 phút; BAN B duy trì kênh hỗ trợ khẩn cấp 24/7.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Trung binh",
+    "citation_a": "Mức độ sẵn sàng của hệ thống (SLA) cam kết tối thiểu là 99,5% mỗi tháng, không bao gồm thời gian bảo trì đã thông báo trước. Đối với sự cố nghiêm trọng, Bên B phải phản hồi trong vòng 60 phút và khắc phục trong vòng 08 giờ.",
+    "citation_b": "Mức độ sẵn sàng của hệ thống (SLA) cam kết tối thiểu là 99,9% mỗi tháng, không bao gồm thời gian bảo trì đã thông báo trước. Đối với sự cố nghiêm trọng, Bên B phải phản hồi trong vòng 30 phút và khắc phục trong vòng 04 giờ. Đối với sự cố thông thường, Bên B phải duy trì kênh hỗ trợ khẩn cấp 24/7 cho nhóm quản trị hệ thống của Bên A."
+  },
+  "8177e72eaabc5d757b93fd3f15488bdd42cf4001f96b4c49896c484eea7d1ebf": {
+    "status": "MODIFIED",
+    "summary": "Thời gian lưu trữ dữ liệu sao lưu từ 30 ngày của BAN A tăng lên 60 ngày của BAN B. BAN B được phép sử dụng hạ tầng điện toán đám mây tại Singapore của BAN B.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "- Thời gian lưu trữ dữ liệu sao lưu: BAN A (30 ngày) vs BAN B (60 ngày)\n- Cho phép sử dụng hạ tầng điện toán đám mây của BAN B tại Singapore",
+    "change_type": "Sua noi dung",
+    "impact_level": "Trung binh",
+    "citation_a": "Dữ liệu sao lưu được lưu giữ tối thiểu 30 ngày.",
+    "citation_b": "Bên A đồng ý để Bên B sử dụng hạ tầng điện toán đám mây đặt tại Singapore cho mục đích sao lưu dự phòng, với điều kiện dữ liệu được mã hóa và chỉ dùng cho mục tiêu vận hành Hợp đồng."
+  },
+  "ea729ebabb79ddc72d78c7cf9b35e1f0960390447bbc41fd4e15ccf7dd0d755f": {
+    "status": "MODIFIED",
+    "summary": "Phí dịch vụ và thanh toán: Phí từ 480 triệu đồng (Ban A) tăng lên 540 triệu đồng (Ban B). Đợt 1 thanh toán trong 20 ngày thay vì 15 ngày. Trong Ban B có thêm quy định về phí tăng thêm khi vượt giới hạn số lượng người dùng.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "- Phí cấp phép và bảo trì năm đầu tiên: 480 triệu đồng (Ban A) vs 540 triệu đồng (Ban B)\n- Đợt 1 thanh toán: 20 ngày (Ban B) vs 15 ngày (Ban A)",
+    "change_type": "Sua noi dung",
+    "impact_level": "Trung binh",
+    "citation_a": "Phí cấp phép và bảo trì năm đầu tiên là 480.000.000 đồng (chưa bao gồm VAT). Bên A thanh toán đợt 1 bằng 50% giá trị Hợp đồng trong vòng 15 ngày kể từ ngày ký;",
+    "citation_b": "Phí cấp phép và bảo trì năm đầu tiên là 540.000.000 đồng (chưa bao gồm VAT). Bên A thanh toán đợt 1 bằng 50% giá trị Hợp đồng trong vòng 20 ngày kể từ ngày ký;"
+  },
+  "087cfc5fff082266d2f28572eee1edb76a89324c6ad2322f9fd9f277f450c317": {
+    "status": "MODIFIED",
+    "summary": "SLA từ 99.5% trong bản A tăng lên 99.9% trong bản B; thời gian phản hồi và khắc phục sự cố nghiêm trọng được rút ngắn từ 60 phút thành 30 phút.",
+    "important_change": true,
+    "risk_note": "Thay đổi này có thể ảnh hưởng đến quyền, nghĩa vụ, rủi ro, thời hạn, thanh toán, phạt, bồi thường và bảo mật.",
+    "exact_difference": "SLA tăng từ 99.5% thành 99.9%; thời gian phản hồi sự cố nghiêm trọng giảm từ 60 phút thành 30 phút; thời gian khắc phục sự cố nghiêm trọng giảm từ 8 giờ thành 4 giờ.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Mức độ sẵn sàng của hệ thống (SLA) cam kết tối thiểu là 99,5% mỗi tháng, không bao gồm thời gian bảo trì đã thông báo trước.",
+    "citation_b": "Mức độ sẵn sàng của hệ thống (SLA) cam kết tối thiểu là 99,9% mỗi tháng, không bao gồm thời gian bảo trì đã thông báo trước."
+  },
+  "25ce488227aa90a421ff68d79bcfe31e4a56711c4c79db9b807ce3e73f56163c": {
+    "status": "MODIFIED",
+    "summary": "Số lượng tài khoản truy cập đồng thời tăng từ 300 thành 350.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Giới hạn Người dùng: Từ Tài khoản 300 thay đổi sang Tài khoản 350.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Bên B cấp cho Bên A quyền sử dụng Phần mềm theo các hạng mục sau: Hạng mục Mô tả Đơn vị Giới hạn Người dùng Số lượng tài khoản truy cập đồng thời Tài khoản 300",
+    "citation_b": "Bên B cấp cho Bên A quyền sử dụng Phần mềm theo các hạng mục sau: Hạng mục Mô tả Đơn vị Giới hạn Người dùng Số lượng tài khoản truy cập đồng thời Tài khoản 350"
+  },
+  "0bb7074e8f7dd3556e5a2b770a9afe47941424d5df21eab1794afa7d73cce532": {
+    "status": "MODIFIED",
+    "summary": "Thời gian lưu trữ dữ liệu sao lưu được tăng từ 30 ngày sang 60 ngày. Bên A đồng ý sử dụng hạ tầng đám mây tại Singapore cho mục đích sao lưu dự phòng.",
+    "important_change": true,
+    "risk_note": "Thay đổi này ảnh hưởng đến mức độ bảo mật và khả năng phục hồi dữ liệu.",
+    "exact_difference": "Thời gian lưu trữ dữ liệu sao lưu được tăng từ 30 ngày sang 60 ngày. Bên A đồng ý sử dụng hạ tầng đám mây tại Singapore cho mục đích sao lưu dự phòng, với điều kiện dữ liệu được mã hóa và chỉ dùng cho mục tiêu vận hành Hợp đồng.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Dữ liệu sao lưu được lưu giữ tối thiểu 30 ngày. Bên B không được chuyển dữ liệu của Bên A ra ngoài lãnh thổ Việt Nam nếu không có chấp thuận bằng văn bản của Bên A.",
+    "citation_b": "Dữ liệu sao lưu được lưu giữ tối thiểu 60 ngày. Bên A đồng ý để Bên B sử dụng hạ tầng điện toán đám mây đặt tại Singapore cho mục đích sao lưu dự phòng, với điều kiện dữ liệu được mã hóa và chỉ dùng cho mục tiêu vận hành Hợp đồng."
+  },
+  "37f12b9d2aade9e0c47d58605c6fc8293aed75b9a505f5b4f22b8950ada9877f": {
+    "status": "MODIFIED",
+    "summary": "Phí dịch vụ và thanh toán năm đầu tiên có sự khác biệt về số tiền. Bên A thanh toán 50% giá trị hợp đồng trong vòng 15 ngày, còn Bên B là 20 ngày.",
+    "important_change": true,
+    "risk_note": "Thay đổi thời gian thanh toán đợt 1 có thể ảnh hưởng đến dòng tiền và quản lý dự án.",
+    "exact_difference": "Phí cấp phép và bảo trì năm đầu tiên: Bên A là 480.000.000 đồng, Bên B là 540.000.000 đồng; Thời gian thanh toán đợt 1: Bên A là 15 ngày, Bên B là 20 ngày.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Phí cấp phép và bảo trì năm đầu tiên là 480.000.000 đồng (chưa bao gồm VAT). Bên A thanh toán đợt 1 bằng 50% giá trị Hợp đồng trong vòng 15 ngày kể từ ngày ký.",
+    "citation_b": "Phí cấp phép và bảo trì năm đầu tiên là 540.000.000 đồng (chưa bao gồm VAT). Bên A thanh toán đợt 1 bằng 50% giá trị Hợp đồng trong vòng 20 ngày kể từ ngày ký."
+  },
+  "b0dc27ab0e8839ab055a31485c4990ad4b9d939c29aa04a716f939bbca2e8833": {
+    "status": "MODIFIED",
+    "summary": "Giá trị tạm tính của hợp đồng trong bản B tăng từ 4.850.000.000 đồng (BAN A) lên 5.420.000.000 đồng (BAN B).",
+    "important_change": true,
+    "risk_note": "Thay đổi này có thể ảnh hưởng đến quyền, nghĩa vụ, rủi ro, thời hạn, thanh toán, phạt và bồi thường.",
+    "exact_difference": "Giá trị tạm tính của hợp đồng đã tăng từ 4.850.000.000 đồng (BAN A) lên 5.420.000.000 đồng (BAN B).",
+    "change_type": "Sua noi dung",
+    "impact_level": "Lon",
+    "citation_a": "Giá trị tạm tính của Hợp đồng là 4.850.000.000 đồng, chưa bao gồm thuế giá trị gia tăng.",
+    "citation_b": "Giá trị tạm tính của Hợp đồng là 5.420.000.000 đồng, chưa bao gồm thuế giá trị gia tăng."
+  },
+  "408e0474e341a3dbbc3e525be6d5feffccbe9d8f2c35ef6fa22cd4216a2d3085": {
+    "status": "MODIFIED",
+    "summary": "Tiến độ dự án trong bản A là 180 ngày, trong khi bản B là 210 ngày. Mốc thời gian có thể được điều chỉnh trong các trường hợp tương tự, nhưng mức báo cáo nguy cơ chậm tiến độ khác nhau giữa hai phiên bản.",
+    "important_change": true,
+    "risk_note": "Thay đổi này ảnh hưởng đến thời hạn dự án và quy trình thông báo về nguy cơ chậm tiến độ.",
+    "exact_difference": "Tiến độ dự kiến được thay đổi từ 180 ngày (Bản A) sang 210 ngày (Bản B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Tiến độ dự kiến của dự án là 180 (một trăm tám mươi) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể.",
+    "citation_b": "Tiến độ dự kiến của dự án là 210 (hai trăm mười) ngày kể từ Ngày khởi động dự án, trừ khi các Phụ lục quy định thời hạn ngắn hơn hoặc dài hơn cho từng hạng mục cụ thể."
+  },
+  "a27275d60b7fe7bdc90e6089f78dd40d94bdb3d01e0158c61116556ba47ab9bf": {
+    "status": "MODIFIED",
+    "summary": "Thời gian bảo hành tối thiểu được tăng từ 12 tháng thành 18 tháng.",
+    "important_change": true,
+    "risk_note": "Thay đổi này có thể ảnh hưởng đến thời hạn và phí dịch vụ sau khi hết bảo hành.",
+    "exact_difference": "Thời gian bảo hành tối thiểu thay đổi từ 12 (mười hai) tháng thành 18 (mười tám) tháng.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Điều 16.1 của BAN A: Thời gian bảo hành tối thiểu của hệ thống là 12 (mười hai) tháng kể từ ngày nghiệm thu cuối cùng.",
+    "citation_b": "Điều 16.1 của BAN B: Thời gian bảo hành tối thiểu của hệ thống là 18 (mười tám) tháng kể từ ngày nghiệm thu cuối cùng."
+  },
+  "b6b3810e71de0bf7bca984974c2c6174e89900ae47f8624dcfe08933136c80d4": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn thanh toán và tỷ lệ tạm giữ tiền thanh toán cuối cùng đã được sửa đổi. Thời hạn thanh toán từ 15 ngày làm việc thành 20 ngày làm việc, và tỷ lệ tạm giữ tiền thanh toán cuối cùng từ 5% thành 10%.",
+    "important_change": true,
+    "risk_note": "Thay đổi này có thể ảnh hưởng đến quyền, nghĩa vụ, rủi ro, thời hạn, thanh toán, phạt, bồi thường.",
+    "exact_difference": "Thời hạn thanh toán từ 15 ngày làm việc (Ban A) thành 20 ngày làm việc (Ban B), và tỷ lệ tạm giữ tiền thanh toán cuối cùng từ 5% (Ban A) thành 10% (Ban B).",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Thời hạn thanh toán là 15 ngày làm việc, tỷ lệ tạm giữ tiền thanh toán cuối cùng là 5%.",
+    "citation_b": "Thời hạn thanh toán là 20 ngày làm việc, tỷ lệ tạm giữ tiền thanh toán cuối cùng là 10%."
+  },
+  "7a780c92d8c2d37b1169bcd356cb09be1f8b58eef96c717c86987304b23e8efe": {
+    "status": "MODIFIED",
+    "summary": "Không có điểm khác biệt đáng chú ý giữa hai phiên bản.",
+    "important_change": false,
+    "risk_note": "",
+    "exact_difference": "",
+    "change_type": "Sua noi dung",
+    "impact_level": "Nho",
+    "citation_a": "Bên nhận thông tin chỉ được phép sử dụng thông tin mật cho mục đích thực hiện Hợp đồng; không được sao chép, tiết lộ, chuyển giao hoặc cho phép bên thứ ba tiếp cận nếu khôn...",
+    "citation_b": "Bên nhận thông tin chỉ được phép sử dụng thông tin mật cho mục đích thực hiện Hợp đồng; không được sao chép, tiết lộ, chuyển giao hoặc cho phép bên thứ ba tiếp cận nếu khôn..."
+  },
+  "7017a5723b0b06f65c352d6b58a23f69466d7eb6aace7a44aa6b22b6d7031f8d": {
+    "status": "MODIFIED",
+    "summary": "Điều khoản về cơ chế sao lưu và khôi phục trong Điều 20 của bản B đã được bổ sung.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Trong điểm 20.2, bản A không đề cập đến cơ chế sao lưu và khôi phục, trong khi bản B đã bổ sung thêm hai cơ chế này.",
+    "change_type": "Sua noi dung",
+    "impact_level": "Nho",
+    "citation_a": "Bên B phải áp dụng các biện pháp kỹ thuật và tổ chức phù hợp để bảo vệ dữ liệu, bao gồm nhưng không giới hạn ở: phân quyền truy cập theo nguyên tắc tối thiểu cần thiết, mã hóa trong quá trình truyền nhận khi phù hợp, ghi log hoạt động quản trị.",
+    "citation_b": "Bên B phải áp dụng các biện pháp kỹ thuật và tổ chức phù hợp để bảo vệ dữ liệu, bao gồm nhưng không giới hạn ở: phân quyền truy cập theo nguyên tắc tối thiểu cần thiết, mã hóa trong quá trình truyền nhận khi phù hợp, ghi log hoạt động quản trị, cơ chế sao lưu, cơ chế khôi phục và kiểm soát thiết bị/lưu trữ có chứa dữ liệu của Bên A."
+  },
+  "750eaf2bbd29080efe108b54591039bde1bde838c94d15b44ae6ec5570ae33f2": {
+    "status": "MODIFIED",
+    "summary": "Các mức phạt vi phạm đã được điều chỉnh từ 0,05% lên 0,07% của giá trị phần công việc bị chậm. Mức phạt tối đa vẫn giữ nguyên là 8%. Điều này không ảnh hưởng đến quyền, nghĩa vụ, rủi ro, thời hạn, thanh toán, phạt, bồi thường, bảo mật hay các điều kiện đơn phương.",
+    "important_change": true,
+    "risk_note": "",
+    "exact_difference": "Mức phạt vi phạm được tăng từ 0,05% lên 0,07% của giá trị phần công việc bị chậm. Mức phạt tối đa không thay đổi, vẫn là 8%.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,05% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm.",
+    "citation_b": "Nếu Bên B chậm tiến độ do lỗi của mình vượt quá các mốc thời gian đã được phê duyệt, Bên A có quyền áp dụng phạt vi phạm với mức 0,07% giá trị phần công việc bị chậm cho mỗi ngày chậm, nhưng tổng mức phạt không vượt quá 8% giá trị phần nghĩa vụ bị vi phạm."
+  },
+  "d43b1e336013b234905de862378ea38803cb3d35bab300190fa9224196dc0ca3": {
+    "status": "MODIFIED",
+    "summary": "Thay đổi về thời gian thực hiện và giá trị hợp đồng.",
+    "important_change": true,
+    "risk_note": "Thay đổi thời gian thực hiện từ 20 ngày thành 45 ngày có thể ảnh hưởng đến tiến độ dự án. Giá trị hợp đồng tăng từ 420 triệu đồng lên 1.250 triệu đồng.",
+    "exact_difference": "Thời gian thực hiện và giá trị hợp đồng đã thay đổi. Trước: 20 ngày, 420.000.000 VNĐ; Sau: 45 ngày, 1.250.000.000 VNĐ.",
+    "change_type": "Sửa nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận. ĐẠI DIỆN CÁC BÊN KÝ XÁC NHẬN Đại diện bên A Đại diện bên B (Ký, ghi rõ họ tên, chức vụ và đóng dấu) (Ký, ghi rõ họ tên, chức vụ và đóng dấu)",
+    "citation_b": "Hai Bên xác nhận đã đọc, hiểu rõ, tự nguyện ký kết Hợp đồng này và cam kết thực hiện đầy đủ các quyền, nghĩa vụ đã thỏa thuận."
+  },
+  "0015dcf45b822bcb6227d3c0fc9ec994dfc1eb3bd54be9d5dabd1a856b9189df": {
+    "status": "MODIFIED",
+    "summary": "Thời hạn hợp đồng được tăng từ 36 tháng sang 48 tháng. Thời gian thông báo yêu cầu khắc phục vi phạm cũng giảm từ 15 ngày làm việc xuống còn 10 ngày làm việc.",
+    "important_change": true,
+    "risk_note": "Thay đổi này có thể ảnh hưởng đến thời hạn hợp đồng và quyền chấm dứt trước thời hạn của các bên.",
+    "exact_difference": "Thời hạn hợp đồng thay đổi từ 36 tháng (BẢN A) sang 48 tháng (BẢN B). Thời gian thông báo yêu cầu khắc phục vi phạm giảm từ 15 ngày làm việc (BẢN A) xuống còn 10 ngày làm việc (BẢN B).",
+    "change_type": "Thay đổi nội dung",
+    "impact_level": "Trung bình",
+    "citation_a": "Hết thời hạn này, nếu Hai Bên vẫn còn công việc dở dang hoặc còn nghĩa vụ bảo hành/bảo trì/chuyển giao chưa hoàn tất thì các điều khoản cần thiết vẫn tiếp tục có hiệu lực cho đến khi nghĩa vụ đó được thực hiện xong.",
+    "citation_b": "Hết thời hạn này, nếu Hai Bên vẫn còn công việc dở dang hoặc còn nghĩa vụ bảo hành/bảo trì/chuyển giao chưa hoàn tất thì các điều khoản cần thiết vẫn tiếp tục có hiệu lực cho đến khi nghĩa vụ đó được thực hiện xong."
   }
 }
